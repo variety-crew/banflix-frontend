@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import { definePreset } from '@primevue/themes';
 
+import "@/assets/main.css"
 import 'primeicons/primeicons.css'
 
 const app = createApp(App);
