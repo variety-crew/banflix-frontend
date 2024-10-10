@@ -1,11 +1,10 @@
 <template>
   <div>
-    <Button label="Submit" />
+    <Button label="전송" icon="pi pi-user" />
   </div>
 </template>
 
 <script setup>
-import Button from "primevue/button";
 </script>
 
 <style scoped>
