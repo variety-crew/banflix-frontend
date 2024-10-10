@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import { definePreset } from '@primevue/themes';
 import { createPinia } from 'pinia'
+import ToastService from 'primevue/toastservice';
 
 import "@/assets/main.css"
 import 'primeicons/primeicons.css'
@@ -96,5 +97,6 @@ app.use(PrimeVue, {
         preset: Noir
     }
 });
+app.use(ToastService);
 
 app.mount("#app");
