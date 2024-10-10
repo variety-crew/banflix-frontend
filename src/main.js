@@ -3,10 +3,12 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import { definePreset } from '@primevue/themes';
+import { createPinia } from 'pinia'
 
 import "@/assets/main.css"
 import 'primeicons/primeicons.css'
 
+const pinia = createPinia();
 const app = createApp(App);
 
 // Theme Customization
@@ -87,6 +89,7 @@ const Noir = definePreset(Aura, {
 });
 
 
+app.use(pinia);
 app.use(PrimeVue, {
     // Default theme configuration
     theme: {
