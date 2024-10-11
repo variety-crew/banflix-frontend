@@ -1,4 +1,4 @@
-/**
+/*
  * 폰트 셋팅
  */
 @font-face {
@@ -36,7 +36,6 @@ h3, h4, h5, h6 {
  * default 스타일 셋팅
  */
 body {
-    margin: 0;
     width: 100vw;
     height: 100vh;
 }
@@ -46,4 +45,11 @@ body {
     height: 100vh;
     display: flex;
     flex-direction: column;
+}
+
+/*
+ * reset
+ */
+body, h1, h2, h3, h4, h5, h6 {
+    margin: 0;
 }
