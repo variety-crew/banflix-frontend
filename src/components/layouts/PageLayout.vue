@@ -28,7 +28,7 @@ const props = defineProps({
         required: true
     },
     btnTxt: String,         // btnTxt: 오른쪽 상단에 위치한 버튼
-    btnRole: {              // btnRole: 오른쪽 상단 버튼의 권한
+    btnRole: {              // btnRole: 오른쪽 상단 버튼의 권한(모두에게 보일지 어드민에게만 보일지)
         type: String,       //        : "ADMIN", "ALL"
         default: "ADMIN"
     }
