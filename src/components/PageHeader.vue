@@ -9,6 +9,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router';
+import { useUserStore } from '@/stores/user';
 </script>
 
 <style scoped>

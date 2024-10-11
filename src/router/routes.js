@@ -13,6 +13,8 @@ const router = createRouter({
         { path: "/mypage", component: () => import("@/views/MyPageView.vue") },
         { path: "/dm", component: () => import("@/views/DMMainView.vue") },
         { path: "/notification", component: () => import("@/views/NotificationMainView.vue") },
+        { path: "/login", component: () => import("@/views/LoginMainView.vue") },
+        { path: "/register", component: () => import("@/views/RegisterMainView.vue") },
 
     ]
 });
