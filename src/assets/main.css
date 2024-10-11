@@ -3,6 +3,11 @@
     src:local("NanumGothic-Regular"),
     url('./fonts/NanumGothic-Regular.ttf') 
 }
+
 * {
     font-family: "NanumGothic";
+}
+
+body {
+    margin: 0;
 }
