@@ -5,7 +5,7 @@
     <RouterView />
   </main>
 
-  <Toast />
+  <Toast position="top-center" />
 </template>
 
 <script setup>
