@@ -6,6 +6,7 @@ import { definePreset } from '@primevue/themes';
 import { createPinia } from 'pinia'
 import ToastService from 'primevue/toastservice';
 import router from '@/router/routes';
+import Toast from 'primevue/toast';
 
 import "@/assets/main.css"
 import 'primeicons/primeicons.css'
@@ -100,5 +101,8 @@ app.use(PrimeVue, {
 });
 app.use(ToastService);
 app.use(router);
+
+// PrimeVue의 전역 컴포넌트 설정
+app.component('Toast', Toast);
 
 app.mount("#app");
