@@ -6,7 +6,7 @@
                     <img src="../assets/logo/bangflix_logo.svg" class="logo">
                 </RouterLink>
                 
-                <template v-for="item in items">
+                <template v-for="item in items" :key="item.label">
                     <RouterLink :to="item.route">
                         <Button v-if="item.role === 'ALL'" :label="item.label" text />
                         <Button v-else-if="item.role === 'ADMIN' && userStore.isAdmin" :label="item.label" severity="secondary" />
