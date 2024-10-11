@@ -12,7 +12,6 @@
 import { RouterView } from 'vue-router';
 import PageHeader from './components/PageHeader.vue';
 import Toast from 'primevue/toast';
-
 </script>
 
 <style scoped>

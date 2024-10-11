@@ -1,13 +1,7 @@
 <template>
-    <div>
-        방탈출 테마 메인페이지
-    </div>
+  <div>방탈출 테마 메인페이지</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

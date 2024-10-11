@@ -1,13 +1,7 @@
 <template>
-    <div>
-        커뮤니티 페이지
-    </div>
+  <div>커뮤니티 페이지</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

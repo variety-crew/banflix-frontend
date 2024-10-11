@@ -1,13 +1,7 @@
 <template>
-    <div>
-        쪽지함
-    </div>
+  <div>쪽지함</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>

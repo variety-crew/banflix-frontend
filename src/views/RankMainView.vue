@@ -1,13 +1,7 @@
 <template>
-    <div>
-        랭킹 페이지
-    </div>
+  <div>랭킹 페이지</div>
 </template>
 
-<script setup>
+<script setup></script>
 
-</script>
-
-<style scoped>
-
-</style>
+<style scoped></style>
