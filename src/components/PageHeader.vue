@@ -1,43 +1,47 @@
 <template>
     <header>
         <nav class="menu-bar">
-            <div class="main-menu">
-                <div class="logo">
-                    <img src="../assets/logo/bangflix_logo.svg">
-                </div>
+            <div class="start">
                 <RouterLink to="/">
-                    <button class="menu">홈</button>
+                    <img src="../assets/logo/bangflix_logo.svg" class="logo">
                 </RouterLink>
-                <RouterLink to="/rank">
-                    <button class="menu">랭킹</button>
-                </RouterLink>
-                <RouterLink to="/theme">
-                    <button class="menu">방탈출 테마</button>
-                </RouterLink>
-                <RouterLink to="/community">
-                    <button class="menu">커뮤니티</button>
-                </RouterLink>
-                <RouterLink to="/event">
-                    <button class="menu">이벤트</button>
-                </RouterLink>
-                    <RouterLink to="/notice">
-                        <button class="menu">공지사항</button>
+                
+                <template v-for="item in items">
+                    <RouterLink :to="item.route">
+                        <Button v-if="item.role === 'ALL'" :label="item.label" text />
+                        <Button v-else-if="item.role === 'ADMIN' && userStore.isAdmin" :label="item.label" severity="secondary" />
                     </RouterLink>
-                <RouterLink to="/admin">
-                    <button class="admin-menu">관리자 전용</button>
-                </RouterLink>
+                </template>
             </div>
-            <div class="login-menu">
-                <div class="welcome">{{ useUserStore.nickname }} 님, 안녕하세요!</div>
-                <RouterLink to="/mypage">
-                    <button class="mypage"><img src="../assets/header/mypage_button.svg"></button>
-                </RouterLink>
-                <RouterLink to="/dm">
-                    <button class="pi pi-envelope"></button>
-                </RouterLink>
-                <RouterLink to="/notification">
-                    <button class="pi pi-bell"></button>
-                </RouterLink>
+
+            <div class="end">
+                
+                <!-- 로그인 유저 -->
+                <template v-if="userStore.nickname">
+                    <div>{{ userStore.nickname }} 님, 안녕하세요!</div>
+                    
+                    <RouterLink to="/mypage">
+                        <Avatar icon="pi pi-user" size="large" shape="circle" />
+                    </RouterLink>
+
+                    <OverlayBadge value="2" size="small" severity="danger">
+                        <RouterLink to="/dm">
+                            <i class="pi pi-envelope" style="font-size: 1.3rem;" />
+                        </RouterLink>
+                    </OverlayBadge>
+
+                    <OverlayBadge value="2" size="small" severity="danger">
+                        <RouterLink to="/notification">
+                            <i class="pi pi-bell" style="font-size: 1.3rem;" />
+                        </RouterLink>
+                    </OverlayBadge>
+                </template>
+
+                <!-- 게스트 -->
+                <template v-else>
+                    <Button label="로그인" severity="secondary" @click="goLoginPage" size="small" />
+                    <Button label="회원가입" @click="goRegisterPage" size="small" />
+                </template>
             </div>
         </nav>
     </header>
@@ -46,9 +50,58 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import { useUserStore } from '@/stores/user';
+import { ref } from "vue";
+import Button from 'primevue/button';
+import Avatar from 'primevue/avatar';
+import OverlayBadge from 'primevue/overlaybadge';
 
-import 'primeicons/primeicons.css'
+const items = ref([
+    {
+        label: "홈",
+        route: "/",
+        role: "ALL",
+    },
+    {
+        label: "랭킹",
+        route: "/rank",
+        role: "ALL",
+    },
+    {
+        label: "방탈출 테마",
+        route: "/theme",
+        role: "ALL",
+    },
+    {
+        label: "커뮤니티",
+        route: "/community",
+        role: "ALL",
+    },
+    {
+        label: "이벤트",
+        route: "/event",
+        role: "ALL",
+    },
+    {
+        label: "공지사항",
+        route: "/notice",
+        role: "ALL",
+    },
+    {
+        label: "관리자",
+        route: "/admin",
+        role: "ADMIN",
+    }
+]);
 
+const userStore = useUserStore();
+
+const goLoginPage = () => {
+
+}
+
+const goRegisterPage = () => {
+
+}
 
 </script>
 
@@ -57,66 +110,25 @@ import 'primeicons/primeicons.css'
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-    }
+        align-items: center;
+        padding: 10px 28px;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
 
-    .main-menu {
-        display: flex;
-        flex-direction: row;
-        width: 640px;
-        height: 50px;
-        justify-content: space-between;
+        .start, .end {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .end {
+            gap: 20px;
+        }
     }
 
     .logo {
         width: 49px;
         height: 49px;
-        padding-right: 10px;
-    }
-
-    .menu {
-        align-items: center;
-        margin: 5px auto;
-        height: 32px;
-        border: none;
-        background: #FFFFFF;
-        color: #1E1E1E;
-
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 100%;
-        cursor: pointer;
-    }
-
-    .admin-menu {
-        align-items: center;
-        margin: 4px auto;
-        height: 32px;
-
-        background: #E5FFD6;
-        border-radius: 8px;
-        border: none;
-
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 100%;
-        cursor: pointer;
-    }
-
-    .login-menu {
-        display: flex;
-        flex-direction: row;
-        width: 351px;
-        height: 50px;
-        justify-content: space-between;
-    }
-
-    .welcome {
-
-    }
-
-    .mypage {
-        border: none;
-        background: #FFFFFF;
+        margin-right: 20px;
     }
 
     .pi-envelope {
