@@ -1,11 +1,12 @@
 <template>
-    <div>
-        관리자 전용 페이지
-    </div>
+    <AdminPageLayout>
+        <RouterView />
+    </AdminPageLayout>
 </template>
 
 <script setup>
-
+import AdminPageLayout from '@/components/layouts/AdminPageLayout.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <style scoped>
