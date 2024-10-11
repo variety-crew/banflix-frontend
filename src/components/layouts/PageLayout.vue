@@ -40,7 +40,7 @@ const userStore = useUserStore();
 
 <style scoped>
 .container {
-    padding: 64px 32px;
+    padding: 64px 48px;
 
     .top-area {
         display: flex;

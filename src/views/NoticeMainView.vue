@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import PageLayout from '@/components/PageLayout.vue';
+import PageLayout from '@/components/layouts/PageLayout.vue';
 import useToastMessage from '@/hooks/useToastMessage';
 
 const { showSuccess } = useToastMessage();

@@ -9,6 +9,7 @@ const router = createRouter({
         { path: "/community", component: () => import("@/views/CommunityMainView.vue") },
         { path: "/event", component: () => import("@/views/EventMainView.vue") },
         { path: "/notice", component: () => import("@/views/NoticeMainView.vue") },
+        { path: "/notice/form/:noticeId?", component: () => import("@/views/notice/NoticeFormView.vue") },
         { path: "/admin", component: () => import("@/views/AdminMainView.vue") },
         { path: "/mypage", component: () => import("@/views/MyPageView.vue") },
         { path: "/dm", component: () => import("@/views/DMMainView.vue") },
