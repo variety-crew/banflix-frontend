@@ -1,10 +1,12 @@
 <template>
-    <div>
+    <PageLayout title="공지사항">
         공지사항 페이지
-    </div>
+    </PageLayout>
 </template>
 
 <script setup>
+import PageLayout from '@/components/PageLayout.vue';
+
 
 </script>
 
