@@ -34,6 +34,8 @@
               <i class="pi pi-bell" style="font-size: 1.3rem" />
             </RouterLink>
           </OverlayBadge>
+
+          <Button label="로그아웃" severity="secondary" size="small" @click="logout" />
         </template>
 
         <!-- 게스트 -->
@@ -99,6 +101,8 @@ const goLoginPage = () => {
 };
 
 const goRegisterPage = () => {};
+
+const logout = () => {};
 </script>
 
 <style scoped>
