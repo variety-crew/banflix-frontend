@@ -9,8 +9,7 @@
       <Textarea
         v-model="inputContent"
         class="content"
-        rows="5"
-        cols="30"
+        rows="15"
         placeholder="내용을 입력해주세요. &#10;스포일러에 대한 내용을 작성할 경우 법적으로 조치가 들어갈 수 있습니다."
       />
     </div>
@@ -60,5 +59,6 @@ onMounted(() => {
   width: 100%;
   margin-top: 10px;
   resize: none;
+  padding: 15px;
 }
 </style>
