@@ -72,7 +72,7 @@ const items = ref([
   },
   {
     label: '커뮤니티',
-    route: '/community',
+    route: '/board',
     role: 'ALL',
   },
   {
@@ -94,7 +94,9 @@ const items = ref([
 
 const userStore = useUserStore();
 
-const goLoginPage = () => {};
+const goLoginPage = () => {
+  userStore.login();
+};
 
 const goRegisterPage = () => {};
 </script>

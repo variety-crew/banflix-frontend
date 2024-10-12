@@ -11,6 +11,7 @@ export const useUserStore = defineStore('user', () => {
     userCode.value = 1;
     nickname.value = '프로방탈출러';
     accessToken.value = 'fakeaccesstoken';
+    isAdmin.value = true;
   }
 
   return { userCode, nickname, isAdmin, login };
