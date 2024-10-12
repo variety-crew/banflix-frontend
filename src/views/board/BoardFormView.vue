@@ -126,9 +126,11 @@ const saveBoard = () => {
 }
 .delete-button {
   position: absolute;
+  width: 25px;
+  height: 25px;
   top: -10px;
   right: -10px;
-  background-color: #f5f5f5;
+  background-color: #e3e3e3;
   border-radius: 50%;
   border: none;
   cursor: pointer;
