@@ -2,12 +2,12 @@
   <PageLayout title="커뮤니티" btn-txt="글 작성" btn-role="ALL" @click-btn="goBoardForm">
     <div class="board-card-container">
       <template v-if="cards && cards.length">
-        <template v-for="(card, index) in cards" :key="index">
+        <template v-for="(card, index) in cards" :key="card.id">
           <BoardPreviewCard
             :card="card"
             :index="index"
             class="board-card"
-            @click-board-preview="goBoardDetail(index)"
+            @click-board-preview="goBoardDetail(card.id)"
           />
         </template>
       </template>
@@ -25,20 +25,21 @@ import BoardPreviewCard from '@/components/cards/preview/BoardPreviewCard.vue';
 const router = useRouter();
 
 const cards = ref([]);
-const postNotExist = ref('게시글이 존재하지 않습니다.');
+const postNotExist = '게시글이 존재하지 않습니다.';
 
-const goBoardDetail = index => {
-  router.push(`/board/form/${index}`);
+const goBoardDetail = id => {
+  router.push(`/board/detail/${id}`);
 };
 const goBoardForm = () => {
   router.push({ path: 'board/form' });
 };
 
 onMounted(() => {
-  cards.value.push({ key: 'value' });
-  cards.value.push({ key: 'value' });
-  cards.value.push({ key: 'value' });
-  cards.value.push({ key: 'value' });
+  cards.value.push({ id: 0, key: 'value' });
+  cards.value.push({ id: 1, key: 'value' });
+  cards.value.push({ id: 2, key: 'value' });
+  cards.value.push({ id: 3, key: 'value' });
+  cards.value.push({ id: 4, key: 'value' });
 });
 </script>
 

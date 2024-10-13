@@ -20,12 +20,12 @@ const router = createRouter({
       component: () => import('@/views/BoardMainView.vue'),
     },
     {
-      path: '/board/form',
-      component: () => import('@/views/board/BoardFormView.vue'),
+      path: '/board/detail/:boardId',
+      component: () => import('@/views/board/BoardDetailView.vue'),
     },
     {
-      path: '/board/form/:boardId',
-      component: () => import('@/views/board/BoardDetailView.vue'),
+      path: '/board/form',
+      component: () => import('@/views/board/BoardFormView.vue'),
     },
     {
       path: '/event',
