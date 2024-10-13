@@ -57,10 +57,14 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import useToastMessage from '@/hooks/useToastMessage';
 
 const route = useRoute();
-const boardId = ref(route.params.boardId);
+const { showSuccess, showError, showWarning } = useToastMessage();
 
+const boardId = ref(route.params.boardId);
+const isSubscribed = ref(true);
+const isWriter = ref(true);
 const inputComment = ref('');
 const menu = ref();
 const boardDetail = ref({
@@ -85,24 +89,44 @@ const boardDetail = ref({
 const menuItems = ref([]);
 
 const setMenuItems = () => {
-  menuItems.value = [
-    {
-      items: [
-        {
-          label: '구독하기',
-          icon: 'pi pi-bell',
-        },
-        {
-          label: '수정하기',
-          icon: 'pi pi-pencil',
-        },
-        {
-          label: '삭제하기',
-          icon: 'pi pi-trash',
-        },
-      ],
-    },
-  ];
+  if (isSubscribed.value) {
+    menuItems.value = [
+      {
+        items: [
+          {
+            label: '구독중',
+            icon: 'pi pi-bell-slash',
+            command: handleSubscribe,
+          },
+        ],
+      },
+    ];
+  } else {
+    menuItems.value = [
+      {
+        items: [
+          {
+            label: '구독하기',
+            icon: 'pi pi-bell',
+            command: handleSubscribe,
+          },
+        ],
+      },
+    ];
+  }
+
+  if (isWriter.value) {
+    menuItems.value[0].items.push(
+      {
+        label: '수정하기',
+        icon: 'pi pi-pencil',
+      },
+      {
+        label: '삭제하기',
+        icon: 'pi pi-trash',
+      },
+    );
+  }
 };
 
 const toggle = event => {
@@ -110,6 +134,18 @@ const toggle = event => {
 };
 const handleReport = () => {
   console.log('신고하기');
+};
+const handleSubscribe = () => {
+  // 구독 API 요청 handling 필요
+  isSubscribed.value = !isSubscribed.value;
+  if (isSubscribed.value) {
+    showSuccess('구독 완료', '해당 글을 구독합니다. \n 해당 글의 변동사항에 대해서 알림을 받습니다.');
+  } else {
+    showWarning('구독 취소', '구독이 취소됐습니다. \n 더 이상 해당 글의 변동사항에 대해서 알림을 받지 않습니다.');
+  }
+
+  setMenuItems();
+  console.log('status: ', isSubscribed.value);
 };
 
 onMounted(() => {
