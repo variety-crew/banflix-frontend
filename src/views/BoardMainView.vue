@@ -3,10 +3,15 @@
     <div class="board-card-container">
       <template v-if="cards && cards.length">
         <template v-for="(card, index) in cards" :key="index">
-          <BoardPreviewCard :card="card" :index="index" />
+          <BoardPreviewCard
+            :card="card"
+            :index="index"
+            class="board-card"
+            @click-board-preview="goBoardDetail(index)"
+          />
         </template>
       </template>
-      <template v-else>게시글이 존재하지 않습니다.</template>
+      <template v-else>{{ postNotExist }}</template>
     </div>
   </PageLayout>
 </template>
@@ -20,16 +25,26 @@ import BoardPreviewCard from '@/components/cards/preview/BoardPreviewCard.vue';
 const router = useRouter();
 
 const cards = ref([]);
+const postNotExist = ref('게시글이 존재하지 않습니다.');
 
+const goBoardDetail = index => {
+  router.push(`/board/form/${index}`);
+};
 const goBoardForm = () => {
-  router.push('/board/form');
+  router.push({ path: 'board/form' });
 };
 
 onMounted(() => {
-  console.log('mounted');
-  console.log('cards.value: ', cards.value);
+  cards.value.push({ key: 'value' });
+  cards.value.push({ key: 'value' });
+  cards.value.push({ key: 'value' });
   cards.value.push({ key: 'value' });
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.board-card {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+</style>

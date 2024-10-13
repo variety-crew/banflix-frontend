@@ -1,12 +1,12 @@
 <template>
-  <Card>
+  <Card @click="emit('clickBoardPreview')">
     <template #header>
       <div class="card-header-container">
         <div class="card-profile">
           <Avatar :image="profileImage" class="profile-image" size="large" shape="circle" />
           <div class="profile-nickname">{{ nickname }}</div>
         </div>
-        <div>오후 8:33</div>
+        <div>{{ createdAt }}</div>
       </div>
     </template>
     <template #title>{{ title }}</template>
@@ -29,10 +29,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+
+const emit = defineEmits(['clickBoardPreview']);
 
 const profileImage = ref('https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png');
 const nickname = ref('닉네임');
+
+const createdAt = ref('오후 8:33');
 
 const title = ref('제목');
 const content = ref('내용');
