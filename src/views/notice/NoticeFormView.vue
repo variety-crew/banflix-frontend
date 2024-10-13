@@ -40,7 +40,7 @@ const inputContent = ref('');
 const fileInput = ref(null);
 const images = ref([]);
 
-const { showSuccess, showError, showWarning } = useToastMessage();
+const { showSuccess, showError } = useToastMessage();
 
 const triggerFileUpload = () => {
   fileInput.value.click();
