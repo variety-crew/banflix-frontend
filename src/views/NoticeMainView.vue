@@ -1,10 +1,11 @@
 <template>
   <PageLayout title="공지사항" btn-txt="공지사항 등록" btn-role="ADMIN" @click-btn="goNoticeForm">
-    <template v-if="notices">
+    <template v-if="notices.length > 0">
       <template v-for="(notice, id) in notices" :key="id">
         <NoticePreviewCard :notice="notice" class="notice-card" @click="goDetailNotice(id)"></NoticePreviewCard>
       </template>
     </template>
+    <template v-else> 게시글이 존재하지 않습니다. </template>
   </PageLayout>
 </template>
 
@@ -36,5 +37,6 @@ const goNoticeForm = () => {
 <style scoped>
 .notice-card {
   margin-bottom: 20px;
+  cursor: pointer;
 }
 </style>
