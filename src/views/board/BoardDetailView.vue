@@ -49,7 +49,7 @@
               <Button class="enter-comment">작성</Button>
             </div>
             <template v-if="boardDetail.comments">
-              <template v-for="(comment, index) in boardDetail.comments" :key="index">
+              <template v-for="comment in boardDetail.comments" :key="comment.id">
                 <Comment :comment="comment" :is-admin="isAdmin" :is-writer="isWriter" />
               </template>
             </template>
@@ -69,11 +69,11 @@ import useToastMessage from '@/hooks/useToastMessage';
 import Comment from '@/components/common/Comment.vue';
 
 const route = useRoute();
-const { showSuccess, showError, showWarning } = useToastMessage();
+const { showSuccess, showWarning } = useToastMessage();
 
 const boardId = ref(route.params.boardId);
 const isSubscribed = ref(true);
-const isWriter = ref(false);
+const isWriter = ref(true);
 const isAdmin = ref(true);
 
 const inputComment = ref('');
@@ -95,12 +95,14 @@ const boardDetail = ref({
   comment: 0,
   comments: [
     {
+      id: 0,
       writer: '홍길동1',
       profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
       comment: '저도 이번에 여기 다녀왔는데 저한텐 흙길 ㅠ1',
       createdAt: '오후 8:33',
     },
     {
+      id: 1,
       writer: '홍길동2',
       profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
       comment: '저도 이번에 여기 다녀왔는데 저한텐 흙길 ㅠ2',

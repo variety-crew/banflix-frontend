@@ -13,12 +13,14 @@
       </div>
       <div class="comment-footer">
         <div class="footer-start">
-          <i v-if="props.isWriter" class="pi pi-pencil"> 수정</i>
-          <i v-if="props.isWriter" class="pi pi-trash"> 삭제</i>
-          <i v-if="props.isAdmin" class="pi pi-power-off"> 비활성화</i>
+          <i v-if="props.isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comment.id)"> 수정</i>
+          <i v-if="props.isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comment.id)"> 삭제</i>
+          <i v-if="props.isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comment.id)">
+            비활성화
+          </i>
         </div>
         <div class="footer-end">
-          <i v-if="comment" class="pi pi-exclamation-triangle"> 신고</i>
+          <i v-if="comment" class="pi pi-exclamation-triangle" @click="handleCommentReport(props.comment.id)"> 신고</i>
         </div>
       </div>
     </Fieldset>
@@ -26,7 +28,10 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import useToastMessage from '@/hooks/useToastMessage';
+import { defineProps, onMounted } from 'vue';
+
+const { showSuccess } = useToastMessage();
 const props = defineProps({
   comment: {
     type: Object,
@@ -42,7 +47,24 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['clickSave']);
+const handleCommentUpdate = commentId => {
+  // TODO: 댓글 수정
+  showSuccess('updated', 'successfully');
+};
+const handleCommentDelete = commentId => {
+  // TODO: 댓글 삭제
+  showSuccess('deleted', 'successfully');
+};
+const handleCommentDeactivate = commentId => {
+  // TODO: 댓글 비활성화
+  showSuccess('deactivated', 'successfully');
+};
+const handleCommentReport = commentId => {
+  // TODO: 댓글 신고
+  showSuccess('reported', 'successfully');
+};
+
+onMounted(() => {});
 </script>
 
 <style scoped>
@@ -70,5 +92,6 @@ const emit = defineEmits(['clickSave']);
 }
 i {
   margin-right: 15px;
+  cursor: pointer;
 }
 </style>
