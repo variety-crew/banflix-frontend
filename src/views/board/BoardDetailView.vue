@@ -9,9 +9,10 @@
           </div>
           <div class="end">
             <div class="created-at">{{ boardDetail.createdAt }}</div>
+            <i class="pi pi-exclamation-triangle" @click="handleReport"> 신고하기</i>
             <div class="button-overlay">
               <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" />
-              <Menu id="overlay_menu" ref="menu" :model="items" :popup="true" />
+              <Menu id="overlay_menu" ref="menu" :model="menuItems" :popup="true" />
             </div>
           </div>
         </div>
@@ -62,34 +63,6 @@ const boardId = ref(route.params.boardId);
 
 const inputComment = ref('');
 const menu = ref();
-const items = ref([
-  {
-    label: '옵션',
-    items: [
-      {
-        label: '구독하기',
-        icon: 'pi pi-refresh',
-      },
-      {
-        label: '신고하기',
-        icon: 'pi pi-upload',
-      },
-      {
-        label: '수정하기',
-        icon: 'pi pi-upload',
-      },
-      {
-        label: '삭제하기',
-        icon: 'pi pi-upload',
-      },
-    ],
-  },
-]);
-
-const toggle = event => {
-  menu.value.toggle(event);
-};
-
 const boardDetail = ref({
   id: boardId,
   profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
@@ -109,8 +82,38 @@ const boardDetail = ref({
   createdAt: '오후 8:33',
 });
 
+const menuItems = ref([]);
+
+const setMenuItems = () => {
+  menuItems.value = [
+    {
+      items: [
+        {
+          label: '구독하기',
+          icon: 'pi pi-bell',
+        },
+        {
+          label: '수정하기',
+          icon: 'pi pi-pencil',
+        },
+        {
+          label: '삭제하기',
+          icon: 'pi pi-trash',
+        },
+      ],
+    },
+  ];
+};
+
+const toggle = event => {
+  menu.value.toggle(event);
+};
+const handleReport = () => {
+  console.log('신고하기');
+};
+
 onMounted(() => {
-  // console.log(boardDetail);
+  setMenuItems();
 });
 </script>
 
@@ -146,6 +149,10 @@ onMounted(() => {
 }
 .created-at {
   margin-right: 20px;
+}
+.pi-exclamation-triangle {
+  margin-right: 20px;
+  cursor: pointer;
 }
 
 /* content */
