@@ -16,6 +16,14 @@ const router = createRouter({
       component: () => import('@/views/ThemeMainView.vue'),
     },
     {
+      path: '/theme/:themeId',
+      component: () => import('@/views/theme/ThemeDetailView.vue'),
+    },
+    {
+      path: '/theme/:themeId/create-review',
+      component: () => import('@/views/theme/ThemeReviewFormView.vue'),
+    },
+    {
       path: '/community',
       component: () => import('@/views/CommunityMainView.vue'),
     },
