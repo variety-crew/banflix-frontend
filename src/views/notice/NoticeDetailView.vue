@@ -26,8 +26,12 @@ import { useRoute } from 'vue-router';
 import NoticePageLayout from '@/components/layouts/notice/NoticePageLayout.vue';
 import NoticePreviewCard from '@/components/cards/preview/NoticePreviewCard.vue';
 import Card from 'primevue/card';
+import { useConfirm } from 'primevue/useconfirm';
+import useToastMessage from '@/hooks/useToastMessage';
+const { showSuccess } = useToastMessage();
 
 const route = useRoute();
+const confirm = useConfirm();
 const noticeId = ref(route.params.noticeId);
 
 const notice = ref({
@@ -47,8 +51,28 @@ const handleUpdateNotice = actionType => {
   if (actionType === 'edit') {
     console.log('수정 버튼');
   } else if (actionType === 'delete') {
-    console.log('삭제 버튼');
+    console.log('delete 버튼');
+    handleOnDelete();
   }
+};
+
+const handleOnDelete = () => {
+  confirm.require({
+    message: '글이 삭제됩니다.',
+    header: '공지사항 글을 삭제할까요?',
+    rejectProps: {
+      label: '취소',
+      severity: 'secondary',
+      outlined: true,
+    },
+    acceptProps: {
+      label: '삭제하기',
+    },
+    accept: () => {
+      showSuccess('삭제 완료', '공지사항이 삭제되었습니다.');
+    },
+    reject: () => {},
+  });
 };
 </script>
 

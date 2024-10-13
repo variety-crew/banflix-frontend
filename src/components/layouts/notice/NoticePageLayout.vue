@@ -4,6 +4,7 @@
       <Button label="돌아가기" text icon="pi pi-arrow-left" @click="goBack" />
       <div class="buttons">
         <template v-if="props.btnRole === 'ALL' || (props.btnRole === 'ADMIN' && userStore.isAdmin)">
+          <ConfirmDialog></ConfirmDialog>
           <Button label="수정" size="small" class="edit" @click="clickBtn('edit')" />
           <Button label="삭제" size="small" class="delete" @click="clickBtn('delete')" />
         </template>
