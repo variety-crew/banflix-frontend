@@ -1,63 +1,72 @@
 <template>
-  <div class="board-detail-container">
-    <Card v-if="boardDetail">
-      <template #header>
-        <div class="card-header-container">
-          <div class="start">
-            <Avatar :image="boardDetail.profileImage" class="profile-image" size="large" shape="circle" />
-            <div class="profile-nickname">{{ boardDetail.writer }}</div>
-          </div>
-          <div class="end">
-            <div class="created-at">{{ boardDetail.createdAt }}</div>
-            <i class="pi pi-exclamation-triangle" @click="handleReport"> 신고하기</i>
-            <div class="button-overlay">
-              <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" />
-              <Menu id="overlay_menu" ref="menu" :model="menuItems" :popup="true" />
+  <PageLayout title="게시글 상세보기">
+    <div class="board-detail-container">
+      <Card v-if="boardDetail">
+        <template #header>
+          <div class="card-header-container">
+            <div class="start">
+              <Avatar :image="boardDetail.profileImage" class="profile-image" size="large" shape="circle" />
+              <div class="profile-nickname">{{ boardDetail.writer }}</div>
+            </div>
+            <div class="end">
+              <div class="created-at">{{ boardDetail.createdAt }}</div>
+              <i class="pi pi-exclamation-triangle" @click="handleReport"> 신고하기</i>
+              <div class="button-overlay">
+                <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" />
+                <Menu id="overlay_menu" ref="menu" :model="menuItems" :popup="true" />
+              </div>
             </div>
           </div>
-        </div>
-      </template>
-      <template #title>{{ boardDetail.title }}</template>
-      <template #content>
-        <div class="content-container">
-          <div class="content">{{ boardDetail.content }}</div>
-          <div class="content-image-container">
-            <template v-if="boardDetail.images">
-              <template v-for="(image, index) in boardDetail.images" :key="index">
-                <img :src="image" alt="보드 이미지" class="content-image" />
+        </template>
+        <template #title>{{ boardDetail.title }}</template>
+        <template #content>
+          <div class="content-container">
+            <div class="content">{{ boardDetail.content }}</div>
+            <div class="content-image-container">
+              <template v-if="boardDetail.images">
+                <template v-for="(image, index) in boardDetail.images" :key="index">
+                  <img :src="image" alt="보드 이미지" class="content-image" />
+                </template>
+              </template>
+            </div>
+          </div>
+          <div class="content-footer">
+            <div class="like">
+              <i class="pi pi-heart"></i>
+              <div class="emoji">{{ boardDetail.like }}</div>
+            </div>
+            <div class="comment">
+              <i class="pi pi-comment"></i>
+              <div class="emoji">{{ boardDetail.comment }}</div>
+            </div>
+          </div>
+          <Divider type="solid" />
+        </template>
+        <template #footer>
+          <div class="comment-container">
+            <div class="input-comment-container">
+              <Textarea v-model="inputComment" class="input-comment" placeholder="여기에 댓글 작성" />
+              <Button class="enter-comment">작성</Button>
+            </div>
+            <template v-if="boardDetail.comments">
+              <template v-for="(comment, index) in boardDetail.comments" :key="index">
+                <Comment />
               </template>
             </template>
           </div>
-        </div>
-        <div class="content-footer">
-          <div class="like">
-            <i class="pi pi-heart"></i>
-            <div class="emoji">{{ boardDetail.like }}</div>
-          </div>
-          <div class="comment">
-            <i class="pi pi-comment"></i>
-            <div class="emoji">{{ boardDetail.comment }}</div>
-          </div>
-        </div>
-        <Divider type="solid" />
-      </template>
-      <template #footer>
-        <div class="comment-container">
-          <Textarea v-model="inputComment" class="input-comment" placeholder="여기에 댓글 작성" />
-          <Button class="enter-comment">작성</Button>
-        </div>
-      </template>
-    </Card>
+        </template>
+      </Card>
 
-    <template v-else> 게시글이 존재하지 않습니다.</template>
-  </div>
-  <div>{{ boardDetail }}</div>
+      <template v-else> 게시글이 존재하지 않습니다.</template>
+    </div>
+  </PageLayout>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
+import Comment from '@/components/common/Comment.vue';
 
 const route = useRoute();
 const { showSuccess, showError, showWarning } = useToastMessage();
@@ -66,6 +75,7 @@ const boardId = ref(route.params.boardId);
 const isSubscribed = ref(true);
 const isWriter = ref(true);
 const inputComment = ref('');
+const isAdmin = ref(false);
 const menu = ref();
 const boardDetail = ref({
   id: boardId,
@@ -82,7 +92,20 @@ const boardDetail = ref({
   ],
   like: 0,
   comment: 0,
-  comments: [],
+  comments: [
+    {
+      writer: '홍길동1',
+      profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
+      comment: '저도 이번에 여기 다녀왔는데 저한텐 흙길 ㅠ1',
+      createdAt: '오후 8:33',
+    },
+    {
+      writer: '홍길동2',
+      profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
+      comment: '저도 이번에 여기 다녀왔는데 저한텐 흙길 ㅠ2',
+      createdAt: '오후 8:33',
+    },
+  ],
   createdAt: '오후 8:33',
 });
 
@@ -139,9 +162,9 @@ const handleSubscribe = () => {
   // 구독 API 요청 handling 필요
   isSubscribed.value = !isSubscribed.value;
   if (isSubscribed.value) {
-    showSuccess('구독 완료', '해당 글을 구독합니다. \n 해당 글의 변동사항에 대해서 알림을 받습니다.');
+    showSuccess('구독 완료', '\n해당 글을 구독합니다. \n\n 해당 글의 변동사항에 대해서 알림을 받습니다.');
   } else {
-    showWarning('구독 취소', '구독이 취소됐습니다. \n 더 이상 해당 글의 변동사항에 대해서 알림을 받지 않습니다.');
+    showWarning('구독 취소', '\n구독을 취소합니다. \n\n 더 이상 해당 글의 변동사항에 대해서 알림을 받지 않습니다.');
   }
 
   setMenuItems();
@@ -225,7 +248,7 @@ onMounted(() => {
 }
 
 /* comment input */
-.comment-container {
+.input-comment-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
