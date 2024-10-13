@@ -50,7 +50,7 @@
             </div>
             <template v-if="boardDetail.comments">
               <template v-for="(comment, index) in boardDetail.comments" :key="index">
-                <Comment />
+                <Comment :comment="comment" :is-admin="isAdmin" :is-writer="isWriter" />
               </template>
             </template>
           </div>
@@ -73,9 +73,10 @@ const { showSuccess, showError, showWarning } = useToastMessage();
 
 const boardId = ref(route.params.boardId);
 const isSubscribed = ref(true);
-const isWriter = ref(true);
+const isWriter = ref(false);
+const isAdmin = ref(true);
+
 const inputComment = ref('');
-const isAdmin = ref(false);
 const menu = ref();
 const boardDetail = ref({
   id: boardId,
@@ -156,7 +157,7 @@ const toggle = event => {
   menu.value.toggle(event);
 };
 const handleReport = () => {
-  console.log('신고하기');
+  showSuccess('신고 완료!', '\n성공적으로 신고가 완료됐습니다.');
 };
 const handleSubscribe = () => {
   // 구독 API 요청 handling 필요

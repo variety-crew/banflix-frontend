@@ -2,18 +2,25 @@
   <div class="card">
     <Fieldset>
       <template #legend>
-        <div class="flex items-center pl-2">
+        <div class="profile-container">
           <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-          <span class="font-bold p-2">Amy Elsner</span>
+          <span class="nickname">{{ props.comment.writer }}</span>
         </div>
       </template>
-      <p class="m-0">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
-      </p>
+      <div class="comment-content-container">
+        <div class="created-at">{{ props.comment.createdAt }}</div>
+        <div class="comment-content">{{ props.comment.comment }}</div>
+      </div>
+      <div class="comment-footer">
+        <div class="footer-start">
+          <i v-if="props.isWriter" class="pi pi-pencil"> 수정</i>
+          <i v-if="props.isWriter" class="pi pi-trash"> 삭제</i>
+          <i v-if="props.isAdmin" class="pi pi-power-off"> 비활성화</i>
+        </div>
+        <div class="footer-end">
+          <i v-if="comment" class="pi pi-exclamation-triangle"> 신고</i>
+        </div>
+      </div>
     </Fieldset>
   </div>
 </template>
@@ -21,16 +28,8 @@
 <script setup>
 import { defineProps, defineEmits } from 'vue';
 const props = defineProps({
-  profile: {
+  comment: {
     type: Object,
-    required: true,
-  },
-  content: {
-    type: Object,
-    required: true,
-  },
-  created: {
-    type: String,
     required: true,
   },
   isWriter: {
@@ -46,4 +45,30 @@ const props = defineProps({
 const emit = defineEmits(['clickSave']);
 </script>
 
-<style scoped></style>
+<style scoped>
+/* legend profile */
+.profile-container {
+  display: flex;
+  align-items: center;
+}
+.nickname {
+  margin-left: 10px;
+}
+
+/* content-container */
+.created-at {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 13px;
+}
+
+/* footer */
+.comment-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+i {
+  margin-right: 15px;
+}
+</style>
