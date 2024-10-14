@@ -6,7 +6,7 @@
     class="container-theme-detail"
     @click-btn="goReviewForm"
   >
-    <div class="flex-row gap-20">
+    <div class="flex-row gap-20 mb-l">
       <!-- 테마 이미지 -->
       <Galleria
         :value="themeImages"
@@ -59,6 +59,25 @@
         </div>
       </Panel>
     </div>
+
+    <!-- 리뷰 -->
+    <section>
+      <div class="flex-row content-between">
+        <div class="flex-row gap-10 items-end">
+          <h3>참가자 리뷰</h3>
+          <span>(123)</span>
+        </div>
+
+        <Select
+          v-model="selectedReviewSorting"
+          :options="reviewSortingOptions"
+          option-label="name"
+          placeholder="정렬기준"
+          checkmark
+          :highlight-on-select="false"
+        />
+      </div>
+    </section>
   </PageLayout>
 </template>
 
@@ -69,6 +88,7 @@ import PageLayout from '@/components/layouts/PageLayout.vue';
 import Galleria from 'primevue/galleria';
 import Panel from 'primevue/panel';
 import Divider from 'primevue/divider';
+import Select from 'primevue/select';
 import {
   quizQualityOptions,
   levelOptions,
@@ -107,6 +127,12 @@ const scaryStatisticsData = ref(scaryOptions.map((e, i) => ({ ...e, percent: 10 
 const activityStatisticsData = ref(activityOptions.map((e, i) => ({ ...e, percent: 10 * (i + 1) })));
 const interiorStatisticsData = ref(interiorOptions.map((e, i) => ({ ...e, percent: 10 * (i + 1) })));
 const probabilityStatisticsData = ref(probabilityOptions.map((e, i) => ({ ...e, percent: 10 * (i + 1) })));
+const selectedReviewSorting = ref({ name: '최신 순', value: 'RECENT' });
+const reviewSortingOptions = ref([
+  { name: '최신 순', value: 'RECENT' },
+  { name: '만족도 높은 순', value: 'SCORE_DESC' },
+  { name: '만족도 낮은 순', value: 'SCORE_ASC' },
+]);
 
 const goReviewForm = () => {
   router.push(`/theme/${themeId}/create-review`);
