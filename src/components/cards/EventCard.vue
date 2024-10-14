@@ -58,7 +58,7 @@ const goEventDetail = id => {
 
 <style scoped>
 .p-card {
-  width: 300px;
+  width: 245px;
 }
 
 .content-container {
