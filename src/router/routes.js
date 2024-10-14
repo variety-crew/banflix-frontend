@@ -28,6 +28,10 @@ const router = createRouter({
       component: () => import('@/views/NoticeMainView.vue'),
     },
     {
+      path: '/notice/detail/:noticeId',
+      component: () => import('@/views/notice/NoticeDetailView.vue'),
+    },
+    {
       path: '/notice/form/:noticeId?',
       component: () => import('@/views/notice/NoticeFormView.vue'),
     },
