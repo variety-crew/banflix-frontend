@@ -1,7 +1,9 @@
 <template>
-  <div></div>
+  <DetailPageLayout :title="asf"> </DetailPageLayout>
 </template>
 
-<script setup></script>
+<script setup>
+import DetailPageLayout from '@/components/layouts/DetailPageLayout.vue';
+</script>
 
 <style scoped></style>
