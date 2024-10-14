@@ -1,9 +1,17 @@
 <template>
-  <Card @click="goEventDetail(card.id)">
+  <Card>
     <template #content>
+      <template v-if="userStore.isLoggined">
+        <div v-if="props.card.reaction.scrap.scraped" class="scrap-banner">스크랩됨</div>
+      </template>
       <div class="content-container">
-        <img class="theme-tumb" :src="props.card.profileImage" alt="테마 프로필 이미지" />
-        <h3 class="theme">{{ props.card.theme }}</h3>
+        <img
+          class="theme-tumb"
+          :src="props.card.profileImage"
+          alt="테마 프로필 이미지"
+          @click="goEventDetail(props.card.id)"
+        />
+        <h3 class="theme" @click="goEventDetail(props.card.id)">{{ props.card.theme }}</h3>
         <div class="partner">{{ props.card.partner }}</div>
         <div class="location">{{ props.card.location }}</div>
         <div class="reaction-container">
@@ -22,6 +30,11 @@ import Card from 'primevue/card';
 import ReviewIcon from '../common/reaction/ReviewIcon.vue';
 import Like from '../common/reaction/Like.vue';
 import Scrap from '../common/reaction/Scrap.vue';
+import router from '@/router/routes';
+import { useUserStore } from '@/stores/user';
+
+const userStore = useUserStore();
+
 const props = defineProps({
   card: {
     type: Object,
@@ -46,19 +59,17 @@ const props = defineProps({
   //     },
   //   },
   // },
-  isLoggined: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const goEventDetail = id => {
+  router.push(`/event/detail/${id}`);
   console.log(id);
 };
 </script>
 
 <style scoped>
 .p-card {
+  position: relative; /* 띠를 절대 위치로 배치하기 위한 부모 설정 */
   width: 245px;
 }
 
@@ -72,10 +83,12 @@ const goEventDetail = id => {
   /* align-self: center; */
   width: 200px;
   height: 200px;
+  cursor: pointer;
 }
 .theme {
   margin-top: 20px;
   font-weight: bolder;
+  cursor: pointer;
 }
 .partner {
   margin-top: 10px;
@@ -88,5 +101,18 @@ const goEventDetail = id => {
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+}
+
+/* 스크랩 여부에 따른 띠 스타일 */
+.scrap-banner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #ffcc00; /* 띠 배경색 */
+  color: #fff; /* 텍스트 색상 */
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 12px;
+  border-bottom-left-radius: 8px;
 }
 </style>

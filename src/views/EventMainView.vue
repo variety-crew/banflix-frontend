@@ -1,7 +1,17 @@
 <template>
   <PageLayout title="이벤트" btn-txt="글 작성" btn-role="ADMIN" @click-btn="goEventForm">
     <h3>할인 테마</h3>
-
+    <div class="sub-title">테마 별 할인 정보를 제공합니다. 지금이 제일 저렴할 때!</div>
+    <template v-if="cards.length > 0">
+      <div class="event-card-container">
+        <template v-for="(card, id) in cards" :key="id">
+          <EventCard :card="card" />
+        </template>
+      </div>
+    </template>
+    <template v-else> 이벤트가 존재하지 않습니다. </template>
+    <h3>신규 테마</h3>
+    <div class="sub-title">새로운 방탈출 게임을 소개합니다.</div>
     <template v-if="cards.length > 0">
       <div class="event-card-container">
         <template v-for="(card, id) in cards" :key="id">
@@ -20,7 +30,7 @@ import EventCard from '@/components/cards/EventCard.vue';
 import router from '@/router/routes';
 
 const goEventForm = () => {
-  router.push(`/form/event`);
+  router.push(`/event/form/`);
 };
 
 const goEventDetail = id => {
@@ -122,8 +132,18 @@ const cards = ref([
 </script>
 
 <style scoped>
+h3 {
+  margin-top: 50px;
+}
+.sub-title {
+  margin-top: 10px;
+}
 .event-card-container {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+}
+.event-card {
+  cursor: pointer;
 }
 </style>
