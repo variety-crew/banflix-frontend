@@ -84,8 +84,8 @@ const genreOptions = ref([
 const selectedSorting = ref({ name: '기본 순', value: 'DEFAULT' });
 const sortingOptions = ref([
   { name: '기본 순', value: 'DEFAULT' },
-  { name: '리뷰 많은 순', value: 'REVIEW_ASC' },
-  { name: '좋아요 많은 순', value: 'LIKE_ASC' },
+  { name: '리뷰 많은 순', value: 'REVIEW_DESC' },
+  { name: '좋아요 많은 순', value: 'LIKE_DESC' },
 ]);
 
 const clickTheme = () => {
