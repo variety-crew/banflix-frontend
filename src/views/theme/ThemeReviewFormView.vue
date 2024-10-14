@@ -1,58 +1,62 @@
 <template>
   <FormPageLayout title="리뷰 작성">
-    <Panel header="참여한 테마">
-      <div>{{ themeName }}</div>
-    </Panel>
+    <div class="review-form-container">
+      <Panel header="참여한 테마">
+        <div>{{ themeName }}</div>
+      </Panel>
 
-    <div>
-      <h5>참가 인원</h5>
-      <InputNumber v-model="peopleNum" suffix="명" />
-    </div>
+      <div class="flex-row gap-10">
+        <div>
+          <h5>참가 인원</h5>
+          <InputNumber v-model="peopleNum" suffix="명" />
+        </div>
 
-    <div>
-      <h5>소요 시간</h5>
-      <InputNumber v-model="time" suffix="분" />
-    </div>
+        <div>
+          <h5>소요 시간</h5>
+          <InputNumber v-model="time" suffix="분" />
+        </div>
+      </div>
 
-    <div>
-      <h5>문제 구성</h5>
-      <SelectButton v-model="quizQuality" :options="quizQualityOptions" aria-labelledby="문제 구성" />
-    </div>
+      <div>
+        <h5>문제 구성</h5>
+        <SelectButton v-model="quizQuality" :options="quizQualityOptions" aria-labelledby="문제 구성" />
+      </div>
 
-    <div>
-      <h5>체감 난이도</h5>
-      <SelectButton v-model="level" :options="levelOptions" aria-labelledby="체감 난이도" />
-    </div>
+      <div>
+        <h5>체감 난이도</h5>
+        <SelectButton v-model="level" :options="levelOptions" aria-labelledby="체감 난이도" />
+      </div>
 
-    <div>
-      <h5>체감 공포도</h5>
-      <SelectButton v-model="scary" :options="scaryOptions" aria-labelledby="체감 공포도" />
-    </div>
+      <div>
+        <h5>체감 공포도</h5>
+        <SelectButton v-model="scary" :options="scaryOptions" aria-labelledby="체감 공포도" />
+      </div>
 
-    <div>
-      <h5>체감 활동성</h5>
-      <SelectButton v-model="activity" :options="activityOptions" aria-labelledby="체감 활동성" />
-    </div>
+      <div>
+        <h5>체감 활동성</h5>
+        <SelectButton v-model="activity" :options="activityOptions" aria-labelledby="체감 활동성" />
+      </div>
 
-    <div>
-      <h5>인테리어</h5>
-      <SelectButton v-model="interior" :options="interiorOptions" aria-labelledby="인테리어" />
-    </div>
+      <div>
+        <h5>인테리어</h5>
+        <SelectButton v-model="interior" :options="interiorOptions" aria-labelledby="인테리어" />
+      </div>
 
-    <div>
-      <h5>개연성</h5>
-      <SelectButton v-model="probability" :options="probabilityOptions" aria-labelledby="개연성" />
-    </div>
+      <div>
+        <h5>개연성</h5>
+        <SelectButton v-model="probability" :options="probabilityOptions" aria-labelledby="개연성" />
+      </div>
 
-    <div>
-      <h5>리뷰 내용</h5>
-      <Textarea
-        v-model="reviewContent"
-        auto-resize
-        rows="6"
-        cols="100"
-        placeholder="개성 넘치는 리뷰를 작성해주세요!"
-      />
+      <div>
+        <h5>리뷰 내용</h5>
+        <Textarea
+          v-model="reviewContent"
+          auto-resize
+          rows="6"
+          cols="100"
+          placeholder="개성 넘치는 리뷰를 작성해주세요!"
+        />
+      </div>
     </div>
   </FormPageLayout>
 </template>
@@ -115,4 +119,10 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.review-form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

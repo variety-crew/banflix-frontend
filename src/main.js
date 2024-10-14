@@ -7,6 +7,7 @@ import router from '@/router/routes';
 import Noir from './assets/PrimeVueNoirPreset';
 
 import '@/assets/main.css';
+import '@/assets/utils.css';
 import 'primeicons/primeicons.css';
 
 const pinia = createPinia();
