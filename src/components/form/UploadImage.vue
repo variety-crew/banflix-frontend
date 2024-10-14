@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { onUnmounted, ref } from 'vue';
+import { onBeforeUnmount, ref } from 'vue';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
 import { defineProps } from 'vue';
@@ -90,7 +90,7 @@ const clickRemove = targetIndex => {
   emit('onChangeFiles', newFiles);
 };
 
-onUnmounted(() => {
+onBeforeUnmount(() => {
   // 프리뷰 이미지 객체 할당 해제
   previewUrls.value.forEach(url => {
     URL.revokeObjectURL(url);
