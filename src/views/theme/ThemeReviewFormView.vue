@@ -29,60 +29,42 @@
 
       <SelectButtonWithLabel
         :selected="quizQuality"
-        :options-ko="[
-          '문제가 엉성해요',
-          '문제가 별로예요',
-          '보통이에요',
-          '잘 구성되어 있어요',
-          '매우 잘 구성되어 있어요',
-        ]"
+        :options="quizQualityOptions"
         label="문제 구성"
         @change-value="onChangeQuizQuality"
       />
 
       <SelectButtonWithLabel
         :selected="level"
-        :options-ko="['아주 쉬워요', '쉬워요', '보통이에요', '어려워요', '아주 어려워요']"
+        :options="levelOptions"
         label="체감 난이도"
         @change-value="onChangeLevel"
       />
 
       <SelectButtonWithLabel
         :selected="scary"
-        :options-ko="['하나도 안무서워요', '안무서워요', '보통이에요', '무서워요', '아주 무서워요']"
+        :options="scaryOptions"
         label="체감 공포도"
         @change-value="onChangeScary"
       />
 
       <SelectButtonWithLabel
         :selected="activity"
-        :options-ko="[
-          '전혀 활동적이지 않아요',
-          '활동이 거의 없어요',
-          '보통이에요',
-          '활동적이에요',
-          '매우 활동적이에요',
-        ]"
+        :options="activityOptions"
         label="체감 활동성"
         @change-value="onChangeActivity"
       />
 
       <SelectButtonWithLabel
         :selected="interior"
-        :options-ko="['전혀 신경 안 쓴 인테리어예요', '아쉬워요', '보통이에요', '신경을 많이 썼어요', '매우 훌륭해요']"
+        :options="interiorOptions"
         label="인테리어"
         @change-value="onChangeInterior"
       />
 
       <SelectButtonWithLabel
         :selected="probability"
-        :options-ko="[
-          '전혀 개연성이 없어요',
-          '개연성이 아쉬워요',
-          '보통이에요',
-          '개연성이 있어요',
-          '매우 개연성 있어요',
-        ]"
+        :options="probabilityOptions"
         label="개연성"
         @change-value="onChangeProbability"
       />
@@ -106,6 +88,14 @@ import SelectButtonWithLabel from '@/components/form/SelectButtonWithLabel.vue';
 import FloatLabel from 'primevue/floatlabel';
 import UploadImage from '@/components/form/UploadImage.vue';
 import Rating from 'primevue/rating';
+import {
+  quizQualityOptions,
+  levelOptions,
+  scaryOptions,
+  activityOptions,
+  interiorOptions,
+  probabilityOptions,
+} from '@/utils/constants';
 
 const route = useRoute();
 const { themeId } = route.params;

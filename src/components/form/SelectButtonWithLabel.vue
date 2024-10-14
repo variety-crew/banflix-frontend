@@ -21,7 +21,7 @@ import { defineProps, defineEmits, ref, watchEffect } from 'vue';
 import SelectButton from 'primevue/selectbutton';
 
 const props = defineProps({
-  optionsKo: {
+  options: {
     type: Array,
     required: true,
   },
@@ -37,21 +37,10 @@ const props = defineProps({
 
 const emit = defineEmits(['changeValue']);
 
-const map = new Map();
-map.set(1, 'ONE');
-map.set(2, 'TWO');
-map.set(3, 'THREE');
-map.set(4, 'FOUR');
-map.set(5, 'FIVE');
-
-const makeOptions = labelArr => {
-  return labelArr.map((label, index) => ({ label, value: map.get(index + 1) }));
-};
-
-const options = ref([]);
+const selectOptions = ref([]);
 
 watchEffect(() => {
-  options.value = makeOptions(props.optionsKo);
+  selectOptions.value = props.options;
 });
 
 const onChange = event => {
