@@ -9,6 +9,7 @@ import Noir from './assets/PrimeVueNoirPreset';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 import '@/assets/main.css';
+import '@/assets/utils.css';
 import 'primeicons/primeicons.css';
 
 const pinia = createPinia();
