@@ -3,6 +3,7 @@ import App from './App.vue';
 import PrimeVue from 'primevue/config';
 import { createPinia } from 'pinia';
 import ToastService from 'primevue/toastservice';
+import ConfirmationService from 'primevue/confirmationservice';
 import router from '@/router/routes';
 import Noir from './assets/PrimeVueNoirPreset';
 
@@ -20,6 +21,7 @@ app.use(PrimeVue, {
     preset: Noir,
   },
 });
+app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
 

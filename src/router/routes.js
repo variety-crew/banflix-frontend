@@ -16,8 +16,16 @@ const router = createRouter({
       component: () => import('@/views/ThemeMainView.vue'),
     },
     {
-      path: '/community',
-      component: () => import('@/views/CommunityMainView.vue'),
+      path: '/board',
+      component: () => import('@/views/BoardMainView.vue'),
+    },
+    {
+      path: '/board/detail/:boardId',
+      component: () => import('@/views/board/BoardDetailView.vue'),
+    },
+    {
+      path: '/board/form',
+      component: () => import('@/views/board/BoardFormView.vue'),
     },
     {
       path: '/event',
@@ -26,6 +34,10 @@ const router = createRouter({
     {
       path: '/notice',
       component: () => import('@/views/NoticeMainView.vue'),
+    },
+    {
+      path: '/notice/detail/:noticeId',
+      component: () => import('@/views/notice/NoticeDetailView.vue'),
     },
     {
       path: '/notice/form/:noticeId?',
