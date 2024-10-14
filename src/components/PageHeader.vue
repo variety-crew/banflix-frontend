@@ -35,7 +35,7 @@
             </RouterLink>
           </OverlayBadge>
 
-          <Button label="로그아웃" severity="secondary" size="small" @click="logout" />
+          <Button label="로그아웃" severity="secondary" size="small" @click="logout()" />
         </template>
 
         <!-- 게스트 -->
@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import { useUserStore } from '@/stores/user';
 import { ref } from 'vue';
 import Button from 'primevue/button';
@@ -95,14 +95,18 @@ const items = ref([
 ]);
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const goLoginPage = () => {
-  userStore.login();
+  router.push('/login');
 };
 
 const goRegisterPage = () => {};
 
-const logout = () => {};
+const logout = () => {
+  userStore.logout();
+  router.replace('/');
+};
 </script>
 
 <style scoped>

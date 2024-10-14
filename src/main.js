@@ -6,11 +6,14 @@ import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
 import router from '@/router/routes';
 import Noir from './assets/PrimeVueNoirPreset';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 
 import '@/assets/main.css';
 import 'primeicons/primeicons.css';
 
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
 const app = createApp(App);
 
 // use()
