@@ -7,9 +7,9 @@
         <div class="partner">{{ props.card.partner }}</div>
         <div class="location">{{ props.card.location }}</div>
         <div class="reaction-container">
+          <ReviewIcon :count="props.card.reaction.reviewCount" />
           <Like :like="props.card.reaction.like" />
-          <Like :like="props.card.reaction.like" />
-          <Like :like="props.card.reaction.like" />
+          <Scrap :scrap="props.card.reaction.scrap" />
         </div>
       </div>
     </template>
@@ -19,8 +19,9 @@
 <script setup>
 import { ref, defineProps } from 'vue';
 import Card from 'primevue/card';
-import Image from 'primevue/image';
+import ReviewIcon from '../common/reaction/ReviewIcon.vue';
 import Like from '../common/reaction/Like.vue';
+import Scrap from '../common/reaction/Scrap.vue';
 const props = defineProps({
   card: {
     type: Object,
@@ -40,8 +41,8 @@ const props = defineProps({
   //       count: 8,
   //     },
   //     scrap: {
-  //       scrapped: true,
-  //       scrapped: 9,
+  //       scraped: true,
+  //       count: 9,
   //     },
   //   },
   // },
