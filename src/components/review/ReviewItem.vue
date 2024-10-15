@@ -21,10 +21,7 @@
       </div>
 
       <div class="flex-row gap-10 mb-s">
-        <div class="grow-1">
-          <AppTypography type="title3" class="mb-s">{{ props.review.title }}</AppTypography>
-          <AppTypography type="body1">{{ props.review.desc }}</AppTypography>
-        </div>
+        <AppTypography type="body1" class="grow-1">{{ props.review.desc }}</AppTypography>
 
         <!-- 이미지 있는 경우 표시 -->
         <img

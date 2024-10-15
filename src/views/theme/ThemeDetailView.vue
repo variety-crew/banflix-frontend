@@ -7,20 +7,40 @@
     @click-btn="goReviewForm"
   >
     <div class="flex-row gap-20 mb-l items-start">
-      <!-- 테마 이미지 -->
-      <Galleria
-        :value="themeImages"
-        :circular="true"
-        container-style="width: 440px; flex-shrink: 0;"
-        :show-item-navigators="true"
-      >
-        <template #item="slotProps">
-          <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="width: 100%; display: block" />
-        </template>
-        <template #thumbnail="slotProps">
-          <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="display: block; width: 100px" />
-        </template>
-      </Galleria>
+      <div>
+        <!-- 테마 이미지 -->
+        <Galleria
+          :value="themeImages"
+          :circular="true"
+          container-style="width: 440px; flex-shrink: 0; margin-bottom: 16px;"
+          :show-item-navigators="true"
+        >
+          <template #item="slotProps">
+            <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="width: 100%; display: block" />
+          </template>
+          <template #thumbnail="slotProps">
+            <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="display: block; width: 100px" />
+          </template>
+        </Galleria>
+
+        <!-- 좋아요/스크랩 -->
+        <div class="flex-row gap-10">
+          <Button
+            label="좋아요"
+            :icon="`pi ${userLiked ? 'pi-heart-fill' : 'pi-heart'}`"
+            outlined
+            badge="1,000"
+            @click="toggleLike"
+          />
+          <Button
+            label="스크랩"
+            :icon="`pi ${userBookmarked ? 'pi-bookmark-fill' : 'pi-bookmark'}`"
+            outlined
+            badge="2,102"
+            @click="toggleBookmark"
+          />
+        </div>
+      </div>
 
       <div class="grow-1">
         <!-- 테마 상세 정보 -->
@@ -93,6 +113,7 @@ import Galleria from 'primevue/galleria';
 import Panel from 'primevue/panel';
 import Divider from 'primevue/divider';
 import Select from 'primevue/select';
+import Button from 'primevue/button';
 import {
   quizQualityOptions,
   levelOptions,
@@ -173,9 +194,19 @@ const reviews = ref([
     probability: 'FIVE',
   },
 ]);
+const userLiked = ref(true);
+const userBookmarked = ref(false);
 
 const goReviewForm = () => {
   router.push(`/theme/${themeId}/create-review`);
+};
+
+const toggleLike = () => {
+  userLiked.value = !userLiked.value;
+};
+
+const toggleBookmark = () => {
+  userBookmarked.value = !userBookmarked.value;
 };
 
 onMounted(() => {
@@ -186,6 +217,9 @@ onMounted(() => {
     { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria4.jpg', alt: '' },
     { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria5.jpg', alt: '' },
   ];
+
+  userLiked.value = false;
+  userBookmarked.value = true;
 });
 </script>
 
