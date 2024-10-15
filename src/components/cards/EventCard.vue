@@ -2,7 +2,8 @@
   <Card>
     <template #content>
       <template v-if="userStore.isLoggined">
-        <div v-if="props.card.reaction.scrap.scraped" class="scrap-banner">스크랩됨</div>
+        <div v-if="props.card.reaction.scrap.scraped" class="banner-scraped">스크랩 됨</div>
+        <div v-else class="banner-unscraped" />
       </template>
       <div class="content-container">
         <img
@@ -104,7 +105,20 @@ const goEventDetail = id => {
 }
 
 /* 스크랩 여부에 따른 띠 스타일 */
-.scrap-banner {
+.banner-unscraped {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: white; /* 띠 배경색 */
+  color: #fff; /* 텍스트 색상 */
+  padding: 5px 10px;
+  font-weight: bold;
+  font-size: 12px;
+  border-bottom-left-radius: 8px;
+}
+
+/* 스크랩 여부에 따른 띠 스타일 */
+.banner-scraped {
   position: absolute;
   top: 0;
   right: 0;

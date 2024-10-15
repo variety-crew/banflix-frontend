@@ -76,6 +76,10 @@ onMounted(() => {});
   margin-top: 50px;
 }
 
+h1 {
+  margin-bottom: 30px;
+}
+
 .content-container {
   margin-left: 30px;
   width: 100%;

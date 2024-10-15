@@ -69,7 +69,7 @@ const cards = ref([
         count: 5,
       },
       scrap: {
-        scraped: true,
+        scraped: false,
         count: 6,
       },
     },
