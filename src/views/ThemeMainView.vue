@@ -81,11 +81,12 @@ const genreOptions = ref([
   { label: '퓨전사극', value: 3 },
   { label: '힐링', value: 3 },
 ]);
-const selectedSorting = ref({ name: '기본 순', value: 'DEFAULT' });
+const selectedSorting = ref({ name: '최신 순', value: 'RECENT' });
 const sortingOptions = ref([
-  { name: '기본 순', value: 'DEFAULT' },
+  { name: '최신 순', value: 'RECENT' },
   { name: '리뷰 많은 순', value: 'REVIEW_DESC' },
   { name: '좋아요 많은 순', value: 'LIKE_DESC' },
+  { name: '스크랩 많은 순', value: 'SCRAP_DESC' },
 ]);
 
 const clickTheme = () => {
