@@ -1,5 +1,5 @@
 <template>
-  <NoticePageLayout title="공지사항" btn-role="ADMIN" @update="handleUpdateNotice">
+  <DetailPageLayout title="공지사항" btn-role="ADMIN" @update="handleUpdateNotice">
     <NoticePreviewCard :notice="notice" class="notice-card" />
     <div class="notice-detail-container">
       <Card>
@@ -17,13 +17,13 @@
         </template>
       </Card>
     </div>
-  </NoticePageLayout>
+  </DetailPageLayout>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import NoticePageLayout from '@/components/layouts/notice/NoticePageLayout.vue';
+import DetailPageLayout from '@/components/layouts/DetailPageLayout.vue';
 import NoticePreviewCard from '@/components/cards/preview/NoticePreviewCard.vue';
 import Card from 'primevue/card';
 import { useConfirm } from 'primevue/useconfirm';
