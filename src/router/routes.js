@@ -40,6 +40,14 @@ const router = createRouter({
       component: () => import('@/views/EventMainView.vue'),
     },
     {
+      path: '/event/detail/:eventId',
+      component: () => import('@/views/event/EventDetailView.vue'),
+    },
+    {
+      path: '/event/form/:eventId?',
+      component: () => import('@/views/event/EventFormView.vue'),
+    },
+    {
       path: '/notice',
       component: () => import('@/views/NoticeMainView.vue'),
     },
