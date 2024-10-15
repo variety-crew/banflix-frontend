@@ -39,7 +39,7 @@ const cards = ref([
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
     themeId: 1,
     theme: '위험한 동굴1',
-    partner: '그레이트 이스케이프 신촌점',
+    store: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-11',
     reaction: {
       reviewCount: 1,
@@ -58,7 +58,7 @@ const cards = ref([
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
     themeId: 2,
     theme: '위험한 동굴2',
-    partner: '그레이트 이스케이프 신촌점',
+    store: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-12',
     reaction: {
       reviewCount: 4,
@@ -77,7 +77,7 @@ const cards = ref([
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
     themeId: 3,
     theme: '위험한 동굴3',
-    partner: '그레이트 이스케이프 신촌점',
+    store: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-13',
     reaction: {
       reviewCount: 7,
@@ -96,7 +96,7 @@ const cards = ref([
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
     themeId: 4,
     theme: '위험한 동굴4',
-    partner: '그레이트 이스케이프 신촌점',
+    store: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-14',
     reaction: {
       reviewCount: 10,
@@ -115,7 +115,7 @@ const cards = ref([
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
     themeId: 5,
     theme: '위험한 동굴5',
-    partner: '그레이트 이스케이프 신촌점1',
+    store: '그레이트 이스케이프 신촌점1',
     location: '서울 동작구 여의대방로 188-142',
     reaction: {
       reviewCount: 110,

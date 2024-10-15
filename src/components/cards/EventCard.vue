@@ -13,7 +13,7 @@
           @click="goEventDetail(props.card.themeId)"
         />
         <h3 class="theme" @click="goEventDetail(props.card.themeId)">{{ props.card.theme }}</h3>
-        <div class="partner">{{ props.card.partner }}</div>
+        <div class="store">{{ props.card.store }}</div>
         <div class="location">{{ props.card.location }}</div>
         <div class="reaction-container">
           <ReviewIcon :count="props.card.reaction.reviewCount" />
@@ -47,7 +47,7 @@ const props = defineProps({
   //   profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
   //   themeId: 0,
   //   theme: '위험한 동굴3',
-  //   partner: '그레이트 이스케이프 신촌점',
+  //   store: '그레이트 이스케이프 신촌점',
   //   location: '서울 동작구 여의대방로 188-13',
   //   reaction: {
   //     reviewCount: 7,
@@ -92,7 +92,7 @@ const goEventDetail = id => {
   font-weight: bolder;
   cursor: pointer;
 }
-.partner {
+.store {
   margin-top: 10px;
 }
 .location {
