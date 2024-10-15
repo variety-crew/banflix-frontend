@@ -15,6 +15,30 @@
     align-items: center;
 }
 
+.items-start {
+    align-items: flex-start;
+}
+
+.items-end {
+    align-items: flex-end;
+}
+
+.content-between {
+    justify-content: space-between;
+}
+
+.grow-1 {
+    flex-grow: 1;
+}
+
+.shrink-0 {
+    flex-shrink: 0;
+}
+
+.gap-5 {
+    gap: 5px;
+}
+
 .gap-10 {
     gap: 10px;
 }
@@ -24,9 +48,16 @@
 }
 
 /* padding */
+.p-16 {
+    padding: 16px;
+}
+    
+.p-20 {
+    padding: 20px;
+}
 
 /* margin */
-.mb-sx {
+.mb-xs {
     margin-bottom: 8px;
 }
 .mb-s {
