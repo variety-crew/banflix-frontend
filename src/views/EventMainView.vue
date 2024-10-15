@@ -33,14 +33,11 @@ const goEventForm = () => {
   router.push(`/event/form/`);
 };
 
-const goEventDetail = id => {
-  router.push(`/detail/event/${id}`);
-};
-
 const cards = ref([
   {
     id: 0,
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+    themeId: 1,
     theme: '위험한 동굴1',
     partner: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-11',
@@ -59,6 +56,7 @@ const cards = ref([
   {
     id: 1,
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+    themeId: 2,
     theme: '위험한 동굴2',
     partner: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-12',
@@ -77,6 +75,7 @@ const cards = ref([
   {
     id: 2,
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+    themeId: 3,
     theme: '위험한 동굴3',
     partner: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-13',
@@ -95,6 +94,7 @@ const cards = ref([
   {
     id: 3,
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+    themeId: 4,
     theme: '위험한 동굴4',
     partner: '그레이트 이스케이프 신촌점',
     location: '서울 동작구 여의대방로 188-14',
@@ -113,6 +113,7 @@ const cards = ref([
   {
     id: 4,
     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+    themeId: 5,
     theme: '위험한 동굴5',
     partner: '그레이트 이스케이프 신촌점1',
     location: '서울 동작구 여의대방로 188-142',

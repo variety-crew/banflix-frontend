@@ -10,9 +10,9 @@
           class="theme-tumb"
           :src="props.card.profileImage"
           alt="테마 프로필 이미지"
-          @click="goEventDetail(props.card.id)"
+          @click="goEventDetail(props.card.themeId)"
         />
-        <h3 class="theme" @click="goEventDetail(props.card.id)">{{ props.card.theme }}</h3>
+        <h3 class="theme" @click="goEventDetail(props.card.themeId)">{{ props.card.theme }}</h3>
         <div class="partner">{{ props.card.partner }}</div>
         <div class="location">{{ props.card.location }}</div>
         <div class="reaction-container">
@@ -45,6 +45,7 @@ const props = defineProps({
   // {
   //   id: 2,
   //   profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+  //   themeId: 0,
   //   theme: '위험한 동굴3',
   //   partner: '그레이트 이스케이프 신촌점',
   //   location: '서울 동작구 여의대방로 188-13',
@@ -63,7 +64,7 @@ const props = defineProps({
 });
 
 const goEventDetail = id => {
-  router.push(`/event/detail/${id}`);
+  router.push(`/theme/detail/${id}`);
   console.log(id);
 };
 </script>
