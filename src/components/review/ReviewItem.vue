@@ -9,7 +9,7 @@
         <AppTypography type="body2" color="gray">선호 장르: {{ props.review.userGenres }}</AppTypography>
       </div>
 
-      <div class="flex-row gap-10">
+      <div class="flex-row gap-10 mb-s">
         <div class="grow-1">
           <AppTypography type="title3" class="mb-s">{{ props.review.title }}</AppTypography>
           <AppTypography type="body1">{{ props.review.desc }}</AppTypography>
@@ -26,6 +26,7 @@
       </div>
 
       <!-- 좋아요 버튼 -->
+      <Like :like="{ liked: false, count: props.review.likeCnt }" />
     </div>
 
     <!-- 구분선 -->
@@ -62,6 +63,7 @@ import Avatar from 'primevue/avatar';
 import Divider from 'primevue/divider';
 import AppTypography from '@/components/AppTypography.vue';
 import ReviewTag from '@/components/review/ReviewTag.vue';
+import Like from '../common/reaction/Like.vue';
 
 const props = defineProps({
   review: {
