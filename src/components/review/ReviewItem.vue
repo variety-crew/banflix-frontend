@@ -2,11 +2,22 @@
   <div class="container-review-item flex-row">
     <!-- 왼쪽 부분 -->
     <div class="grow-1">
-      <div class="flex-row gap-10 items-center mb-m">
-        <Avatar :image="props.review.profileImageUrl" size="large" shape="circle" />
-        <AppTypography type="body1" color="darkgray">{{ props.review.nickname }}</AppTypography>
-        <AppTypography type="body2" color="gray">{{ props.review.createdAt }}</AppTypography>
-        <AppTypography type="body2" color="gray">선호 장르: {{ props.review.userGenres }}</AppTypography>
+      <div class="flex-row items-center content-between mb-m">
+        <div class="flex-row gap-10 items-center">
+          <Avatar :image="props.review.profileImageUrl" size="large" shape="circle" />
+          <AppTypography type="body1" color="darkgray">{{ props.review.nickname }}</AppTypography>
+          <AppTypography type="body2" color="gray">{{ props.review.createdAt }}</AppTypography>
+          <AppTypography type="body2" color="gray">선호 장르: {{ props.review.userGenres }}</AppTypography>
+        </div>
+
+        <Button
+          label="신고하기"
+          outlined
+          icon="pi pi-ban"
+          size="small"
+          severity="danger"
+          @click="emit('clickReport', $event)"
+        />
       </div>
 
       <div class="flex-row gap-10 mb-s">
@@ -33,16 +44,12 @@
     <Divider layout="vertical" />
 
     <!-- 상세 평가항목(오른쪽) -->
-    <div class="shrink-0 flex-row gap-10">
-      <div class="flex-col content-between">
-        <div>
-          <AppTypography type="body1" class="mb-xs">만족도</AppTypography>
-          <AppTypography type="title1">{{ props.review.totalScore }}.0</AppTypography>
-        </div>
-        <div>
-          <ReviewTag label="참가인원" :value="props.review.people.toString()" type="PEOPLE" />
-          <ReviewTag label="소요시간" :value="props.review.time.toString()" type="TIME" />
-        </div>
+    <div class="shrink-0 flex-row gap-10 items-center">
+      <div class="flex-col gap-5">
+        <AppTypography type="body1" class="mb-xs">만족도</AppTypography>
+        <AppTypography type="title1" class="mb-m">{{ props.review.totalScore }}.0</AppTypography>
+        <ReviewTag label="참가인원" :value="props.review.people.toString()" type="PEOPLE" />
+        <ReviewTag label="소요시간" :value="props.review.time.toString()" type="TIME" />
       </div>
 
       <div class="flex-col gap-5">
@@ -61,9 +68,10 @@
 import { defineProps } from 'vue';
 import Avatar from 'primevue/avatar';
 import Divider from 'primevue/divider';
+import Button from 'primevue/button';
 import AppTypography from '@/components/AppTypography.vue';
 import ReviewTag from '@/components/review/ReviewTag.vue';
-import Like from '../common/reaction/Like.vue';
+import Like from '@/components/common/reaction/Like.vue';
 
 const props = defineProps({
   review: {
@@ -97,7 +105,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['clickImage']);
+const emit = defineEmits(['clickImage', 'clickReport']);
 </script>
 
 <style scoped>

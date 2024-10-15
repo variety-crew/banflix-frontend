@@ -48,6 +48,13 @@
 }
 
 /* padding */
+.p-16 {
+    padding: 16px;
+}
+    
+.p-20 {
+    padding: 20px;
+}
 
 /* margin */
 .mb-xs {
