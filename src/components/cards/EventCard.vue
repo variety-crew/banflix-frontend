@@ -10,9 +10,9 @@
           class="theme-tumb"
           :src="props.card.profileImage"
           alt="테마 프로필 이미지"
-          @click="goEventDetail(props.card.themeId)"
+          @click="clickCard(props.card.themeId)"
         />
-        <h3 class="theme" @click="goEventDetail(props.card.themeId)">{{ props.card.theme }}</h3>
+        <h3 class="theme" @click="clickCard(props.card.themeId)">{{ props.card.theme }}</h3>
         <div class="store">{{ props.card.store }}</div>
         <div class="location">{{ props.card.location }}</div>
         <div class="reaction-container">
@@ -61,10 +61,22 @@ const props = defineProps({
   //     },
   //   },
   // },
+  nextPage: {
+    type: String, // 'EVENT', 'THEME'
+    required: true,
+  },
 });
 
-const goEventDetail = id => {
-  router.push(`/theme/detail/${id}`);
+const clickCard = id => {
+  let nextPageUrl = '';
+  if (props.nextPage === 'EVENT') {
+    nextPageUrl = `/event/detail/${id}`;
+  } else if (props.nextPage === 'THEME') {
+    nextPageUrl = `/theme/detail/${id}`;
+  }
+
+  router.push(nextPageUrl);
+
   console.log(id);
 };
 </script>

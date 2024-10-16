@@ -46,7 +46,7 @@
     <div>
       <AppTypography type="title3" class="mb-s">테마 목록</AppTypography>
       <div class="list-store-theme">
-        <EventCard v-for="theme in themeList" :key="theme.id" :card="theme" />
+        <EventCard v-for="theme in themeList" :key="theme.id" :card="theme" next-page="THEME" />
       </div>
     </div>
   </PageLayout>
