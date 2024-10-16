@@ -4,6 +4,7 @@ import PrimeVue from 'primevue/config';
 import { createPinia } from 'pinia';
 import ToastService from 'primevue/toastservice';
 import ConfirmationService from 'primevue/confirmationservice';
+import Tooltip from 'primevue/tooltip';
 import router from '@/router/routes';
 import Noir from './assets/PrimeVueNoirPreset';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
@@ -28,5 +29,7 @@ app.use(PrimeVue, {
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(router);
+
+app.directive('tooltip', Tooltip);
 
 app.mount('#app');

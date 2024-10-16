@@ -105,6 +105,14 @@ const router = createRouter({
       path: '/register',
       component: () => import('@/views/RegisterMainView.vue'),
     },
+    {
+      path: '/store',
+      component: () => import('@/views/StoreMainView.vue'),
+    },
+    {
+      path: '/store/:storeId',
+      component: () => import('@/views/store/StoreDetailView.vue'),
+    },
   ],
 });
 

@@ -1,11 +1,14 @@
 <template>
   <PageLayout
-    title="검은 조직"
+    title="테마: 검은 조직"
     btn-role="ALL"
     btn-txt="나도 리뷰 작성할래요!"
     class="container-theme-detail"
     @click-btn="goReviewForm"
   >
+    <!-- 매장 -->
+    <Button label="방플릭스 신촌점" text icon="pi pi-home" class="mb-s" @click="clickStore" />
+
     <div class="flex-row gap-20 mb-l items-start">
       <div>
         <!-- 테마 이미지 -->
@@ -207,6 +210,10 @@ const toggleLike = () => {
 
 const toggleBookmark = () => {
   userBookmarked.value = !userBookmarked.value;
+};
+
+const clickStore = () => {
+  router.push('/store/1');
 };
 
 onMounted(() => {
