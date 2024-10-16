@@ -1,28 +1,84 @@
 <template>
-  <PageLayout :title="storeName">
-    <Button
-      v-tooltip="'클릭 시 네이버지도로 이동합니다.'"
-      as="a"
-      link
-      :label="storeAddress"
-      href="https://vuejs.org/"
-      target="_blank"
-      rel="noopener"
-      icon="pi pi-map-marker"
-    />
-    홈페이지 url / 등록된 테마 목록 / 베스트 리뷰 표시
+  <PageLayout :title="storeName" class="store-detail-view">
+    <!-- 매장 정보 -->
+    <div class="mb-xl">
+      <AppTypography type="title3" class="mb-s">매장 정보</AppTypography>
+      <div class="mb-s">
+        <div class="flex-row gap-10 items-center">
+          <i class="pi pi-map-marker"></i>
+          <AppTypography>주소</AppTypography>
+        </div>
+
+        <div class="flex-row gap-10 items-center">
+          <AppTypography color="darkgray">{{ storeAddress }}</AppTypography>
+          <Button
+            v-if="!copySuccess"
+            icon="pi pi-copy"
+            aria-label="복사하기"
+            outlined
+            size="small"
+            @click="clickCopyAddress"
+          />
+          <Button v-else outlined size="small" icon="pi pi-check" severity="success" label="복사되었어요!" />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex-row gap-10 items-center">
+          <i class="pi pi-link"></i>
+          <AppTypography>홈페이지</AppTypography>
+        </div>
+
+        <div class="flex-row gap-10 items-center">
+          <AppTypography color="darkgray">홈페이지 방문하기</AppTypography>
+          <Button icon="pi pi-external-link" aria-label="외부링크 이동" outlined size="small" @click="clickUrl" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 매장의 베스트 리뷰 -->
+    <div class="mb-l">
+      <AppTypography type="title3" class="mb-s">베스트 리뷰</AppTypography>
+      <ReviewItem v-if="bestReview" :review="bestReview" />
+    </div>
+
+    <!-- 매장의 테마 목록 -->
+    <div>
+      <AppTypography type="title3" class="mb-s">테마 목록</AppTypography>
+      <div class="list-store-theme">
+        <EventCard v-for="theme in themeList" :key="theme.id" :card="theme" />
+      </div>
+    </div>
   </PageLayout>
 </template>
 
 <script setup>
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import AppTypography from '@/components/AppTypography.vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
-import { onMounted, ref } from 'vue';
+import ReviewItem from '@/components/review/ReviewItem.vue';
+import EventCard from '@/components/cards/EventCard.vue';
 
 const storeName = ref('');
 const storeAddress = ref('');
 const storeUrl = ref('');
 const themeList = ref([]);
-const bestReview = ref({});
+const bestReview = ref();
+const copySuccess = ref(false);
+let timeout = null;
+
+const clickCopyAddress = () => {
+  navigator.clipboard.writeText(storeAddress.value);
+
+  copySuccess.value = true;
+  timeout = setTimeout(() => {
+    copySuccess.value = false;
+  }, 2000);
+};
+
+const clickUrl = () => {
+  window.open(storeUrl.value, '_blank');
+};
 
 onMounted(() => {
   storeName.value = '방플릭스 신촌점';
@@ -149,6 +205,19 @@ onMounted(() => {
     probability: 'FIVE',
   };
 });
+
+onBeforeUnmount(() => {
+  clearTimeout(timeout);
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.store-detail-view {
+  .list-store-theme {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    justify-items: center;
+  }
+}
+</style>
