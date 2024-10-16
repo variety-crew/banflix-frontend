@@ -1,12 +1,14 @@
 <template>
+  <AppTypography type="caption" color="darkgray" class="mb-xs">기준일자 선택</AppTypography>
+  <SelectButton v-model="selectedWeek" :options="weekOptions" aria-labelledby="장르" class="mb-l" />
   <div class="flex-col gap-20">
     <ReviewItem v-for="review in reviews" :key="review.id" :review="review" show-theme />
   </div>
 </template>
 
 <script setup>
-import ReviewItem from '@/components/review/ReviewItem.vue';
 import { ref } from 'vue';
+import ReviewItem from '@/components/review/ReviewItem.vue';
 
 const reviews = ref([
   {
@@ -141,6 +143,8 @@ const reviews = ref([
     },
   },
 ]);
+const selectedWeek = ref('');
+const weekOptions = ref(['2024-08-10', '2024-08-11', '2024-08-12', '2024-08-13', '2024-08-14']);
 </script>
 
 <style scoped></style>
