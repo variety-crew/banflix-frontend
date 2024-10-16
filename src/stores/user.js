@@ -34,7 +34,7 @@ export const useUserStore = defineStore(
       isLoggined.value = false;
     }
 
-    return { userCode, nickname, isAdmin, isLoggined, login, loginByAdmin, logout };
+    return { userCode, nickname, accessToken, isAdmin, isLoggined, login, loginByAdmin, logout };
   },
   {
     persist: true,

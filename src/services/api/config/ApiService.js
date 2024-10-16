@@ -1,101 +1,104 @@
 import BaseApiService from '@/services/api/config/BaseApiService';
 import DOMEventService from '@/services/DOMEventService';
+import { useUserStore } from '@/stores/user';
 
 export default class ApiService extends BaseApiService {
+  #userStore;
+
   constructor(resource) {
     super(resource);
+
+    const userStore = useUserStore();
+    this.#userStore = userStore;
   }
 
-  async getAll() {
+  // 요청을 처리하는 부분
+  async #callApi(url, options) {
     try {
-      const response = await fetch(`${this.baseUrl}/${this.resource}`);
+      const fetchOptions = { ...options };
+
+      // headers default 설정값
+      const myHeaders = new Headers();
+      const rewriteContentType = options?.headers?.['Content-Type'];
+      myHeaders.append('Content-Type', rewriteContentType || 'application/json');
+
+      if (this.#userStore.accessToken) {
+        myHeaders.append('Authorization', `Bearer ${this.#userStore.accessToken}`);
+      }
+
+      // 요청 시 보낼 최종 options 셋팅
+      fetchOptions['headers'] = myHeaders;
+
+      // 요청 시작
+      const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
         throw new Error(`Error occurred: ${response.status}`);
       }
 
-      const { status, msg, result } = await response.json();
-      return result;
+      return await response.json();
     } catch (err) {
       this.handleError(err);
     }
+  }
+
+  async getAll() {
+    const url = `${this.baseUrl}/${this.resource}`;
+
+    const responseData = await this.#callApi(url);
+    return responseData.result;
   }
 
   async getById(id) {
     if (!id) throw new Error('{id} is not provided');
 
-    try {
-      const response = await fetch(`${this.baseUrl}/${this.resource}/${id}`);
+    const url = `${this.baseUrl}/${this.resource}/${id}`;
 
-      if (!response.ok) {
-        throw new Error(`Error occurred: ${response.status}`);
-      }
-
-      const { status, msg, result } = await response.json();
-      return result;
-    } catch (err) {
-      this.handleError(err);
-    }
+    const responseData = await this.#callApi(url);
+    return responseData.result;
   }
 
-  async create(data = {}) {
-    try {
-      const response = await fetch(`${this.baseUrl}/${this.resource}`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
+  async create(data = {}, rewriteOptions) {
+    const url = `${this.baseUrl}/${this.resource}`;
+    const options = {
+      method: 'POST',
+      body: JSON.stringify(data),
+      ...rewriteOptions,
+    };
 
-      if (!response.ok) {
-        throw new Error(`Error occurred: ${response.status}`);
-      }
+    const responseData = await this.#callApi(url, options);
+    DOMEventService.dispatchApiSuccess(responseData.msg || '성공');
 
-      const { status, msg, result } = await response.json();
-      DOMEventService.dispatchApiSuccess(msg || '성공');
-
-      return result;
-    } catch (err) {
-      this.handleError(err);
-    }
+    return responseData.result;
   }
 
-  async updateById(id, data = {}) {
+  async updateById(id, data = {}, rewriteOptions) {
     if (!id) throw new Error('{id} is not provided');
 
-    try {
-      const response = await fetch(`${this.baseUrl}/${this.resource}/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-      });
+    const url = `${this.baseUrl}/${this.resource}/${id}`;
+    const options = {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      ...rewriteOptions,
+    };
 
-      if (!response.ok) {
-        throw new Error(`Error occurred: ${response.status}`);
-      }
+    const responseData = await this.#callApi(url, options);
+    DOMEventService.dispatchApiSuccess(responseData.msg || '성공');
 
-      const { status, msg, result } = await response.json();
-      DOMEventService.dispatchApiSuccess(msg || '성공');
-
-      return result;
-    } catch (err) {
-      this.handleError(err);
-    }
+    return responseData.result;
   }
 
   async deleteById(id) {
     if (!id) throw new Error('{id} is not provided');
 
-    try {
-      const response = await fetch(`${this.baseUrl}/${this.resource}/${id}`, {
-        method: 'DELETE',
-      });
+    const url = `${this.baseUrl}/${this.resource}/${id}`;
+    const options = {
+      method: 'DELETE',
+    };
 
-      if (!response.ok) {
-        throw new Error(`Error occurred: ${response.status}`);
-      }
+    const responseData = await this.#callApi(url, options);
+    DOMEventService.dispatchApiSuccess(responseData.msg || '성공');
 
-      const { status, msg, result } = await response.json();
-      DOMEventService.dispatchApiSuccess(msg || '성공');
-    } catch (err) {
-      this.handleError(err);
-    }
+    return responseData.result;
   }
 }
