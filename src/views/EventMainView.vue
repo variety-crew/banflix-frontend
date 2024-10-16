@@ -5,7 +5,7 @@
     <template v-if="cards.length > 0">
       <div class="event-card-container">
         <template v-for="(card, id) in cards" :key="id">
-          <EventCard :card="card" />
+          <EventCard :card="card" next-page="EVENT" />
         </template>
       </div>
     </template>
@@ -15,7 +15,7 @@
     <template v-if="cards.length > 0">
       <div class="event-card-container">
         <template v-for="(card, id) in cards" :key="id">
-          <EventCard :card="card" />
+          <EventCard :card="card" next-page="EVENT" />
         </template>
       </div>
     </template>

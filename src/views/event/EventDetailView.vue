@@ -3,7 +3,7 @@
     <div class="detail-container">
       <div class="profile-container">
         <h1>{{ event.category }}</h1>
-        <EventCard :card="event.theme" />
+        <EventCard :card="event.theme" next-page="THEME" />
       </div>
       <div class="content-container">
         <Card class="content-aria">
