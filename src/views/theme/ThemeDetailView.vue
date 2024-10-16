@@ -213,7 +213,7 @@ const toggleBookmark = () => {
 };
 
 const clickStore = () => {
-  router.push('/store/1');
+  router.push('/store/detail/1');
 };
 
 onMounted(() => {

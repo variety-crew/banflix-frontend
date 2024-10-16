@@ -16,7 +16,7 @@ const router = createRouter({
       component: () => import('@/views/ThemeMainView.vue'),
     },
     {
-      path: '/theme/:themeId',
+      path: '/theme/detail/:themeId',
       component: () => import('@/views/theme/ThemeDetailView.vue'),
     },
     {
@@ -110,7 +110,7 @@ const router = createRouter({
       component: () => import('@/views/StoreMainView.vue'),
     },
     {
-      path: '/store/:storeId',
+      path: '/store/detail/:storeId',
       component: () => import('@/views/store/StoreDetailView.vue'),
     },
   ],
