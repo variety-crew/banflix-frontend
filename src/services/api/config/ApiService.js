@@ -42,8 +42,11 @@ export default class ApiService extends BaseApiService {
     }
   }
 
-  async getAll() {
-    const url = `${this.baseUrl}/${this.resource}`;
+  async getAll(queryParams) {
+    let url = `${this.baseUrl}/${this.resource}`;
+    if (queryParams) {
+      url += `?${queryParams}`;
+    }
 
     const responseData = await this.#callApi(url);
     return responseData.result;
@@ -58,8 +61,11 @@ export default class ApiService extends BaseApiService {
     return responseData.result;
   }
 
-  async create(data = {}, rewriteOptions) {
-    const url = `${this.baseUrl}/${this.resource}`;
+  async create(data = {}, subUrl, rewriteOptions) {
+    let url = `${this.baseUrl}/${this.resource}`;
+    if (subUrl) {
+      url += `/${subUrl}`;
+    }
     const options = {
       method: 'POST',
       body: JSON.stringify(data),
