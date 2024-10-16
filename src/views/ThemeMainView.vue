@@ -90,7 +90,7 @@ const sortingOptions = ref([
 ]);
 
 const clickTheme = () => {
-  router.push('/theme/2');
+  router.push('/theme/detail/2');
 };
 </script>
 
