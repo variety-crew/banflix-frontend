@@ -57,6 +57,9 @@
 }
 
 /* margin */
+.mb-xxs {
+    margin-bottom: 4px;
+}
 .mb-xs {
     margin-bottom: 8px;
 }
