@@ -71,7 +71,7 @@ const loginByAdmin = () => {
 };
 
 const goToSignup = () => {
-  router.push('/signup');
+  router.push('/register');
 };
 </script>
 
