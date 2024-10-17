@@ -47,20 +47,14 @@ export default class ApiService extends BaseApiService {
     }
   }
 
-  async getAll(queryParams) {
+  async get(subUrl, queryParams) {
     let url = `${this.baseUrl}/${this.resource}`;
+    if (subUrl) {
+      url += `/${subUrl}`;
+    }
     if (queryParams) {
       url += `?${queryParams}`;
     }
-
-    const responseData = await this.#callApi(url);
-    return responseData.result;
-  }
-
-  async getById(id) {
-    if (!id) throw new Error('{id} is not provided');
-
-    const url = `${this.baseUrl}/${this.resource}/${id}`;
 
     const responseData = await this.#callApi(url);
     return responseData.result;

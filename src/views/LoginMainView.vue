@@ -89,7 +89,7 @@ const login = async () => {
   userStore.saveTokens(userTokens);
 
   // 회원 정보 가져오기
-  const userInfo = await $api.user.getAll();
+  const userInfo = await $api.user.get();
 
   // userStore에 유저 정보 저장
   userStore.saveUserInfo(userInfo);
