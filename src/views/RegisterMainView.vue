@@ -45,20 +45,20 @@
       </div>
 
       <div class="input-group">
-        <label for="check-password">비밀번호 확인</label>
+        <label for="confirm-password">비밀번호 확인</label>
         <InputGroup>
           <Password
-            id="check-password"
+            id="confirm-password"
             v-model="confirmPassword"
             :invalid="isValidConfirmPassword === false"
             placeholder="비밀번호를 다시 입력해주세요"
             :feedback="false"
-            aria-describedby="helper-check-password"
+            aria-describedby="helper-confirm-password"
           />
         </InputGroup>
         <small
           v-if="helperConfirmPassword"
-          id="helper-check-password"
+          id="helper-confirm-password"
           :class="{ error: isValidConfirmPassword === false, success: isValidConfirmPassword === true }"
           >{{ helperConfirmPassword }}</small
         >

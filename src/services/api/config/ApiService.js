@@ -15,28 +15,35 @@ export default class ApiService extends BaseApiService {
   // 요청을 처리하는 부분
   async #callApi(url, options) {
     try {
-      const fetchOptions = { ...options };
-
-      // headers default 설정값
+      // headers 값 셋팅
       const myHeaders = new Headers();
 
       if (this.#userStore.accessToken) {
         myHeaders.append('Authorization', `Bearer ${this.#userStore.accessToken}`);
       }
 
-      // 요청 시 보낼 최종 options 셋팅
+      // form data가 아니면 Content-Type 추가
+      if (options?.body && !(options.body instanceof FormData)) {
+        myHeaders.append('Content-Type', 'application/json');
+      }
+
+      const fetchOptions = { ...options };
       fetchOptions['headers'] = myHeaders;
 
       // 요청 시작
       const response = await fetch(url, fetchOptions);
 
       if (!response.ok) {
-        throw new Error(`Error occurred: ${response.status}`);
+        throw response;
       }
 
       return await response.json();
     } catch (err) {
-      this.handleError(err);
+      // 서버에서 보내주는 에러 메시지 뽑기
+      err.text().then(errResponse => {
+        const errRes = JSON.parse(errResponse);
+        this.handleError(errRes.msg || '알 수 없는 에러 발생');
+      });
     }
   }
 
