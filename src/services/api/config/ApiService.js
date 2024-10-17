@@ -19,8 +19,6 @@ export default class ApiService extends BaseApiService {
 
       // headers default 설정값
       const myHeaders = new Headers();
-      const rewriteContentType = options?.headers?.['Content-Type'];
-      myHeaders.append('Content-Type', rewriteContentType || 'application/json');
 
       if (this.#userStore.accessToken) {
         myHeaders.append('Authorization', `Bearer ${this.#userStore.accessToken}`);
@@ -61,7 +59,7 @@ export default class ApiService extends BaseApiService {
     return responseData.result;
   }
 
-  async post(data = {}, subUrl, rewriteOptions) {
+  async post(data = {}, subUrl) {
     let url = `${this.baseUrl}/${this.resource}`;
     if (subUrl) {
       url += `/${subUrl}`;
@@ -70,14 +68,13 @@ export default class ApiService extends BaseApiService {
     let requestBody = JSON.stringify(data);
 
     // formData 자체로 넘어올 예정
-    if (rewriteOptions?.headers?.['Content-Type'] === 'multipart/form-data') {
+    if (data instanceof FormData) {
       requestBody = data;
     }
 
     const options = {
       method: 'POST',
       body: requestBody,
-      ...rewriteOptions,
     };
 
     const responseData = await this.#callApi(url, options);
@@ -86,14 +83,21 @@ export default class ApiService extends BaseApiService {
     return responseData.result;
   }
 
-  async put(id, data = {}, rewriteOptions) {
+  async put(id, data = {}) {
     if (!id) throw new Error('{id} is not provided');
 
     const url = `${this.baseUrl}/${this.resource}/${id}`;
+
+    let requestBody = JSON.stringify(data);
+
+    // formData 자체로 넘어올 예정
+    if (data instanceof FormData) {
+      requestBody = data;
+    }
+
     const options = {
       method: 'PUT',
-      body: JSON.stringify(data),
-      ...rewriteOptions,
+      body: requestBody,
     };
 
     const responseData = await this.#callApi(url, options);
