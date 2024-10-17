@@ -1,7 +1,7 @@
 import DOMEventService from '@/services/DOMEventService';
 
 export default class BaseApiService {
-  baseUrl = 'http://localhost:8080/api';
+  baseUrl = '/server/api';
   resource;
 
   constructor(resource) {
