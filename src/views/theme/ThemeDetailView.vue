@@ -6,7 +6,7 @@
     btn-role="ALL"
     btn-txt="나도 리뷰 작성할래요!"
     class="container-theme-detail"
-    @click-btn="goReviewForm"
+    @click-btn="goReviewForm(themeDetail.themeCode)"
   >
     <!-- 매장 -->
     <Button
@@ -195,8 +195,8 @@ const reviews = ref([
 const userLiked = ref(true);
 const userBookmarked = ref(false);
 
-const goReviewForm = () => {
-  router.push(`/theme/${themeId}/create-review`);
+const goReviewForm = themeCode => {
+  router.push(`/theme/${themeCode}/create-review`);
 };
 
 const clickLike = themeCode => {
