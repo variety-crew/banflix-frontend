@@ -53,6 +53,7 @@ import router from '@/router/routes';
 import { useUserStore } from '@/stores/user';
 import Button from 'primevue/button';
 import AppTypography from '../AppTypography.vue';
+import { $api } from '@/services/api/api';
 
 const userStore = useUserStore();
 
@@ -77,13 +78,15 @@ const clickCard = id => {
   }
 
   router.push(nextPageUrl);
-
-  console.log(id);
 };
 
-const clickLike = () => {};
+const clickLike = () => {
+  $api.theme.setReactions('like', true, props.theme.themeCode).then(() => {});
+};
 
-const clickScrap = () => {};
+const clickScrap = () => {
+  $api.theme.setReactions('scrap', true, props.theme.themeCode).then(() => {});
+};
 </script>
 
 <style scoped>

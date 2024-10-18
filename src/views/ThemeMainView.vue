@@ -57,6 +57,8 @@ const sortingOptions = ref([
   { name: '스크랩 많은 순', value: 'scrap' },
 ]);
 const resultThemes = ref([]); // 검색 결과로 나온 테마 목록
+const userLikeThemeCodes = [];
+const userScrapThemeCodes = [];
 
 let debounce = null;
 

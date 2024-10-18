@@ -47,12 +47,21 @@ export default class ThemeApiService extends ApiService {
 
   setReactions(type, isActive, themeCode) {
     if (isActive) {
-      return this.post({
-        themeCode,
-        reaction: type,
-      });
+      return this.post(
+        {
+          themeCode,
+          reaction: type,
+        },
+        'reaction',
+      );
     }
 
-    // return this.delete()
+    return this.delete(
+      {
+        themeCode,
+        reaction: type,
+      },
+      'reaction',
+    );
   }
 }
