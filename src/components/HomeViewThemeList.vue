@@ -10,7 +10,7 @@
 <script setup>
 import AppTypography from './AppTypography.vue';
 import { defineProps } from 'vue';
-import EventCard from './cards/EventCard.vue';
+import EventCard from './cards/ThemeCard.vue';
 
 const props = defineProps({
   sectionTitle: {
