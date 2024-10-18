@@ -152,8 +152,8 @@ const reviewSortingOptions = ref([
   { name: '만족도 낮은 순', value: 'lowScore' },
 ]);
 const reviews = ref([]);
-const userLiked = ref(true);
-const userBookmarked = ref(false);
+const userLiked = ref(true); // 로그인 한 유저가 좋아요 한 테마인지
+const userBookmarked = ref(false); // 로그인 한 유저가 스크랩 한 테마인지
 const reviewStatistics = ref(null);
 const currenReviewPage = 0;
 
@@ -170,11 +170,17 @@ const goReviewForm = themeCode => {
 };
 
 const clickLike = themeCode => {
-  $api.theme.setReactions('like', true, themeCode).then(() => {});
+  $api.theme.setReactions('like', !userLiked.value, themeCode).then(() => {
+    // 서버에서 다시 불러오지 않고 클라이언트 메모리에 저장
+    userLiked.value = !userLiked.value;
+  });
 };
 
 const clickScrap = themeCode => {
-  $api.theme.setReactions('scrap', true, themeCode).then(() => {});
+  $api.theme.setReactions('scrap', !userBookmarked.value, themeCode).then(() => {
+    // 서버에서 다시 불러오지 않고 클라이언트 메모리에 저장
+    userBookmarked.value = !userBookmarked.value;
+  });
 };
 
 const clickStore = storeCode => {
@@ -207,6 +213,8 @@ watchEffect(() => {
   // 테마 정보 조회
   $api.theme.getTheme(themeId).then(theme => {
     themeDetail.value = theme;
+    userLiked.value = theme.isLike;
+    userBookmarked.value = theme.isScrap;
   });
 
   // 리뷰 통계 조회

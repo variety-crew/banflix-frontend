@@ -21,7 +21,7 @@
       <template #footer>
         <div class="footer mb-xs">
           <Button
-            icon="pi pi-heart"
+            :icon="`pi ${userLiked ? 'pi-heart-fill' : 'pi-heart'}`"
             label="좋아요"
             size="small"
             outlined
@@ -29,7 +29,7 @@
             @click="clickLike"
           />
           <Button
-            icon="pi pi-bookmark"
+            :icon="`pi ${userBookmarked ? 'pi-bookmark-fill' : 'pi-bookmark'}`"
             label="스크랩"
             size="small"
             outlined
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, watchEffect, onMounted } from 'vue';
 import Card from 'primevue/card';
 import ReviewIcon from '../common/reaction/ReviewIcon.vue';
 import Like from '../common/reaction/Like.vue';
@@ -69,6 +69,9 @@ const props = defineProps({
   },
 });
 
+const userLiked = ref(false);
+const userBookmarked = ref(false);
+
 const clickCard = id => {
   let nextPageUrl = '';
   if (props.nextPage === 'EVENT') {
@@ -81,12 +84,21 @@ const clickCard = id => {
 };
 
 const clickLike = () => {
-  $api.theme.setReactions('like', true, props.theme.themeCode).then(() => {});
+  $api.theme.setReactions('like', !userLiked.value, props.theme.themeCode).then(() => {
+    userLiked.value = !userLiked.value;
+  });
 };
 
 const clickScrap = () => {
-  $api.theme.setReactions('scrap', true, props.theme.themeCode).then(() => {});
+  $api.theme.setReactions('scrap', !userBookmarked.value, props.theme.themeCode).then(() => {
+    userBookmarked.value = !userBookmarked.value;
+  });
 };
+
+onMounted(() => {
+  userLiked.value = props.theme.isLike;
+  userBookmarked.value = props.theme.isScrap;
+});
 </script>
 
 <style scoped>
