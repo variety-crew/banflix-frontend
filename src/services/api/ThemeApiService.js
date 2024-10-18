@@ -5,5 +5,16 @@ export default class ThemeApiService extends ApiService {
     super('v1/themes');
   }
 
-  //  필요 시 custom method 작성은 여기에
+  getGenres() {
+    return this.get('genres');
+  }
+
+  searchThemes(themeName = '', genres = []) {
+    const params = new URLSearchParams();
+    params.set('page', '0');
+    params.set('content', themeName);
+    params.set('genres', genres.join(','));
+
+    return this.get('', params.toString());
+  }
 }
