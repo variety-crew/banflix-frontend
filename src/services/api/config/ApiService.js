@@ -84,10 +84,11 @@ export default class ApiService extends BaseApiService {
     return responseData.result;
   }
 
-  async put(id, data = {}) {
-    if (!id) throw new Error('{id} is not provided');
-
-    const url = `${this.baseUrl}/${this.resource}/${id}`;
+  async put(data = {}, subUrl) {
+    let url = `${this.baseUrl}/${this.resource}`;
+    if (subUrl) {
+      url += `/${subUrl}`;
+    }
 
     let requestBody = JSON.stringify(data);
 
@@ -107,12 +108,15 @@ export default class ApiService extends BaseApiService {
     return responseData.result;
   }
 
-  async delete(id) {
-    if (!id) throw new Error('{id} is not provided');
+  async delete(data, subUrl) {
+    let url = `${this.baseUrl}/${this.resource}`;
+    if (subUrl) {
+      url += `/${subUrl}`;
+    }
 
-    const url = `${this.baseUrl}/${this.resource}/${id}`;
     const options = {
       method: 'DELETE',
+      body: JSON.stringify(data),
     };
 
     const responseData = await this.#callApi(url, options);
