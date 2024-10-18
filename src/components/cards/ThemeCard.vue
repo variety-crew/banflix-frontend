@@ -20,13 +20,21 @@
       </template>
       <template #footer>
         <div class="footer mb-xs">
-          <Button icon="pi pi-heart" label="좋아요" size="small" outlined :badge="props.theme.likeCount.toString()" />
+          <Button
+            icon="pi pi-heart"
+            label="좋아요"
+            size="small"
+            outlined
+            :badge="props.theme.likeCount.toString()"
+            @click="clickLike"
+          />
           <Button
             icon="pi pi-bookmark"
             label="스크랩"
             size="small"
             outlined
             :badge="props.theme.scrapCount.toString()"
+            @click="clickScrap"
           />
         </div>
         <Button label="테마 상세보기" size="small" fluid @click="clickCard(props.theme.themeCode)" />
@@ -72,6 +80,10 @@ const clickCard = id => {
 
   console.log(id);
 };
+
+const clickLike = () => {};
+
+const clickScrap = () => {};
 </script>
 
 <style scoped>

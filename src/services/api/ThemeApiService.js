@@ -31,4 +31,28 @@ export default class ThemeApiService extends ApiService {
 
     return this.get('', params.toString());
   }
+
+  /**
+   *
+   * @param {string} type // like, scrap
+   * @param {boolean} isActive
+   * @returns
+   */
+  getReactions(type) {
+    const params = new URLSearchParams();
+    params.set('reaction', type);
+
+    return this.get('reactions/member', params);
+  }
+
+  setReactions(type, isActive, themeCode) {
+    if (isActive) {
+      return this.post({
+        themeCode,
+        reaction: type,
+      });
+    }
+
+    // return this.delete()
+  }
 }

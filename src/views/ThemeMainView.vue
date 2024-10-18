@@ -73,20 +73,21 @@ const searchThemes = async (themeName, genres, filter) => {
   resultThemes.value = foundThemes;
 };
 
-onMounted(async () => {
+onMounted(() => {
   // 1. 전체 장르 목록 표시
-  const genres = await $api.theme.getGenres();
-
-  // 장르 옵션 목록 만들기
-  const options = genres.map(genre => ({
-    value: genre.genreCode,
-    label: genre.name,
-  }));
-  genreOptions.value = options;
+  $api.theme.getGenres().then(genres => {
+    // 장르 옵션 목록 만들기
+    const options = genres.map(genre => ({
+      value: genre.genreCode,
+      label: genre.name,
+    }));
+    genreOptions.value = options;
+  });
 
   // 2. 테마 목록 표시
-  const themes = await $api.theme.searchThemes();
-  resultThemes.value = themes;
+  $api.theme.searchThemes().then(themes => {
+    resultThemes.value = themes;
+  });
 });
 
 // 장르가 변경되면 테마 검색
