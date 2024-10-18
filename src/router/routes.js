@@ -24,6 +24,10 @@ const router = createRouter({
       component: () => import('@/views/theme/ThemeReviewFormView.vue'),
     },
     {
+      path: '/theme/for-you',
+      component: () => import('@/views/theme/ThemeForYouView.vue'),
+    },
+    {
       path: '/board',
       component: () => import('@/views/BoardMainView.vue'),
     },

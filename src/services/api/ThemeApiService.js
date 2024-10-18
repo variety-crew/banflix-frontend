@@ -68,4 +68,8 @@ export default class ThemeApiService extends ApiService {
       'reaction',
     );
   }
+
+  getRecommend(themeCodes) {
+    return this.get('recommend', `themeCodes=${themeCodes.join(',')}`);
+  }
 }

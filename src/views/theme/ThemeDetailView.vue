@@ -47,8 +47,9 @@
           {{ themeDetail.story }}
         </p>
         <p>난이도: {{ themeDetail.level }}</p>
-        <p>1인당 가격: {{ themeDetail.price.toLocaleString() }}원</p>
         <p>제한시간: {{ themeDetail.timeLimit }}분</p>
+        <p>인원 수: {{ themeDetail.headcount }}</p>
+        <p>1인당 가격: {{ themeDetail.price.toLocaleString() }}원</p>
       </Panel>
     </div>
 

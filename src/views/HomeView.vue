@@ -4,6 +4,7 @@
     <HomeViewThemeList :section-title="`${userStore.nickname}님의 취향과 일치하는 테마예요`" :themes="[]" />
     <HomeViewThemeList section-title="미스터리" :themes="[]" />
     <HomeViewThemeList section-title="범죄" :themes="[]" />
+    <Button label="테마 추천" as="router-link" to="/theme/for-you" />
   </PageLayout>
 </template>
 
@@ -13,6 +14,7 @@ import PageLayout from '@/components/layouts/PageLayout.vue';
 import { $api } from '@/services/api/api';
 import { useUserStore } from '@/stores/user';
 import { onMounted } from 'vue';
+import Button from 'primevue/button';
 
 const userStore = useUserStore();
 
