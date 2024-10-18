@@ -85,7 +85,7 @@
       <div class="flex-row content-between mb-m">
         <div class="flex-row gap-10 items-end">
           <h3>참가자 리뷰</h3>
-          <span>(123)</span>
+          <span>({{ reviews.length }})</span>
         </div>
 
         <Select
@@ -151,54 +151,11 @@ const reviewSortingOptions = ref([
   { name: '만족도 높은 순', value: 'highScore' },
   { name: '만족도 낮은 순', value: 'lowScore' },
 ]);
-const reviews = ref([
-  {
-    reviewCode: 1,
-    nickname: '홍길동',
-    profileImageUrl: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
-    createdAt: '2024.10.10 22:00',
-    userGenres: '범죄, 공포, 스릴러',
-    title: '여기 검은 조직은 진짜 미침',
-    desc: '인생 어쩌구 저쩌구 리뷰 이벤트 해서 엠오유가 어쩌구 저쩌구 인테리어가 진짜 내가 방탈출하는 사람이 된거같고 어쩌구 저쩌구 몰입도가 어쩌구 저쩌구 총쏘면 진짜 총 맞는게 단점이고 어쩌구 저쩌구인생 어쩌구 저쩌구 리뷰 이벤트 해서 엠오유가 어쩌구 저쩌구 인테',
-    images: [
-      'https://primefaces.org/cdn/primevue/images/card-vue.jpg',
-      'https://primefaces.org/cdn/primevue/images/card-vue.jpg',
-    ],
-    likeCnt: 100,
-    totalScore: 5,
-    time: 60,
-    people: 2,
-    level: 'ONE',
-    quizQuality: 'TWO',
-    scary: 'TWO',
-    activity: 'THREE',
-    interior: 'FIVE',
-    probability: 'FIVE',
-  },
-  {
-    reviewCode: 2,
-    nickname: '프로방탈출러',
-    profileImageUrl: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
-    createdAt: '2024.10.10 22:00',
-    userGenres: '범죄, 스릴러',
-    title: '여기 검은 조직은 진짜 미침',
-    desc: '인생 어쩌구 저쩌구 리뷰 이벤트 해서 엠오유가 어쩌구 저쩌구 인테리어가 진짜 내가 방탈출하는 사람이 된거같고 어쩌구 저쩌구 몰입도가 어쩌구 저쩌구 총쏘면 진짜 총 맞는게 단점이고 어쩌구 저쩌구인생 어쩌구 저쩌구 리뷰 이벤트 해서 엠오유가 어쩌구 저쩌구 인테',
-    images: [],
-    likeCnt: 10,
-    totalScore: 4,
-    time: 60,
-    people: 2,
-    level: 'ONE',
-    quizQuality: 'TWO',
-    scary: 'TWO',
-    activity: 'THREE',
-    interior: 'FIVE',
-    probability: 'FIVE',
-  },
-]);
+const reviews = ref([]);
 const userLiked = ref(true);
 const userBookmarked = ref(false);
 const reviewStatistics = ref(null);
+const currenReviewPage = 0;
 
 const totalScoreOptions = [
   { label: '1점', value: 'ONE' },
@@ -371,7 +328,16 @@ watchEffect(() => {
   });
 
   // 리뷰 목록 조회
-  $api.review.getReviewsByThemeCode(themeId).then(reviews => {});
+  $api.review.getReviewsByThemeCode(themeId).then(themeReviews => {
+    reviews.value = themeReviews;
+  });
+});
+
+watch(selectedReviewSorting, newVal => {
+  // 리뷰 목록 조회
+  $api.review.getReviewsByThemeCode(themeId, currenReviewPage, newVal.value).then(themeReviews => {
+    reviews.value = themeReviews;
+  });
 });
 </script>
 

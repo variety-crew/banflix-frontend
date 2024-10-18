@@ -9,7 +9,13 @@ export default class ReviewApiService extends ApiService {
     return this.get(`statistics/${themeCode}`);
   }
 
-  getReviewsByThemeCode(themeCode) {
-    return this.get(themeCode);
+  getReviewsByThemeCode(themeCode, page = 0, filter = '') {
+    const params = new URLSearchParams();
+    params.append('page', page);
+    if (filter) {
+      params.append('filter', filter);
+    }
+
+    return this.get(themeCode, params.toString());
   }
 }
