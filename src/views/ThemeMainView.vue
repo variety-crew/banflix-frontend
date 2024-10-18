@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import PageLayout from '@/components/layouts/PageLayout.vue';
 import FloatLabel from 'primevue/floatlabel';
@@ -49,17 +49,28 @@ const router = useRouter();
 const keyword = ref('');
 const selectedGenres = ref([]);
 const genreOptions = ref([]);
-const selectedSorting = ref({ name: '최신 순', value: 'RECENT' });
+const selectedSorting = ref({ name: '최신 순', value: '' });
 const sortingOptions = ref([
-  { name: '최신 순', value: 'RECENT' },
-  { name: '리뷰 많은 순', value: 'REVIEW_DESC' },
-  { name: '좋아요 많은 순', value: 'LIKE_DESC' },
-  { name: '스크랩 많은 순', value: 'SCRAP_DESC' },
+  { name: '최신 순', value: '' },
+  { name: '리뷰 많은 순', value: 'review' },
+  { name: '좋아요 많은 순', value: 'like' },
+  { name: '스크랩 많은 순', value: 'scrap' },
 ]);
 const resultThemes = ref([]); // 검색 결과로 나온 테마 목록
 
+let debounce = null;
+
 const clickTheme = () => {
   router.push('/theme/detail/2');
+};
+
+const searchThemes = async (themeName, genres, filter) => {
+  const foundThemes = await $api.theme.searchThemes(
+    themeName,
+    genres.map(e => e.label), // 장르 이름
+    filter.value,
+  );
+  resultThemes.value = foundThemes;
 };
 
 onMounted(async () => {
@@ -78,18 +89,31 @@ onMounted(async () => {
   resultThemes.value = themes;
 });
 
-const searchThemes = async (themeName, genres) => {
-  const foundThemes = await $api.theme.searchThemes(themeName, genres);
-};
-
 // 장르가 변경되면 테마 검색
 watch(selectedGenres, newVal => {
-  searchThemes(keyword.value, newVal);
+  searchThemes(keyword.value, newVal, selectedSorting.value);
 });
 
 // 키워드가 변경되면 테마 검색
 watch(keyword, newVal => {
-  searchThemes(newVal, selectedGenres.value);
+  if (debounce) {
+    clearTimeout(debounce);
+  }
+
+  debounce = setTimeout(() => {
+    searchThemes(newVal, selectedGenres.value, selectedSorting.value);
+  }, 500);
+});
+
+// 정렬기준이 변경되면 테마 검색
+watch(selectedSorting, newVal => {
+  searchThemes(keyword.value, selectedGenres.value, newVal);
+});
+
+onBeforeUnmount(() => {
+  if (debounce) {
+    clearTimeout(debounce);
+  }
 });
 </script>
 

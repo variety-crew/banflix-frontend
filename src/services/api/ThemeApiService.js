@@ -9,11 +9,25 @@ export default class ThemeApiService extends ApiService {
     return this.get('genres');
   }
 
-  searchThemes(themeName = '', genres = []) {
+  /**
+   *
+   * @param {string} themeName
+   * @param {Array} genres // 장르 코드 배열: [number, number]
+   * @param {string} filter // like, scrap, review
+   * @returns
+   */
+  searchThemes(themeName = '', genres = [], filter = '') {
     const params = new URLSearchParams();
     params.set('page', '0');
-    params.set('content', themeName);
-    params.set('genres', genres.join(','));
+    if (themeName) {
+      params.set('content', themeName);
+    }
+    if (genres.length > 0) {
+      params.set('genres', genres.join(','));
+    }
+    if (filter) {
+      params.set('filter', filter);
+    }
 
     return this.get('', params.toString());
   }
