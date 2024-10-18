@@ -1,30 +1,26 @@
 <template>
+  <PageLoadingLayout v-if="!themeDetail" />
   <PageLayout
-    title="테마: 검은 조직"
+    v-else
+    :title="`[테마] ${themeDetail.name}`"
     btn-role="ALL"
     btn-txt="나도 리뷰 작성할래요!"
     class="container-theme-detail"
     @click-btn="goReviewForm"
   >
     <!-- 매장 -->
-    <Button label="방플릭스 신촌점" text icon="pi pi-home" class="mb-s" @click="clickStore" />
+    <Button
+      :label="themeDetail.storeName"
+      text
+      icon="pi pi-home"
+      class="mb-s"
+      @click="clickStore(themeDetail.storeCode)"
+    />
 
     <div class="flex-row gap-20 mb-l items-start">
       <div>
         <!-- 테마 이미지 -->
-        <Galleria
-          :value="themeImages"
-          :circular="true"
-          container-style="width: 440px; flex-shrink: 0; margin-bottom: 16px;"
-          :show-item-navigators="true"
-        >
-          <template #item="slotProps">
-            <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="width: 100%; display: block" />
-          </template>
-          <template #thumbnail="slotProps">
-            <img :src="slotProps.item.src" :alt="slotProps.item.alt" style="display: block; width: 100px" />
-          </template>
-        </Galleria>
+        <Image :src="themeDetail.posterImage" image-style="width: 440px; flex-shrink: 0; margin-bottom: 16px;" />
 
         <!-- 좋아요/스크랩 -->
         <div class="flex-row gap-10">
@@ -32,57 +28,54 @@
             label="좋아요"
             :icon="`pi ${userLiked ? 'pi-heart-fill' : 'pi-heart'}`"
             outlined
-            badge="1,000"
-            @click="toggleLike"
+            :badge="themeDetail.likeCount.toString()"
+            @click="clickLike(themeDetail.themeCode)"
           />
           <Button
             label="스크랩"
             :icon="`pi ${userBookmarked ? 'pi-bookmark-fill' : 'pi-bookmark'}`"
             outlined
-            badge="2,102"
-            @click="toggleBookmark"
+            :badge="themeDetail.scrapCount.toString()"
+            @click="clickScrap(themeDetail.themeCode)"
           />
         </div>
       </div>
 
-      <div class="grow-1">
-        <!-- 테마 상세 정보 -->
-        <Panel header="테마 상세 정보" class="area-theme-desc mb-s">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
-          </p>
-        </Panel>
-
-        <!-- 리뷰 통계 -->
-        <Panel header="" class="area-review-statistics">
-          <div class="top">
-            <div>
-              <h3 class="mb-s">평균 만족도</h3>
-              <h1>4.11 / 5</h1>
-            </div>
-            <Divider layout="vertical" />
-            <div>
-              <ReviewStatisticsItem :data="totalScoreStatisticsData" />
-            </div>
-          </div>
-
-          <Divider />
-
-          <div class="bottom">
-            <ReviewStatisticsItem label="문제구성" :data="quizQualityStatisticsData" />
-            <ReviewStatisticsItem label="난이도" :data="levelStatisticsData" />
-            <ReviewStatisticsItem label="공포도" :data="scaryStatisticsData" />
-            <ReviewStatisticsItem label="활동성" :data="activityStatisticsData" />
-            <ReviewStatisticsItem label="인테리어" :data="interiorStatisticsData" />
-            <ReviewStatisticsItem label="개연성" :data="probabilityStatisticsData" />
-          </div>
-        </Panel>
-      </div>
+      <!-- 테마 상세 정보 -->
+      <Panel header="" class="grow-1">
+        <p class="mb-xl">
+          {{ themeDetail.story }}
+        </p>
+        <p>난이도: {{ themeDetail.level }}</p>
+        <p>1인당 가격: {{ themeDetail.price.toLocaleString() }}원</p>
+        <p>제한시간: {{ themeDetail.timeLimit }}분</p>
+      </Panel>
     </div>
+
+    <!-- 리뷰 통계 -->
+    <Panel header="" class="area-review-statistics mb-l">
+      <div class="top">
+        <div>
+          <h3 class="mb-s">평균 만족도</h3>
+          <h1>4.11 / 5</h1>
+        </div>
+        <Divider layout="vertical" />
+        <div>
+          <ReviewStatisticsItem :data="totalScoreStatisticsData" />
+        </div>
+      </div>
+
+      <Divider />
+
+      <div class="bottom">
+        <ReviewStatisticsItem label="문제구성" :data="quizQualityStatisticsData" />
+        <ReviewStatisticsItem label="난이도" :data="levelStatisticsData" />
+        <ReviewStatisticsItem label="공포도" :data="scaryStatisticsData" />
+        <ReviewStatisticsItem label="활동성" :data="activityStatisticsData" />
+        <ReviewStatisticsItem label="인테리어" :data="interiorStatisticsData" />
+        <ReviewStatisticsItem label="개연성" :data="probabilityStatisticsData" />
+      </div>
+    </Panel>
 
     <!-- 리뷰 -->
     <section>
@@ -109,10 +102,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import PageLayout from '@/components/layouts/PageLayout.vue';
-import Galleria from 'primevue/galleria';
 import Panel from 'primevue/panel';
 import Divider from 'primevue/divider';
 import Select from 'primevue/select';
@@ -127,12 +119,15 @@ import {
 } from '@/utils/constants';
 import ReviewStatisticsItem from '@/components/review/ReviewStatisticsItem.vue';
 import ReviewList from '@/components/review/ReviewList.vue';
+import { $api } from '@/services/api/api';
+import PageLoadingLayout from '@/components/layouts/PageLoadingLayout.vue';
+import Image from 'primevue/image';
 
 const router = useRouter();
 const route = useRoute();
 const { themeId } = route.params;
 
-const themeImages = ref([]);
+const themeDetail = ref(null);
 const totalScoreStatisticsData = ref([
   { label: '1점', percent: 1 },
   { label: '2점', percent: 2 },
@@ -204,29 +199,32 @@ const goReviewForm = () => {
   router.push(`/theme/${themeId}/create-review`);
 };
 
-const toggleLike = () => {
-  userLiked.value = !userLiked.value;
+const clickLike = themeCode => {
+  $api.theme.setReactions('like', true, themeCode).then(() => {});
 };
 
-const toggleBookmark = () => {
-  userBookmarked.value = !userBookmarked.value;
+const clickScrap = themeCode => {
+  $api.theme.setReactions('scrap', true, themeCode).then(() => {});
 };
 
-const clickStore = () => {
-  router.push('/store/detail/1');
+const clickStore = storeCode => {
+  router.push(`/store/detail/${storeCode}`);
 };
 
-onMounted(() => {
-  themeImages.value = [
-    { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria1.jpg', alt: '' },
-    { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria2.jpg', alt: '' },
-    { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria3.jpg', alt: '' },
-    { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria4.jpg', alt: '' },
-    { src: 'https://primefaces.org/cdn/primevue/images/galleria/galleria5.jpg', alt: '' },
-  ];
+// 테마코드로 조회
+watchEffect(() => {
+  if (!themeId) return;
 
-  userLiked.value = false;
-  userBookmarked.value = true;
+  // 테마 정보 조회
+  $api.theme.getTheme(themeId).then(theme => {
+    themeDetail.value = theme;
+  });
+
+  // 리뷰 통계 조회
+  $api.review.getStatisticsByThemeCode(themeId).then(statistics => {});
+
+  // 리뷰 목록 조회
+  $api.review.getReviewsByThemeCode(themeId).then(reviews => {});
 });
 </script>
 
