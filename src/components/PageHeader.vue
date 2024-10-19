@@ -55,6 +55,9 @@ import { ref } from 'vue';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 import OverlayBadge from 'primevue/overlaybadge';
+import useToastMessage from '@/hooks/useToastMessage';
+
+const { showSuccess } = useToastMessage();
 
 const items = ref([
   {
@@ -107,6 +110,7 @@ const goRegisterPage = () => {
 
 const logout = () => {
   userStore.logout();
+  showSuccess('로그아웃되었습니다.');
   router.replace('/');
 };
 </script>
