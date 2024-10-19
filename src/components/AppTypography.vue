@@ -29,7 +29,7 @@ watchEffect(() => {
   if (props.color === 'black') {
     textColor.value = '#000000';
   } else if (props.color === 'white') {
-    textColor.value === '#ffffff';
+    textColor.value = '#ffffff';
   } else if (props.color === 'gray') {
     textColor.value = '#b3b3b3';
   } else if (props.color === 'darkgray') {

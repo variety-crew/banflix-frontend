@@ -72,4 +72,8 @@ export default class ThemeApiService extends ApiService {
   getRecommend(themeCodes) {
     return this.get('recommend', `themeCodes=${themeCodes.join(',')}`);
   }
+
+  getWeekThemes() {
+    return this.get('week');
+  }
 }
