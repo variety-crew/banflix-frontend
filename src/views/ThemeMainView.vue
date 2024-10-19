@@ -87,7 +87,7 @@ onMounted(() => {
   });
 
   // 2. 테마 목록 표시
-  $api.theme.searchThemes().then(themes => {
+  $api.theme.searchThemes({}).then(themes => {
     resultThemes.value = themes;
   });
 });
