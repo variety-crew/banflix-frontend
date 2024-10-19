@@ -15,8 +15,12 @@
         icon-pos="right"
       />
     </section>
-    <HomeViewThemeList section-title="미스터리" :themes="[]" />
-    <HomeViewThemeList section-title="범죄" :themes="[]" />
+    <HomeViewThemeList
+      v-for="genre in genres"
+      :key="genre"
+      :section-title="`장르: ${genre.name}`"
+      :genre-name="genre.name"
+    />
   </div>
 </template>
 
@@ -31,12 +35,24 @@ import AppTypography from '@/components/AppTypography.vue';
 const userStore = useUserStore();
 
 const weekThemeList = ref([]);
+const genres = ref([]);
 
 // 메인 페이지 데이터 조회
 onMounted(() => {
   // 이번주 테마 목록
   $api.theme.getWeekThemes().then(weekThemes => {
     weekThemeList.value = weekThemes;
+  });
+
+  // 장르 목록 조회
+  $api.theme.getGenres().then(foundGenres => {
+    // 장르 5개만 랜덤으로 뽑기
+    if (foundGenres.length <= 5) {
+      genres.value = foundGenres;
+      return;
+    }
+
+    genres.value = foundGenres.slice(0, 5);
   });
 });
 </script>

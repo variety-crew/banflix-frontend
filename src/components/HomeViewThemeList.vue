@@ -2,7 +2,7 @@
   <section class="section-home-view">
     <AppTypography type="title3" color="white" class="mb-l">{{ props.sectionTitle }}</AppTypography>
     <ul>
-      <li v-for="(theme, index) in props.themes" :key="theme.themeCode">
+      <li v-for="(theme, index) in themeList" :key="theme.themeCode">
         <Tag v-if="props.showOrder" :value="index + 1" class="tag-order"></Tag>
         <ThemeCard :theme="theme" next-page="THEME" />
       </li>
@@ -12,8 +12,11 @@
 
 <script setup>
 import AppTypography from './AppTypography.vue';
-import { defineProps } from 'vue';
+import { defineProps, ref, watchEffect } from 'vue';
 import ThemeCard from './cards/ThemeCard.vue';
+import { $api } from '@/services/api/api';
+
+const themeList = ref([]);
 
 const props = defineProps({
   sectionTitle: {
@@ -22,13 +25,30 @@ const props = defineProps({
   },
   themes: {
     type: Array, // ThemeDTO[]
-    required: true,
+    required: false,
+    default: new Array(),
   },
   showOrder: {
     type: Boolean,
     required: false,
     default: false,
   },
+  genreName: {
+    type: String,
+    required: false,
+    default: null,
+  },
+});
+
+watchEffect(() => {
+  if (props.themes.length > 0) {
+    themeList.value = props.themes;
+  } else if (props.genreName) {
+    // 장르가 넘어오면 API 통신
+    $api.theme.searchThemes(undefined, [props.genreName]).then(foundThemes => {
+      themeList.value = foundThemes.slice(0, 5);
+    });
+  }
 });
 </script>
 

@@ -25,16 +25,16 @@
             label="좋아요"
             size="small"
             outlined
-            :badge="props.theme.likeCount.toString()"
-            @click="clickLike"
+            :badge="likeCnt.toString()"
+            @click="clickLike(!userLiked)"
           />
           <Button
             :icon="`pi ${userBookmarked ? 'pi-bookmark-fill' : 'pi-bookmark'}`"
             label="스크랩"
             size="small"
             outlined
-            :badge="props.theme.scrapCount.toString()"
-            @click="clickScrap"
+            :badge="scrapCnt.toString()"
+            @click="clickScrap(!userBookmarked)"
           />
         </div>
         <Button label="테마 상세보기" size="small" fluid @click="clickCard(props.theme.themeCode)" />
@@ -71,6 +71,8 @@ const props = defineProps({
 
 const userLiked = ref(false);
 const userBookmarked = ref(false);
+const likeCnt = ref(0);
+const scrapCnt = ref(0);
 
 const clickCard = id => {
   let nextPageUrl = '';
@@ -83,21 +85,29 @@ const clickCard = id => {
   router.push(nextPageUrl);
 };
 
-const clickLike = () => {
-  $api.theme.setReactions('like', !userLiked.value, props.theme.themeCode).then(() => {
-    userLiked.value = !userLiked.value;
+const clickLike = changeTo => {
+  $api.theme.setReactions('like', changeTo, props.theme.themeCode).then(() => {
+    userLiked.value = changeTo;
+
+    if (changeTo) likeCnt.value += 1;
+    else likeCnt.value -= 1;
   });
 };
 
-const clickScrap = () => {
-  $api.theme.setReactions('scrap', !userBookmarked.value, props.theme.themeCode).then(() => {
-    userBookmarked.value = !userBookmarked.value;
+const clickScrap = changeTo => {
+  $api.theme.setReactions('scrap', changeTo, props.theme.themeCode).then(() => {
+    userBookmarked.value = changeTo;
+
+    if (changeTo) scrapCnt.value += 1;
+    else scrapCnt.value -= 1;
   });
 };
 
 onMounted(() => {
   userLiked.value = props.theme.isLike;
   userBookmarked.value = props.theme.isScrap;
+  likeCnt.value = props.theme.likeCount;
+  scrapCnt.value = props.theme.scrapCount;
 });
 </script>
 
