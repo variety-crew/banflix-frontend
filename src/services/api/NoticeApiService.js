@@ -11,4 +11,8 @@ export default class NoticeApiService extends ApiService {
     params.append('size', size);
     return this.get('', params.toString());
   }
+
+  getNoticeDetailByNoticeCode(id) {
+    return this.get(`post/${id}`);
+  }
 }

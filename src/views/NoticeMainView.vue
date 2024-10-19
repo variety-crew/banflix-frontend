@@ -2,7 +2,11 @@
   <PageLayout title="공지사항" btn-txt="공지사항 등록" btn-role="ADMIN" @click-btn="goNoticeForm">
     <template v-if="notices.totalPages > 0">
       <template v-for="(notice, id) in notices.noticePosts" :key="id">
-        <NoticePreviewCard :notice="notice" class="notice-card" @click="goDetailNotice(notice.id)"></NoticePreviewCard>
+        <NoticePreviewCard
+          :notice="notice"
+          class="notice-card"
+          @click="goDetailNotice(notice.noticePostCode)"
+        ></NoticePreviewCard>
       </template>
     </template>
     <template v-else> 게시글이 존재하지 않습니다. </template>
