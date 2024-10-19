@@ -12,5 +12,4 @@ export const $api = {
   theme: new ThemeApiService(),
   review: new ReviewApiService(),
   notice: new NoticeApiService(),
-
 };
