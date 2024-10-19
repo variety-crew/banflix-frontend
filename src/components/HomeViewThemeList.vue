@@ -45,7 +45,7 @@ watchEffect(() => {
     themeList.value = props.themes;
   } else if (props.genreName) {
     // 장르가 넘어오면 API 통신
-    $api.theme.searchThemes(undefined, [props.genreName]).then(foundThemes => {
+    $api.theme.searchThemes({ genres: [props.genreName] }).then(foundThemes => {
       themeList.value = foundThemes.slice(0, 5);
     });
   }

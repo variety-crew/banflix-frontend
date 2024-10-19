@@ -1,38 +1,58 @@
 <template>
   <PageLayout title="방탈출 테마 추천" class="theme-for-you">
-    <AppTypography type="title3">회원님에게 딱 맞는 방탈출 테마 추천해드려요!</AppTypography>
-    <AppTypography color="darkgray" class="mb-xl">마음에 드는 포스터를 골라주세요</AppTypography>
-
-    <div class="list-theme">
-      <div v-for="theme in themes" :key="theme.themeCode">
-        <ThemeCard :theme="theme" :show-footer="false" class="mb-s" />
-        <Button
-          :label="selectedThemeCodes.includes(theme.themeCode) ? '선택 완료' : '선택'"
-          fluid
-          :icon="selectedThemeCodes.includes(theme.themeCode) ? 'pi pi-check' : 'pi'"
-          :severity="selectedThemeCodes.includes(theme.themeCode) ? 'success' : 'secondary'"
-          @click="clickTheme(theme.themeCode)"
-        />
+    <!-- 추천된 테마 목록 -->
+    <template v-if="recommendedSuccess">
+      <div class="area-recommended">
+        <AppTypography type="title3" class="mb-l">회원님이 좋아하실만한 방탈출 테마를 골라봤어요!</AppTypography>
+        <div class="list-theme">
+          <div v-for="theme in recommendedThemes" :key="theme.themeCode">
+            <ThemeCard :theme="theme" :show-footer="false" class="mb-s" />
+            <Button label="방탈출 구경하기" fluid @click="clickRecommendedTheme(theme.themeCode)" />
+          </div>
+        </div>
       </div>
-    </div>
+    </template>
 
-    <div class="area-btn">
-      <Button label="새로고침" severity="secondary" icon="pi pi-refresh" :loading="isReloading" @click="reloadThemes" />
-      <div class="flex-col items-center">
-        <Button
-          label="내 취향 방탈출 추천 받기"
-          :disabled="selectedThemeCodes.length < minSelectCnt"
-          @click="clickRecommend"
-        />
-        <AppTypography v-if="selectedThemeCodes.length < minSelectCnt" type="caption" color="darkgray" class="mt-xs"
-          >{{ minSelectCnt - selectedThemeCodes.length }}개 더 골라주세요! (최소 {{ minSelectCnt }}개 선택
-          필요)</AppTypography
-        >
-        <AppTypography v-else type="caption" color="darkgray" class="mt-xs"
-          >많이 고를 수록 더 정확히 추천받을 수 있어요!</AppTypography
-        >
+    <template v-else>
+      <AppTypography type="title3">회원님에게 딱 맞는 방탈출 테마 추천해드려요!</AppTypography>
+      <AppTypography color="darkgray" class="mb-xl">마음에 드는 포스터를 골라주세요</AppTypography>
+      <div class="list-theme">
+        <div v-for="theme in themes" :key="theme.themeCode">
+          <ThemeCard :theme="theme" :show-footer="false" class="mb-s" />
+          <Button
+            :label="selectedThemeCodes.includes(theme.themeCode) ? '선택 완료' : '선택'"
+            fluid
+            :icon="selectedThemeCodes.includes(theme.themeCode) ? 'pi pi-check' : 'pi'"
+            :severity="selectedThemeCodes.includes(theme.themeCode) ? 'success' : 'secondary'"
+            @click="clickTheme(theme.themeCode)"
+          />
+        </div>
       </div>
-    </div>
+
+      <div class="area-btn">
+        <Button
+          label="새로고침"
+          severity="secondary"
+          icon="pi pi-refresh"
+          :loading="isReloading"
+          @click="reloadThemes"
+        />
+        <div class="flex-col items-center">
+          <Button
+            label="내 취향 방탈출 추천 받기"
+            :disabled="selectedThemeCodes.length < minSelectCnt"
+            @click="clickRecommend"
+          />
+          <AppTypography v-if="selectedThemeCodes.length < minSelectCnt" type="caption" color="darkgray" class="mt-xs"
+            >{{ minSelectCnt - selectedThemeCodes.length }}개 더 골라주세요! (최소 {{ minSelectCnt }}개 선택
+            필요)</AppTypography
+          >
+          <AppTypography v-else type="caption" color="darkgray" class="mt-xs"
+            >많이 고를 수록 더 정확히 추천받을 수 있어요!</AppTypography
+          >
+        </div>
+      </div>
+    </template>
   </PageLayout>
 </template>
 
@@ -43,10 +63,15 @@ import { $api } from '@/services/api/api';
 import { onMounted, ref } from 'vue';
 import Button from 'primevue/button';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const themes = ref([]);
 const selectedThemeCodes = ref([]);
 const isReloading = ref(false);
+const recommendedThemes = ref([]);
+const recommendedSuccess = ref(false);
 
 const minSelectCnt = 3;
 let currentPage = 0;
@@ -63,12 +88,19 @@ const clickTheme = themeCode => {
 };
 
 const clickRecommend = () => {
-  $api.theme.getRecommend(selectedThemeCodes.value).then(() => {});
+  $api.theme.getRecommend(selectedThemeCodes.value).then(foundThemes => {
+    recommendedThemes.value = foundThemes;
+    recommendedSuccess.value = true;
+  });
+};
+
+const clickRecommendedTheme = themeCode => {
+  router.push(`/theme/detail/${themeCode}`);
 };
 
 const getThemes = (page = 0) => {
   isReloading.value = true;
-  $api.theme.searchThemes().then(themeList => {
+  $api.theme.searchThemes({ page }).then(themeList => {
     themes.value = themeList;
     isReloading.value = false;
   });
@@ -102,6 +134,13 @@ onMounted(() => {
     & > :first-child {
       margin-right: 48px;
     }
+  }
+
+  .area-recommended {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 48px;
   }
 }
 </style>

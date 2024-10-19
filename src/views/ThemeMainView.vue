@@ -67,11 +67,11 @@ const clickTheme = () => {
 };
 
 const searchThemes = async (themeName, genres, filter) => {
-  const foundThemes = await $api.theme.searchThemes(
+  const foundThemes = await $api.theme.searchThemes({
     themeName,
-    genres.map(e => e.label), // 장르 이름
-    filter.value,
-  );
+    genres: genres.map(e => e.label), // 장르 이름
+    filter: filter.value,
+  });
   resultThemes.value = foundThemes;
 };
 
