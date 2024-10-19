@@ -5,5 +5,10 @@ export default class NoticeApiService extends ApiService {
     super('v1/notice');
   }
 
-  //  필요 시 custom method 작성은 여기에
+  getNoticesByPage(page, size = 6) {
+    const params = new URLSearchParams();
+    params.append('page', page);
+    params.append('size', size);
+    return this.get('', params.toString());
+  }
 }
