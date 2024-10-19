@@ -94,6 +94,10 @@ const router = createRouter({
       component: () => import('@/views/MyPageView.vue'),
     },
     {
+      path: '/member/detail/:memberId',
+      component: () => import('@/views/MyPageView.vue'),
+    },
+    {
       path: '/dm',
       component: () => import('@/views/DMMainView.vue'),
     },
