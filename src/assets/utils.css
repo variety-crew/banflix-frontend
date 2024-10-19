@@ -79,3 +79,22 @@
 .mb-xl {
     margin-bottom: 48px;
 }
+
+.mt-xxs {
+    margin-top: 4px;
+}
+.mt-xs {
+    margin-top: 8px;
+}
+.mt-s {
+    margin-top: 16px;
+}
+.mt-m {
+    margin-top: 24px;
+}
+.mt-l {
+    margin-top: 32px;
+}
+.mt-xl {
+    margin-top: 48px;
+}

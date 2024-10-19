@@ -11,14 +11,12 @@
       </template>
       <template #content>
         <div class="content-container">
-          <div class="mb-m">
-            <h3 class="theme mb-xxs">{{ props.theme.name }}</h3>
-            <div class="mb-s">{{ props.theme.storeName }}</div>
-            <AppTypography type="caption" color="darkgray">리뷰 {{ props.theme.reviewCount }}</AppTypography>
-          </div>
+          <h3 class="theme mb-xxs">{{ props.theme.name }}</h3>
+          <div class="mb-s">{{ props.theme.storeName }}</div>
+          <AppTypography type="caption" color="darkgray">리뷰 {{ props.theme.reviewCount }}</AppTypography>
         </div>
       </template>
-      <template #footer>
+      <template v-if="props.showFooter" #footer>
         <div class="footer mb-xs">
           <Button
             :icon="`pi ${userLiked ? 'pi-heart-fill' : 'pi-heart'}`"
@@ -65,7 +63,14 @@ const props = defineProps({
 
   nextPage: {
     type: String, // 'EVENT', 'THEME'
-    required: true,
+    required: false,
+    default: 'THEME',
+  },
+
+  showFooter: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
 
