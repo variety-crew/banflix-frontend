@@ -3,6 +3,8 @@ import AuthApiService from '@/services/api/AuthApiService';
 import UserApiService from '@/services/api/UserService';
 import ThemeApiService from '@/services/api/ThemeApiService';
 import ReviewApiService from './ReviewApiService';
+import NoticeApiService from '@/services/api/NoticeApiService';
+import RankingApiService from './RankingApiService';
 
 export const $api = {
   posts: new PostApiService(),
@@ -10,4 +12,6 @@ export const $api = {
   user: new UserApiService(),
   theme: new ThemeApiService(),
   review: new ReviewApiService(),
+  notice: new NoticeApiService(),
+  ranking: new RankingApiService(),
 };

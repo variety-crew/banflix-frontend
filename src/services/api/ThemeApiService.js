@@ -16,9 +16,9 @@ export default class ThemeApiService extends ApiService {
    * @param {string} filter // like, scrap, review
    * @returns
    */
-  searchThemes(themeName = '', genres = [], filter = '') {
+  searchThemes({ themeName = '', genres = [], filter = '', page = 0 }) {
     const params = new URLSearchParams();
-    params.set('page', '0');
+    params.set('page', page);
     if (themeName) {
       params.set('content', themeName);
     }
@@ -67,5 +67,13 @@ export default class ThemeApiService extends ApiService {
       },
       'reaction',
     );
+  }
+
+  getRecommend(themeCodes) {
+    return this.get('recommend', `themeCodes=${themeCodes.join(',')}`);
+  }
+
+  getWeekThemes() {
+    return this.get('week');
   }
 }

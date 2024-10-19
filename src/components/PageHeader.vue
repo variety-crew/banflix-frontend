@@ -7,7 +7,7 @@
         </RouterLink>
 
         <template v-for="item in items" :key="item.label">
-          <RouterLink :to="item.route">
+          <RouterLink :to="item.route" active-class="active">
             <Button v-if="item.role === 'ALL'" :label="item.label" text />
             <Button v-else-if="item.role === 'ADMIN' && userStore.isAdmin" :label="item.label" severity="secondary" />
           </RouterLink>
@@ -55,6 +55,9 @@ import { ref } from 'vue';
 import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 import OverlayBadge from 'primevue/overlaybadge';
+import useToastMessage from '@/hooks/useToastMessage';
+
+const { showSuccess } = useToastMessage();
 
 const items = ref([
   {
@@ -107,6 +110,7 @@ const goRegisterPage = () => {
 
 const logout = () => {
   userStore.logout();
+  showSuccess('로그아웃되었습니다.');
   router.replace('/');
 };
 </script>
@@ -130,6 +134,10 @@ const logout = () => {
 
   .end {
     gap: 20px;
+  }
+
+  a.active {
+    background-color: aqua;
   }
 }
 

@@ -11,30 +11,28 @@
       </template>
       <template #content>
         <div class="content-container">
-          <div class="mb-m">
-            <h3 class="theme mb-xxs">{{ props.theme.name }}</h3>
-            <div class="mb-s">{{ props.theme.storeName }}</div>
-            <AppTypography type="caption" color="darkgray">리뷰 {{ props.theme.reviewCount }}</AppTypography>
-          </div>
+          <h3 class="theme mb-xxs">{{ props.theme.name }}</h3>
+          <div class="mb-s">{{ props.theme.storeName }}</div>
+          <AppTypography type="caption" color="darkgray">리뷰 {{ props.theme.reviewCount }}</AppTypography>
         </div>
       </template>
-      <template #footer>
+      <template v-if="props.showFooter" #footer>
         <div class="footer mb-xs">
           <Button
-            icon="pi pi-heart"
+            :icon="`pi ${userLiked ? 'pi-heart-fill' : 'pi-heart'}`"
             label="좋아요"
             size="small"
             outlined
-            :badge="props.theme.likeCount.toString()"
-            @click="clickLike"
+            :badge="likeCnt.toString()"
+            @click="clickLike(!userLiked)"
           />
           <Button
-            icon="pi pi-bookmark"
+            :icon="`pi ${userBookmarked ? 'pi-bookmark-fill' : 'pi-bookmark'}`"
             label="스크랩"
             size="small"
             outlined
-            :badge="props.theme.scrapCount.toString()"
-            @click="clickScrap"
+            :badge="scrapCnt.toString()"
+            @click="clickScrap(!userBookmarked)"
           />
         </div>
         <Button label="테마 상세보기" size="small" fluid @click="clickCard(props.theme.themeCode)" />
@@ -44,7 +42,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps } from 'vue';
+import { ref, defineProps, watchEffect, onMounted } from 'vue';
 import Card from 'primevue/card';
 import ReviewIcon from '../common/reaction/ReviewIcon.vue';
 import Like from '../common/reaction/Like.vue';
@@ -65,9 +63,21 @@ const props = defineProps({
 
   nextPage: {
     type: String, // 'EVENT', 'THEME'
-    required: true,
+    required: false,
+    default: 'THEME',
+  },
+
+  showFooter: {
+    type: Boolean,
+    required: false,
+    default: true,
   },
 });
+
+const userLiked = ref(false);
+const userBookmarked = ref(false);
+const likeCnt = ref(0);
+const scrapCnt = ref(0);
 
 const clickCard = id => {
   let nextPageUrl = '';
@@ -80,13 +90,30 @@ const clickCard = id => {
   router.push(nextPageUrl);
 };
 
-const clickLike = () => {
-  $api.theme.setReactions('like', true, props.theme.themeCode).then(() => {});
+const clickLike = changeTo => {
+  $api.theme.setReactions('like', changeTo, props.theme.themeCode).then(() => {
+    userLiked.value = changeTo;
+
+    if (changeTo) likeCnt.value += 1;
+    else likeCnt.value -= 1;
+  });
 };
 
-const clickScrap = () => {
-  $api.theme.setReactions('scrap', true, props.theme.themeCode).then(() => {});
+const clickScrap = changeTo => {
+  $api.theme.setReactions('scrap', changeTo, props.theme.themeCode).then(() => {
+    userBookmarked.value = changeTo;
+
+    if (changeTo) scrapCnt.value += 1;
+    else scrapCnt.value -= 1;
+  });
 };
+
+onMounted(() => {
+  userLiked.value = props.theme.isLike;
+  userBookmarked.value = props.theme.isScrap;
+  likeCnt.value = props.theme.likeCount;
+  scrapCnt.value = props.theme.scrapCount;
+});
 </script>
 
 <style scoped>
