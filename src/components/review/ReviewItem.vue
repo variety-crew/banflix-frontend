@@ -47,7 +47,7 @@
           <!-- 이미지 있는 경우 표시 -->
           <img
             v-if="props.review.imagePaths.length > 0"
-            :src="`${EnvVariable.Server}${props.review.imagePaths[0]}`"
+            :src="`${Helper.getServerResourceUrl(props.review.imagePaths[0])}`"
             width="150"
             height="150"
             @click="emit('clickImage', props.review.imagePaths)"
@@ -101,7 +101,7 @@ import Image from 'primevue/image';
 import AppTypography from '@/components/AppTypography.vue';
 import ReviewTag from '@/components/review/ReviewTag.vue';
 import Like from '@/components/common/reaction/Like.vue';
-import { EnvVariable } from '@/utils/EnvVariable';
+import { Helper } from '@/utils/Helper';
 
 const props = defineProps({
   review: {

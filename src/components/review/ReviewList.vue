@@ -19,7 +19,7 @@
     :show-indicators-on-item="true"
   >
     <template #item="slotProps">
-      <img :src="slotProps.item" style="width: 100%; display: block" />
+      <img :src="Helper.getServerResourceUrl(slotProps.item)" style="width: 100%; display: block" />
     </template>
   </Galleria>
 
@@ -52,6 +52,7 @@ import RadioButton from 'primevue/radiobutton';
 import Button from 'primevue/button';
 import ReviewItem from './ReviewItem.vue';
 import AppTypography from '../AppTypography.vue';
+import { Helper } from '@/utils/Helper';
 
 const props = defineProps({
   reviews: {
