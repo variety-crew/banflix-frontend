@@ -1,7 +1,8 @@
 <template>
   <div class="home-view">
     <div class="area-title">
-      <AppTypography type="title2">방플릭스! 방탈출 테마를 한 눈에</AppTypography>
+      <AppTypography type="title2">방플릭스!</AppTypography>
+      <AppTypography type="title3">방탈출 테마를 한 눈에</AppTypography>
     </div>
     <HomeViewThemeList section-title="이번 주 TOP5 테마" :themes="weekThemeList" show-order />
     <section class="section-theme-recommend">

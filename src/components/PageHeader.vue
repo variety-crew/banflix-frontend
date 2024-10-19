@@ -7,7 +7,7 @@
         </RouterLink>
 
         <template v-for="item in items" :key="item.label">
-          <RouterLink :to="item.route">
+          <RouterLink :to="item.route" active-class="active">
             <Button v-if="item.role === 'ALL'" :label="item.label" text />
             <Button v-else-if="item.role === 'ADMIN' && userStore.isAdmin" :label="item.label" severity="secondary" />
           </RouterLink>
@@ -134,6 +134,10 @@ const logout = () => {
 
   .end {
     gap: 20px;
+  }
+
+  a.active {
+    background-color: aqua;
   }
 }
 
