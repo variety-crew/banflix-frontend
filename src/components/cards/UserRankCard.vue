@@ -9,7 +9,7 @@
       </template>
       <template #content>
         <div class="flex-row gap-10 items-center">
-          <Avatar :image="props.rankMember.profileUrl" size="large" />
+          <UserAvatar :image-path="props.rankMember.profileUrl" />
           <AppTypography class="mb-xxs">{{ props.rankMember.nickname }}</AppTypography>
         </div>
       </template>
@@ -50,11 +50,11 @@
 <script setup>
 import { defineProps } from 'vue';
 import AppTypography from '../AppTypography.vue';
-import Avatar from 'primevue/avatar';
 import Image from 'primevue/image';
 import Button from 'primevue/button';
 import { useRouter } from 'vue-router';
 import Tag from 'primevue/tag';
+import UserAvatar from '../common/UserAvatar.vue';
 
 const props = defineProps({
   rankMember: {

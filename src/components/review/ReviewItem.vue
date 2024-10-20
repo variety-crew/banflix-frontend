@@ -26,12 +26,7 @@
         <div>
           <div class="flex-row items-center content-between mb-m">
             <div class="flex-row gap-10 items-center">
-              <Avatar
-                :image="Helper.getImageUrl(props.review.memberImage)"
-                size="large"
-                shape="circle"
-                icon="pi pi-user"
-              />
+              <UserAvatar :image-path="props.review.memberImage" />
               <AppTypography type="body1" color="darkgray">{{ props.review.memberNickname }}</AppTypography>
               <AppTypography type="body2" color="gray">{{
                 Helper.Date.formatDateTime(props.review.createdAt)
@@ -108,7 +103,6 @@
 
 <script setup>
 import { defineProps, ref, watchEffect } from 'vue';
-import Avatar from 'primevue/avatar';
 import Divider from 'primevue/divider';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
@@ -117,6 +111,7 @@ import ReviewTag from '@/components/review/ReviewTag.vue';
 import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
 import { Helper } from '@/utils/Helper';
 import { $api } from '@/services/api/api';
+import UserAvatar from '../common/UserAvatar.vue';
 
 const props = defineProps({
   review: {
