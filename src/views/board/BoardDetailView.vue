@@ -63,14 +63,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
 import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
 import { Helper } from '@/utils/Helper';
+import { useUserStore } from '@/stores/user';
 
 const route = useRoute();
+const userStore = useUserStore();
 const { showSuccess, showWarning } = useToastMessage();
 
 const post = ref({});
