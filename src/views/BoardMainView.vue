@@ -7,7 +7,7 @@
             :post="post"
             :index="index"
             class="board-card"
-            @click-board-preview="goBoardDetail(post.id)"
+            @click-board-preview="goBoardDetail(post.communityPostCode)"
           />
         </template>
       </template>

@@ -16,4 +16,8 @@ export default class BoardApiService extends ApiService {
   getPostDetailByPostCode(communityPostCode) {
     return this.get(`post/${communityPostCode}`);
   }
+
+  getCommentsByPostCode(communityPostCode) {
+    return this.get(`post/${communityPostCode}/comments`);
+  }
 }
