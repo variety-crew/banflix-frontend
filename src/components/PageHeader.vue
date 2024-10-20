@@ -123,7 +123,9 @@ const logout = () => {
   align-items: center;
   padding: 10px 28px;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+
   position: relative; /* 그림자가 가려지지 않기 위해 설정 */
+  z-index: 1; /* 그림자가 가려지지 않기 위해 설정 */
 
   .start,
   .end {
