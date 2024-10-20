@@ -83,9 +83,8 @@ export default class ApiService extends BaseApiService {
       return await response.json();
     } catch (err) {
       // 서버에서 보내주는 에러 메시지 뽑기
-      err.text().then(errResponse => {
-        const errRes = JSON.parse(errResponse);
-        this.handleError(errRes.msg || '알 수 없는 에러 발생');
+      err.json().then(errResponse => {
+        this.handleError(errResponse?.msg || '서버 요청 중 문제가 발생했습니다.');
       });
     }
   }

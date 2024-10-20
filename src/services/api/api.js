@@ -4,6 +4,10 @@ import UserApiService from '@/services/api/UserService';
 import ThemeApiService from '@/services/api/ThemeApiService';
 import ReviewApiService from './ReviewApiService';
 import NoticeApiService from '@/services/api/NoticeApiService';
+import RankingApiService from './RankingApiService';
+import BoardApiService from './BoardApiService';
+import CommunityLikeApiService from './CommunityLikeApiService';
+import StoreApiService from './StoreApiService';
 import EventApiService from '@/services/api/EventApiService';
 
 export const $api = {
@@ -13,5 +17,9 @@ export const $api = {
   theme: new ThemeApiService(),
   review: new ReviewApiService(),
   notice: new NoticeApiService(),
+  ranking: new RankingApiService(),
+  community: new BoardApiService(),
+  postLike: new CommunityLikeApiService(),
+  store: new StoreApiService(),
   event: new EventApiService(),
 };
