@@ -2,8 +2,12 @@
   <DetailPageLayout>
     <div class="detail-container">
       <div class="profile-container">
-        <h1>{{ event.category }}</h1>
-        <ThemeCard :theme="event.theme" next-page="THEME" />
+        <h1>
+          {{
+            event.category === 'discount' ? '할인 테마' : event.category === 'newTheme' ? '신규 테마' : event.category
+          }}
+        </h1>
+        <ThemeCard :theme="event.eventTheme" next-page="THEME" />
       </div>
       <div class="content-container">
         <Card class="content-aria">
@@ -11,18 +15,20 @@
             <div class="inner-content">
               <div class="content">{{ event.content }}</div>
               <div class="content-image-container">
-                <template v-if="event.images">
+                <!-- <template v-if="event.images">
                   <template v-for="(image, index) in event.images" :key="index">
                     <img :src="image" alt="이미지" class="content-image" />
                   </template>
-                </template>
+                </template> -->
               </div>
             </div>
           </template>
         </Card>
         <div class="content-footer-container">
-          <div class="created-at">2024.10.01 13:50 등록</div>
-          <div class="writer">홍길동 관리자</div>
+          <div class="created-at">
+            {{ formatDate(event.createdAt) }}
+          </div>
+          <div class="writer">{{ event.nickname + ' 관리자' }}</div>
         </div>
       </div>
     </div>
@@ -34,41 +40,55 @@ import DetailPageLayout from '@/components/layouts/DetailPageLayout.vue';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { $api } from '@/services/api/api';
 
 const route = useRoute();
+const eventId = ref(route.params.eventId);
+const event = ref({});
 
-const event = ref({
-  id: route.params.eventId,
-  category: '할인 테마',
-  theme: {
-    id: 2,
-    profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
-    themeId: 0,
-    theme: '위험한 동굴3',
-    store: '그레이트 이스케이프 신촌점',
-    location: '서울 동작구 여의대방로 188-13',
-    reaction: {
-      reviewCount: 7,
-      like: {
-        liked: false,
-        count: 8,
-      },
-      scrap: {
-        scraped: true,
-        count: 9,
-      },
-    },
-  },
-  content:
-    '안녕하세요. 방플릭스입니다. \n방탈출 마감 할인 정보 공유드립니다. \n\n1~2인 20,000원 \n3~6인 17,000원에 만나보실 수 있습니다.',
-  images: [
-    'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
-    'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
-    'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
-  ],
-});
+const formatDate = createdAt => {
+  if (!createdAt || createdAt.length < 3) return '';
+  const [year, month, day, hour, min] = createdAt;
+  return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')} 등록`;
+};
 
-onMounted(() => {});
+const fetchEventDetail = async () => {
+  event.value = await $api.event.getEventDetailByEventPostCode(eventId.value);
+  console.log(event.value.title);
+};
+
+onMounted(fetchEventDetail);
+
+// const event = ref({
+//   id: route.params.eventId,
+//   category: '할인 테마',
+//   theme: {
+//     id: 2,
+//     profileImage: 'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+//     themeId: 0,
+//     theme: '위험한 동굴3',
+//     store: '그레이트 이스케이프 신촌점',
+//     location: '서울 동작구 여의대방로 188-13',
+//     reaction: {
+//       reviewCount: 7,
+//       like: {
+//         liked: false,
+//         count: 8,
+//       },
+//       scrap: {
+//         scraped: true,
+//         count: 9,
+//       },
+//     },
+//   },
+//   content:
+//     '안녕하세요. 방플릭스입니다. \n방탈출 마감 할인 정보 공유드립니다. \n\n1~2인 20,000원 \n3~6인 17,000원에 만나보실 수 있습니다.',
+//   images: [
+//     'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+//     'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+//     'https://github.com/user-attachments/assets/04e68ff8-44ad-4b43-b5f0-9fa1c6704842',
+//   ],
+// });
 </script>
 
 <style scoped>
