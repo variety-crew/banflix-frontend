@@ -27,7 +27,7 @@
           <div class="flex-row items-center content-between mb-m">
             <div class="flex-row gap-10 items-center">
               <Avatar
-                :image="props.review.memberImage ? Helper.getServerResourceUrl(props.review.memberImage) : ''"
+                :image="Helper.getImageUrl(props.review.memberImage)"
                 size="large"
                 shape="circle"
                 icon="pi pi-user"
@@ -55,7 +55,7 @@
             <!-- 이미지 있는 경우 표시 -->
             <img
               v-if="props.review.imagePaths.length > 0"
-              :src="`${Helper.getServerResourceUrl(props.review.imagePaths[0])}`"
+              :src="`${Helper.getImageUrl(props.review.imagePaths[0])}`"
               width="150"
               height="150"
               @click="emit('clickImage', props.review.imagePaths)"

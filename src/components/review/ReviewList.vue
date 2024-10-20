@@ -24,7 +24,7 @@
     :show-indicators-on-item="true"
   >
     <template #item="slotProps">
-      <img :src="Helper.getServerResourceUrl(slotProps.item)" style="width: 100%; display: block" />
+      <img :src="Helper.getImageUrl(slotProps.item)" style="width: 100%; display: block" />
     </template>
   </Galleria>
 
