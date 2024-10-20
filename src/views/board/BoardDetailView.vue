@@ -134,6 +134,7 @@ const submitComment = async () => {
   await $api.community.submitComment(boardId.value, { content: inputComment.value.content });
   showSuccess('댓글이 작성되었습니다.');
   fetchComments(); // 댓글 목록 새로 고침
+  inputComment.value = '';
 };
 
 // createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
