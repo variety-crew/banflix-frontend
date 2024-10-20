@@ -3,7 +3,7 @@
     <Fieldset>
       <template #legend>
         <div class="profile-container">
-          <Avatar :image="Helper.getImageUrl(props.comments.profile)" shape="circle" />
+          <Avatar :image="getImageUrl(props.comments.profile)" shape="circle" />
           <span class="nickname">{{ props.comments.nickname }}</span>
         </div>
       </template>
@@ -39,10 +39,9 @@
 
 <script setup>
 import useToastMessage from '@/hooks/useToastMessage';
-import { Helper } from '@/utils/Helper';
 import { defineProps, onMounted } from 'vue';
 
-const BASE_URL = `${import.meta.env.VITE_SERVER_URL}`;
+const BASE_URL = 'http://localhost:8080';
 const { showSuccess } = useToastMessage();
 const props = defineProps({
   comments: {

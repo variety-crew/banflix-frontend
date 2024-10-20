@@ -5,7 +5,7 @@
         <template #header>
           <div class="card-header-container">
             <div class="start">
-              <Avatar :image="Helper.getImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
+              <Avatar :image="getImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
               <div class="profile-nickname">{{ post.nickname }}</div>
             </div>
             <div class="end">
@@ -25,7 +25,7 @@
             <div class="content-image-container">
               <template v-if="post.imageUrls && post.imageUrls.length">
                 <template v-for="(image, index) in post.imageUrls" :key="index">
-                  <img :src="Helper.getImageUrl(image)" alt="보드 이미지" class="content-image" />
+                  <img :src="getImageUrl(image)" alt="보드 이미지" class="content-image" />
                 </template>
               </template>
             </div>
@@ -45,8 +45,8 @@
         <template #footer>
           <div class="comment-container">
             <div class="input-comment-container">
-              <Textarea v-model="inputComment.content" class="input-comment" placeholder="여기에 댓글 작성" />
-              <Button class="enter-comment" @click="submitComment">작성</Button>
+              <Textarea v-model="inputComment" class="input-comment" placeholder="여기에 댓글 작성" />
+              <Button class="enter-comment">작성</Button>
             </div>
             <template v-if="comments && comments.length">
               <template v-for="comment in comments" :key="comment.commentCode">
@@ -63,13 +63,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
 import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
-import { useUserStore } from '@/stores/user';
-import { Helper } from '@/utils/Helper';
 
 const route = useRoute();
 const { showSuccess, showWarning } = useToastMessage();
@@ -79,11 +77,8 @@ const boardId = ref(route.params.boardId);
 const isSubscribed = ref(true);
 const isWriter = ref(true);
 const isAdmin = ref(false);
+const BASE_URL = 'http://localhost:8080';
 const comments = ref([]);
-const userStore = useUserStore();
-
-// 로그인 상태 확인
-const isLoggedIn = computed(() => userStore.isLoggined);
 
 const countLikes = ref({
   communityPostCode: boardId.value,
@@ -93,10 +88,6 @@ const countLikes = ref({
 const countComments = ref({
   communityPostCode: boardId.value,
   commentCount: 0,
-});
-
-const inputComment = ref({
-  content: '',
 });
 
 const fetchPostDetail = async () => {
@@ -127,20 +118,12 @@ const fetchCommentCount = async () => {
   countComments.value = response;
 };
 
-// 댓글 작성 API 호출
-const submitComment = async () => {
-  if (!inputComment.value.content) {
-    showWarning('댓글을 작성해주세요.'); // 댓글 내용이 없을 경우 경고
+// 이미지 URL 생성
+const getImageUrl = path => {
+  if (!path) {
     return;
   }
-
-  await $api.community.submitComment(boardId.value, { content: inputComment.value.content });
-  // $api.community.submitComment(boardId.value, inputComment.value).then (() => {
-
-  // });
-  // await $api.community.submitComment(boardId.value, inputComment.value);
-  showSuccess('댓글이 작성되었습니다.');
-  fetchComments(); // 댓글 목록 새로 고침
+  return `${BASE_URL}${path}`; // 절대 URL 반환
 };
 
 // createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
@@ -150,6 +133,7 @@ const formatDate = createdAt => {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 };
 
+const inputComment = ref('');
 const menu = ref();
 const boardDetail = ref({
   communityPostCode: boardId.value,
