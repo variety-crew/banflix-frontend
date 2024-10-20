@@ -6,6 +6,7 @@
         :rank="props.showRanking ? index + 1 : null"
         @click-image="clickImage"
         @click-report="clickReport"
+        @on-removed-my-review="emit('onRemovedMyReview')"
       />
     </li>
   </ul>
@@ -70,6 +71,7 @@ const props = defineProps({
     default: false,
   },
 });
+const emit = defineEmits(['onRemovedMyReview']);
 
 const displayBigImage = ref(false);
 const bigImages = ref([]);

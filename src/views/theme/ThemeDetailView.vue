@@ -100,8 +100,9 @@
       </div>
 
       <!-- 리뷰 목록 -->
-      <ReviewList :reviews="reviews" />
+      <ReviewList :reviews="reviews" @on-removed-my-review="getThemeReviews" />
     </section>
+    <ConfirmDialog></ConfirmDialog>
   </PageLayout>
 </template>
 
@@ -127,6 +128,7 @@ import { $api } from '@/services/api/api';
 import PageLoadingLayout from '@/components/layouts/PageLoadingLayout.vue';
 import Image from 'primevue/image';
 import Fieldset from 'primevue/fieldset';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const router = useRouter();
 const route = useRoute();
@@ -212,6 +214,12 @@ const mappingStatistics = (options, one, two, three, four, five) => {
       percent = five;
     }
     return { ...e, percent };
+  });
+};
+
+const getThemeReviews = () => {
+  $api.review.getReviewsByThemeCode(themeId).then(themeReviews => {
+    reviews.value = themeReviews;
   });
 };
 
@@ -349,9 +357,7 @@ watchEffect(() => {
   });
 
   // 리뷰 목록 조회
-  $api.review.getReviewsByThemeCode(themeId).then(themeReviews => {
-    reviews.value = themeReviews;
-  });
+  getThemeReviews();
 });
 
 watch(selectedReviewSorting, newVal => {

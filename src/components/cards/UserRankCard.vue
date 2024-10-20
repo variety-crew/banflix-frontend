@@ -9,19 +9,20 @@
       </template>
       <template #content>
         <div class="flex-row gap-10 items-center">
-          <UserAvatar :image-path="props.rankMember.profileUrl" />
+          <UserAvatar :image-path="props.rankMember.image" />
           <AppTypography class="mb-xxs">{{ props.rankMember.nickname }}</AppTypography>
         </div>
       </template>
       <template #footer>
-        <Button
+        <!-- <Button
           label="프로필 보기"
           size="small"
           severity="secondary"
           fluid
           as="router-link"
           :to="`/member/detail/${props.rankMember.memberCode}`"
-        />
+        /> -->
+        <Button label="프로필 보기" size="small" severity="secondary" fluid />
       </template>
     </Card>
 

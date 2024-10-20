@@ -50,7 +50,12 @@
             </div>
             <template v-if="comments && comments.length">
               <template v-for="comment in comments" :key="comment.commentCode">
-                <Comment :comments="comment" :is-admin="isAdmin" :is-writer="isWriter" />
+                <Comment
+                  :comments="comment"
+                  :is-admin="isAdmin"
+                  :is-writer="isWriter"
+                  @on-reload-comments="fetchComments"
+                />
               </template>
             </template>
           </div>
@@ -63,14 +68,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
 import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
 import { Helper } from '@/utils/Helper';
+import { useUserStore } from '@/stores/user';
 
 const route = useRoute();
+const userStore = useUserStore();
 const { showSuccess, showWarning } = useToastMessage();
 
 const post = ref({});
@@ -107,6 +114,7 @@ const fetchComments = async () => {
     content: comment.content,
     createdAt: formatDate(comment.createdAt),
     profile: comment.profile,
+    communityPostCode: comment.communityPostCode,
   }));
   // console.log(comments.value);
 };
@@ -132,6 +140,7 @@ const submitComment = async () => {
   await $api.community.submitComment(boardId.value, { content: inputComment.value.content });
   showSuccess('댓글이 작성되었습니다.');
   fetchComments(); // 댓글 목록 새로 고침
+  inputComment.value = '';
 };
 
 // createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수

@@ -34,7 +34,13 @@
               <!-- <AppTypography type="body2" color="gray">선호 장르: {{ props.review.genres.join(',') }}</AppTypography> -->
             </div>
 
-            <!-- <Button
+            <div>
+              <template v-if="props.review.memberNickname === userStore.nickname">
+                <!-- <Button label="수정" size="small" severity="secondary" class="mr-xxs" @click="editReview" /> -->
+                <Button label="삭제" size="small" severity="secondary" @click="clickRemoveMyReview" />
+              </template>
+
+              <!-- <Button
               label="신고하기"
               outlined
               icon="pi pi-ban"
@@ -42,6 +48,7 @@
               severity="danger"
               @click="emit('clickReport', $event)"
             /> -->
+            </div>
           </div>
 
           <div class="flex-row gap-10 mb-s">
@@ -112,6 +119,8 @@ import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
 import { Helper } from '@/utils/Helper';
 import { $api } from '@/services/api/api';
 import UserAvatar from '../common/UserAvatar.vue';
+import { useUserStore } from '@/stores/user';
+import { useConfirm } from 'primevue/useconfirm';
 
 const props = defineProps({
   review: {
@@ -129,7 +138,9 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['clickImage', 'clickReport']);
+const emit = defineEmits(['clickImage', 'clickReport', 'onRemovedMyReview']);
+const userStore = useUserStore();
+const confirm = useConfirm();
 
 const reviewCount = ref(0);
 const reviewUserLike = ref(false);
@@ -145,6 +156,29 @@ const handleDeactivate = () => {
   $api.review.deactivateLike(props.review.reviewCode).then(() => {
     reviewCount.value -= 1;
     reviewUserLike.value = false;
+  });
+};
+
+const removeMyReview = () => {
+  $api.review.removeMyReview(props.review.reviewCode).then(() => {
+    emit('onRemovedMyReview');
+  });
+};
+
+const clickRemoveMyReview = () => {
+  confirm.require({
+    message: '이 테마에 작성한 내 리뷰를 삭제할까요?',
+    header: '리뷰 삭제',
+    rejectProps: {
+      label: '취소',
+      severity: 'secondary',
+      outlined: true,
+    },
+    acceptProps: {
+      label: '리뷰 삭제',
+      severity: 'danger',
+    },
+    accept: removeMyReview,
   });
 };
 
