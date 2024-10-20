@@ -22,9 +22,6 @@ export default class BoardApiService extends ApiService {
   }
 
   submitComment(communityPostCode, commentData) {
-    // const params = new URLSearchParams();
-    params.append('content', commentData);
-    // return this.post(`post/${communityPostCode}/comments`, commentData);
     return this.post({ content: commentData.content }, `post/${communityPostCode}/comments`);
   }
 }

@@ -42,7 +42,6 @@ import useToastMessage from '@/hooks/useToastMessage';
 import { Helper } from '@/utils/Helper';
 import { defineProps, onMounted } from 'vue';
 
-const BASE_URL = `${import.meta.env.VITE_SERVER_URL}`;
 const { showSuccess } = useToastMessage();
 const props = defineProps({
   comments: {
@@ -58,14 +57,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-// 이미지 URL 생성
-const getImageUrl = path => {
-  if (!path) {
-    return;
-  }
-  return `${BASE_URL}${path}`; // 절대 URL 반환
-};
 
 const handleCommentUpdate = commentId => {
   // TODO: 댓글 수정

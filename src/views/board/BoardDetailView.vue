@@ -68,7 +68,6 @@ import { useRoute } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
 import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
-import { useUserStore } from '@/stores/user';
 import { Helper } from '@/utils/Helper';
 
 const route = useRoute();
@@ -80,10 +79,6 @@ const isSubscribed = ref(true);
 const isWriter = ref(true);
 const isAdmin = ref(false);
 const comments = ref([]);
-const userStore = useUserStore();
-
-// 로그인 상태 확인
-const isLoggedIn = computed(() => userStore.isLoggined);
 
 const countLikes = ref({
   communityPostCode: boardId.value,
@@ -135,10 +130,6 @@ const submitComment = async () => {
   }
 
   await $api.community.submitComment(boardId.value, { content: inputComment.value.content });
-  // $api.community.submitComment(boardId.value, inputComment.value).then (() => {
-
-  // });
-  // await $api.community.submitComment(boardId.value, inputComment.value);
   showSuccess('댓글이 작성되었습니다.');
   fetchComments(); // 댓글 목록 새로 고침
 };
@@ -165,7 +156,7 @@ const boardDetail = ref({
     {
       commentCode: comments.value.commentCode,
       nickname: comments.value.nickname,
-      profileImage: 'https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png',
+      profile: comments.value.profile,
       content: comments.value.content,
       createdAt: comments.value.createdAt,
     },
