@@ -3,7 +3,7 @@
     <Fieldset>
       <template #legend>
         <div class="profile-container">
-          <Avatar :image="getImageUrl(props.comments.profile)" shape="circle" />
+          <Avatar :image="Helper.getImageUrl(props.comments.profile)" shape="circle" />
           <span class="nickname">{{ props.comments.nickname }}</span>
         </div>
       </template>
@@ -39,9 +39,9 @@
 
 <script setup>
 import useToastMessage from '@/hooks/useToastMessage';
+import { Helper } from '@/utils/Helper';
 import { defineProps, onMounted } from 'vue';
 
-const BASE_URL = 'http://localhost:8080';
 const { showSuccess } = useToastMessage();
 const props = defineProps({
   comments: {
@@ -57,14 +57,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-// 이미지 URL 생성
-const getImageUrl = path => {
-  if (!path) {
-    return;
-  }
-  return `${BASE_URL}${path}`; // 절대 URL 반환
-};
 
 const handleCommentUpdate = commentId => {
   // TODO: 댓글 수정
