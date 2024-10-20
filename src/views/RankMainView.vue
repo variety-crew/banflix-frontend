@@ -8,10 +8,10 @@
       </TabList>
       <TabPanels>
         <TabPanel value="0">
-          <!-- <WeekBestReviewView /> -->
+          <WeekBestReviewView />
         </TabPanel>
         <TabPanel value="1">
-          <!-- <BestReviewView /> -->
+          <BestReviewView />
         </TabPanel>
         <TabPanel value="2">
           <UserRankView />

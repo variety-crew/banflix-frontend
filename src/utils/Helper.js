@@ -1,7 +1,15 @@
+import dayjs from 'dayjs';
 import { EnvVariable } from './EnvVariable';
 
 export const Helper = {
-  getServerResourceUrl: resourcePath => {
-    return `${EnvVariable.Server}${resourcePath}`;
+  getImageUrl: (imagePath = '') => {
+    if (!imagePath || imagePath.startsWith('http')) return imagePath;
+    return `${EnvVariable.Server}${imagePath}`;
+  },
+
+  Date: {
+    formatDateTime: stringTime => {
+      return dayjs(stringTime).format('YYYY-MM-DD HH:mm');
+    },
   },
 };
