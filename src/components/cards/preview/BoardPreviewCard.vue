@@ -3,25 +3,25 @@
     <template #header>
       <div class="card-header-container">
         <div class="card-profile">
-          <Avatar :image="profileImage" class="profile-image" size="large" shape="circle" />
-          <div class="profile-nickname">{{ nickname }}</div>
+          <Avatar :image="getProfileImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
+          <div class="profile-nickname">{{ post.nickname }}</div>
         </div>
-        <div>{{ createdAt }}</div>
+        <div>{{ formatDate(post.createdAt) }}</div>
       </div>
     </template>
-    <template #title>{{ title }}</template>
+    <template #title>{{ post.title }}</template>
     <template #content>
-      <p class="m-0">{{ content }}</p>
+      <p class="m-0">{{ post.content }}</p>
     </template>
     <template #footer>
       <div class="board-footer">
         <div class="like">
           <i class="pi pi-heart"></i>
-          <div class="emoji">{{ like }}</div>
+          <div class="emoji">{{ countLikes.likeCount }}</div>
         </div>
         <div class="comment">
           <i class="pi pi-comment"></i>
-          <div class="emoji">{{ comment }}</div>
+          <div class="emoji">{{ countComments.commentCount }}</div>
         </div>
       </div>
     </template>
@@ -29,20 +29,60 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, defineProps, onMounted } from 'vue';
+import { $api } from '@/services/api/api';
+
+const props = defineProps({
+  post: {
+    type: Object,
+    Required: true,
+  },
+});
+
+const countLikes = ref({
+  communityPostCode: props.post.communityPostCode,
+  likeCount: 0,
+});
+
+const countComments = ref({
+  communityPostCode: props.post.communityPostCode,
+  commentCount: 0,
+});
+
+const BASE_URL = 'http://localhost:8080';
 
 const emit = defineEmits(['clickBoardPreview']);
 
-const profileImage = ref('https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png');
-const nickname = ref('닉네임');
+// createdAt 배열을 "YYYY-MM-DD" 형식으로 변환
+const formatDate = createdAt => {
+  if (!createdAt || createdAt.length < 3) return '';
+  const [year, month, day] = createdAt;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+};
 
-const createdAt = ref('오후 8:33');
+const fetchLikeCount = async () => {
+  // console.log(props.post.communityPostCode);
+  const response = await $api.postLike.getLikeCount(props.post.communityPostCode);
+  countLikes.value = response;
+};
 
-const title = ref('제목');
-const content = ref('내용');
+const fetchCommentCount = async () => {
+  const response = await $api.community.getCommentCount(props.post.communityPostCode);
+  countComments.value = response;
+};
 
-const like = ref(0);
-const comment = ref(0);
+// 프로필 이미지 URL 생성
+const getProfileImageUrl = profilePath => {
+  if (!profilePath) {
+    return;
+  }
+  return `${BASE_URL}${profilePath}`; // 절대 URL 반환
+};
+
+onMounted(() => {
+  fetchLikeCount();
+  fetchCommentCount();
+});
 </script>
 
 <style scoped>
