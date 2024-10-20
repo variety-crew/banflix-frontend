@@ -12,4 +12,12 @@ export default class RankingApiService extends ApiService {
   getReviewRanking() {
     return this.get('reviews');
   }
+
+  getRakingWeeks() {
+    return this.get('reviews/dates/2024');
+  }
+
+  getReviewRankingByDate(date) {
+    return this.get('reviews/date', `date=${date}`);
+  }
 }
