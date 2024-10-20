@@ -45,7 +45,7 @@
 import { ref, defineProps, watchEffect, onMounted } from 'vue';
 import Card from 'primevue/card';
 import ReviewIcon from '../common/reaction/ReviewIcon.vue';
-import Like from '../common/reaction/Like.vue';
+import Like from '../common/reaction/ReviewLike.vue';
 import Scrap from '../common/reaction/Scrap.vue';
 import router from '@/router/routes';
 import { useUserStore } from '@/stores/user';

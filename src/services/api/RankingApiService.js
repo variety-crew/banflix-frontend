@@ -8,4 +8,8 @@ export default class RankingApiService extends ApiService {
   getMemberRanking() {
     return this.get('members');
   }
+
+  getReviewRanking() {
+    return this.get('reviews');
+  }
 }

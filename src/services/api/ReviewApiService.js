@@ -18,4 +18,12 @@ export default class ReviewApiService extends ApiService {
 
     return this.get(themeCode, params.toString());
   }
+
+  activeLike(reviewCode) {
+    return this.post({ reviewCode }, 'likes');
+  }
+
+  deactivateLike(reviewCode) {
+    return this.delete({ reviewCode }, 'likes');
+  }
 }
