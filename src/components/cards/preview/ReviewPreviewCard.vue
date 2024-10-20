@@ -5,13 +5,20 @@
         <h2>{{ props.review.totalScore }}/10</h2>
       </template>
       <template #content>
-        <p>{{ props.review.content }}</p>
+        <p>
+          {{
+            props.review.content.length > 130
+              ? props.review.content.slice(0, 130) + '...(더보기)'
+              : props.review.content
+          }}
+        </p>
       </template>
-
       <template #footer>
         <div class="footer-container">
           <div>{{ props.review.createdAt.split('T')[0] }}</div>
-          <ReviewLike :is-user-like="props.review.isUserLike" :count="props.review.likes" />
+          <div>
+            <ReviewLike :is-user-like="props.review.isUserLike" :count="props.review.likes" />
+          </div>
         </div>
       </template>
     </Card>
@@ -42,5 +49,6 @@ onMounted(() => {
 .footer-container {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 }
 </style>
