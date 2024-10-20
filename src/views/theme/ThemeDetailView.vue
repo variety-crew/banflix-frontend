@@ -232,6 +232,8 @@ watchEffect(() => {
   $api.review.getStatisticsByThemeCode(themeId).then(statistics => {
     reviewStatistics.value = statistics;
 
+    if (!statistics) return;
+
     const {
       oneCompositionPercent,
       twoCompositionPercent,

@@ -7,11 +7,12 @@
 
     <div class="flex-row item-center content-between">
       <SelectButton
-        v-model="selectedGenres"
+        :model-value="selectedGenres"
         :options="genreOptions"
         option-label="label"
         multiple
         aria-labelledby="장르"
+        @change="changeGenre($event)"
       />
 
       <Select
@@ -27,7 +28,8 @@
     <Divider />
 
     <!-- 검색 결과 목록 -->
-    <div class="list-theme">
+    <LoadingView v-if="isFirstLoading" />
+    <div v-else class="list-theme">
       <ThemeCard v-for="theme in resultThemes" :key="theme.themeCode" :theme="theme" next-page="THEME" />
     </div>
   </PageLayout>
@@ -35,7 +37,6 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import PageLayout from '@/components/layouts/PageLayout.vue';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
@@ -43,8 +44,7 @@ import SelectButton from 'primevue/selectbutton';
 import Divider from 'primevue/divider';
 import { $api } from '@/services/api/api';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
-
-const router = useRouter();
+import LoadingView from '@/components/common/LoadingView.vue';
 
 const keyword = ref('');
 const selectedGenres = ref([]);
@@ -57,39 +57,55 @@ const sortingOptions = ref([
   { name: '스크랩 많은 순', value: 'scrap' },
 ]);
 const resultThemes = ref([]); // 검색 결과로 나온 테마 목록
-const userLikeThemeCodes = [];
-const userScrapThemeCodes = [];
+const isFirstLoading = ref(false);
+const isMoreLoading = ref(false);
+const currentPage = ref(0);
 
 let debounce = null;
 
-const clickTheme = () => {
-  router.push('/theme/detail/2');
-};
-
 const searchThemes = async (themeName, genres, filter) => {
+  if (currentPage.value < 1) {
+    isFirstLoading.value = true;
+  } else {
+    isMoreLoading.value = true;
+  }
+
   const foundThemes = await $api.theme.searchThemes({
     themeName,
     genres: genres.map(e => e.label), // 장르 이름
     filter: filter.value,
+    page: currentPage.value,
   });
+
+  isFirstLoading.value = false;
+  isMoreLoading.value = false;
   resultThemes.value = foundThemes;
 };
 
-onMounted(() => {
-  // 1. 전체 장르 목록 표시
-  $api.theme.getGenres().then(genres => {
-    // 장르 옵션 목록 만들기
-    const options = genres.map(genre => ({
-      value: genre.genreCode,
-      label: genre.name,
-    }));
-    genreOptions.value = options;
-  });
+const changeGenre = event => {
+  if (event.value.length < 1) {
+    return;
+  }
 
-  // 2. 테마 목록 표시
-  $api.theme.searchThemes({}).then(themes => {
-    resultThemes.value = themes;
-  });
+  selectedGenres.value = event.value;
+};
+
+onMounted(async () => {
+  // 1. 전체 장르 목록 표시
+  const genres = await $api.theme.getGenres();
+
+  // 장르 옵션 목록 만들기
+  const options = genres.map(genre => ({
+    value: genre.genreCode,
+    label: genre.name,
+  }));
+
+  genreOptions.value = options;
+
+  // default 장르 선택
+  if (options.length > 0) {
+    selectedGenres.value = [options[0]];
+  }
 });
 
 // 장르가 변경되면 테마 검색
