@@ -20,7 +20,7 @@
           <div>{{ userStore.nickname }} 님, 안녕하세요!</div>
 
           <RouterLink to="/mypage">
-            <Avatar icon="pi pi-user" size="large" shape="circle" />
+            <UserAvatar :image-path="userStore.profileImage" />
           </RouterLink>
 
           <!-- <OverlayBadge value="2" size="small" severity="danger">
@@ -56,6 +56,8 @@ import Button from 'primevue/button';
 import Avatar from 'primevue/avatar';
 import OverlayBadge from 'primevue/overlaybadge';
 import useToastMessage from '@/hooks/useToastMessage';
+import { Helper } from '@/utils/Helper';
+import UserAvatar from './common/UserAvatar.vue';
 
 const { showSuccess } = useToastMessage();
 
