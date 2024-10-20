@@ -3,7 +3,7 @@
     <template #header>
       <div class="card-header-container">
         <div class="card-profile">
-          <Avatar :image="getProfileImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
+          <Avatar :image="Helper.getImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
           <div class="profile-nickname">{{ post.nickname }}</div>
         </div>
         <div>{{ formatDate(post.createdAt) }}</div>
@@ -31,6 +31,7 @@
 <script setup>
 import { ref, defineEmits, defineProps, onMounted } from 'vue';
 import { $api } from '@/services/api/api';
+import { Helper } from '@/utils/Helper';
 
 const props = defineProps({
   post: {
@@ -48,8 +49,6 @@ const countComments = ref({
   communityPostCode: props.post.communityPostCode,
   commentCount: 0,
 });
-
-const BASE_URL = 'http://localhost:8080';
 
 const emit = defineEmits(['clickBoardPreview']);
 
@@ -69,14 +68,6 @@ const fetchLikeCount = async () => {
 const fetchCommentCount = async () => {
   const response = await $api.community.getCommentCount(props.post.communityPostCode);
   countComments.value = response;
-};
-
-// 프로필 이미지 URL 생성
-const getProfileImageUrl = profilePath => {
-  if (!profilePath) {
-    return;
-  }
-  return `${BASE_URL}${profilePath}`; // 절대 URL 반환
 };
 
 onMounted(() => {

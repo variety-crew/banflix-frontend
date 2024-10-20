@@ -3,7 +3,7 @@
     <Fieldset>
       <template #legend>
         <div class="profile-container">
-          <Avatar :image="getImageUrl(props.comments.profile)" shape="circle" />
+          <Avatar :image="Helper.getImageUrl(props.comments.profile)" shape="circle" />
           <span class="nickname">{{ props.comments.nickname }}</span>
         </div>
       </template>
@@ -13,13 +13,13 @@
       </div>
       <div class="comment-footer">
         <div class="footer-start">
-          <i v-if="props.isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comments.commentCode)">
+          <i v-if="isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comments.commentCode)">
             수정</i
           >
-          <i v-if="props.isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)">
+          <i v-if="isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)">
             삭제</i
           >
-          <i v-if="props.isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comments.commentCode)">
+          <i v-if="isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comments.commentCode)">
             비활성화
           </i>
         </div>
@@ -39,13 +39,14 @@
 
 <script setup>
 import useToastMessage from '@/hooks/useToastMessage';
-import { defineProps, onMounted } from 'vue';
+import { Helper } from '@/utils/Helper';
+import { defineProps, onMounted, computed } from 'vue';
+import { useUserStore } from '@/stores/user';
 
-const BASE_URL = 'http://localhost:8080';
 const { showSuccess } = useToastMessage();
 const props = defineProps({
   comments: {
-    type: Array,
+    type: Object,
     required: true,
   },
   isWriter: {
@@ -58,13 +59,12 @@ const props = defineProps({
   },
 });
 
-// 이미지 URL 생성
-const getImageUrl = path => {
-  if (!path) {
-    return;
-  }
-  return `${BASE_URL}${path}`; // 절대 URL 반환
-};
+const userStore = useUserStore(); // Pinia 스토어 인스턴스 가져오기
+const currentUserNickname = userStore.nickname; // 현재 로그인한 사용자의 닉네임
+const currentUserIsAdmin = userStore.isAdmin;
+
+// 댓글 작성자와 현재 사용자의 닉네임 비교
+const isWriter = computed(() => props.comments.nickname === currentUserNickname);
 
 const handleCommentUpdate = commentId => {
   // TODO: 댓글 수정

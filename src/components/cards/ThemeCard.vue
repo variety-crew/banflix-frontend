@@ -5,7 +5,7 @@
         <div v-else class="banner-unscraped" /> -->
     </template>
 
-    <Card>
+    <Card style="overflow: hidden">
       <template #header>
         <img class="theme-tumb" :src="props.theme.posterImage" alt="테마 프로필 이미지" />
       </template>
