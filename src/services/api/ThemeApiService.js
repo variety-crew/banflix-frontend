@@ -36,6 +36,10 @@ export default class ThemeApiService extends ApiService {
     return this.get(themeCode);
   }
 
+  getThemesByMe() {
+    return this.get('scraped');
+  }
+
   /**
    *
    * @param {string} type // like, scrap
