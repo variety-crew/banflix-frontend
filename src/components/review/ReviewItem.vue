@@ -1,61 +1,75 @@
 <template>
   <div class="container-review-item">
     <!-- 메달 (in 베스트 리뷰) -->
-    <!-- <Image
-      v-if="props.review.rank === 1"
+    <Image
+      v-if="props.rank === 1"
       src="/src/assets/icons/medal-gold.png"
       class="item-medal"
       image-style="width: 50px"
     />
     <Image
-      v-else-if="props.review.rank === 2"
+      v-else-if="props.rank === 2"
       src="/src/assets/icons/medal-silver.png"
       class="item-medal"
       image-style="width: 50px"
     />
     <Image
-      v-else-if="props.review.rank === 3"
+      v-else-if="props.rank === 3"
       src="/src/assets/icons/medal-bronze.png"
       class="item-medal"
       image-style="width: 50px"
-    /> -->
+    />
 
     <div class="area-review flex-row">
       <!-- 왼쪽 부분 -->
-      <div class="grow-1">
-        <div class="flex-row items-center content-between mb-m">
-          <div class="flex-row gap-10 items-center">
-            <Avatar :image="props.review.memberImage" size="large" shape="circle" />
-            <AppTypography type="body1" color="darkgray">{{ props.review.memberNickname }}</AppTypography>
-            <AppTypography type="body2" color="gray">{{ props.review.createdAt }}</AppTypography>
-            <!-- <AppTypography type="body2" color="gray">선호 장르: {{ props.review.genres.join(',') }}</AppTypography> -->
+      <div class="grow-1 area-left">
+        <div>
+          <div class="flex-row items-center content-between mb-m">
+            <div class="flex-row gap-10 items-center">
+              <Avatar
+                :image="Helper.getImageUrl(props.review.memberImage)"
+                size="large"
+                shape="circle"
+                icon="pi pi-user"
+              />
+              <AppTypography type="body1" color="darkgray">{{ props.review.memberNickname }}</AppTypography>
+              <AppTypography type="body2" color="gray">{{
+                Helper.Date.formatDateTime(props.review.createdAt)
+              }}</AppTypography>
+              <!-- <AppTypography type="body2" color="gray">선호 장르: {{ props.review.genres.join(',') }}</AppTypography> -->
+            </div>
+
+            <!-- <Button
+              label="신고하기"
+              outlined
+              icon="pi pi-ban"
+              size="small"
+              severity="danger"
+              @click="emit('clickReport', $event)"
+            /> -->
           </div>
 
-          <Button
-            label="신고하기"
-            outlined
-            icon="pi pi-ban"
-            size="small"
-            severity="danger"
-            @click="emit('clickReport', $event)"
-          />
-        </div>
+          <div class="flex-row gap-10 mb-s">
+            <AppTypography type="body1" class="grow-1">{{ props.review.content }}</AppTypography>
 
-        <div class="flex-row gap-10 mb-s">
-          <AppTypography type="body1" class="grow-1">{{ props.review.content }}</AppTypography>
-
-          <!-- 이미지 있는 경우 표시 -->
-          <img
-            v-if="props.review.imagePaths.length > 0"
-            :src="`${Helper.getServerResourceUrl(props.review.imagePaths[0])}`"
-            width="150"
-            height="150"
-            @click="emit('clickImage', props.review.imagePaths)"
-          />
+            <!-- 이미지 있는 경우 표시 -->
+            <img
+              v-if="props.review.imagePaths.length > 0"
+              :src="`${Helper.getImageUrl(props.review.imagePaths[0])}`"
+              width="150"
+              height="150"
+              @click="emit('clickImage', props.review.imagePaths)"
+            />
+          </div>
         </div>
 
         <!-- 좋아요 버튼 -->
-        <!-- <Like :like="{ liked: false, count: props.review.likeCnt }" /> -->
+        <ReviewLike
+          :is-user-like="reviewUserLike"
+          :count="reviewCount"
+          @handle-deactivate="handleDeactivate"
+          @handle-active="handleActive"
+        />
       </div>
 
       <!-- 구분선 -->
@@ -93,53 +107,56 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, ref, watchEffect } from 'vue';
 import Avatar from 'primevue/avatar';
 import Divider from 'primevue/divider';
 import Button from 'primevue/button';
 import Image from 'primevue/image';
 import AppTypography from '@/components/AppTypography.vue';
 import ReviewTag from '@/components/review/ReviewTag.vue';
-import Like from '@/components/common/reaction/Like.vue';
+import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
 import { Helper } from '@/utils/Helper';
+import { $api } from '@/services/api/api';
 
 const props = defineProps({
   review: {
-    type: Object,
-    /* 
-    {
-        reviewCode: 1,
-        nickname: "홍길동",
-        profileImageUrl: "http://",
-        createdAt: "2024.10.10 22:00",
-        userGenres: "범죄, 공포, 스릴러",
-        title: "리뷰 제목",
-        desc: "리뷰 내용",
-        images: [
-            "http://image.url",
-            "http://image.url"
-        ],
-        likeCnt: 10,
-        totalScore: 5,
-        time: 70,
-        people: 2,
-        level: 'ONE',
-        quizQuality: 'TWO',
-        scary: 'TWO',
-        activity: 'THREE',
-        interior: 'FIVE',
-        probability: 'FIVE'
-    }
-     */
+    type: Object, // ReviewDTO
     required: true,
   },
   showTheme: {
     type: Boolean,
     required: false,
   },
+  rank: {
+    type: Number,
+    required: false,
+    default: null,
+  },
 });
 
 const emit = defineEmits(['clickImage', 'clickReport']);
+
+const reviewCount = ref(0);
+const reviewUserLike = ref(false);
+
+const handleActive = () => {
+  $api.review.activeLike(props.review.reviewCode).then(() => {
+    reviewCount.value += 1;
+    reviewUserLike.value = true;
+  });
+};
+
+const handleDeactivate = () => {
+  $api.review.deactivateLike(props.review.reviewCode).then(() => {
+    reviewCount.value -= 1;
+    reviewUserLike.value = false;
+  });
+};
+
+watchEffect(() => {
+  reviewCount.value = props.review.likes;
+  reviewUserLike.value = props.review.isLike;
+});
 </script>
 
 <style scoped>
@@ -158,6 +175,12 @@ const emit = defineEmits(['clickImage', 'clickReport']);
 
     .area-right {
       width: 390px;
+    }
+
+    .area-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 

@@ -53,11 +53,11 @@ const BASE_URL = 'http://localhost:8080';
 
 const emit = defineEmits(['clickBoardPreview']);
 
-// createdAt 배열을 "YYYY-MM-DD" 형식으로 변환
+// createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
 const formatDate = createdAt => {
   if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day] = createdAt;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  const [year, month, day, hour, minute] = createdAt;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 };
 
 const fetchLikeCount = async () => {

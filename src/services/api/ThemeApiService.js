@@ -76,4 +76,8 @@ export default class ThemeApiService extends ApiService {
   getWeekThemes() {
     return this.get('week');
   }
+
+  getStoreThemes(storeCode) {
+    return this.get(`store/${storeCode}`);
+  }
 }

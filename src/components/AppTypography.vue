@@ -1,5 +1,5 @@
 <template>
-  <div :style="{ color: textColor, fontSize: `${textSize}px`, fontWeight }">
+  <div class="app-typography" :style="{ color: textColor, fontSize: `${textSize}px`, fontWeight }">
     <slot></slot>
   </div>
 </template>
@@ -61,4 +61,8 @@ watchEffect(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.app-typography {
+  white-space: pre-wrap;
+}
+</style>
