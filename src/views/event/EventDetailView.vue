@@ -7,7 +7,7 @@
             event.category === 'discount' ? '할인 테마' : event.category === 'newTheme' ? '신규 테마' : event.category
           }}
         </h1>
-        <ThemeCard :theme="event.eventTheme" next-page="THEME" />
+        <!-- <ThemeCard :theme="event.eventTheme" next-page="THEME" /> -->
       </div>
       <div class="content-container">
         <Card class="content-aria">
@@ -15,11 +15,11 @@
             <div class="inner-content">
               <div class="content">{{ event.content }}</div>
               <div class="content-image-container">
-                <!-- <template v-if="event.images">
-                  <template v-for="(image, index) in event.images" :key="index">
+                <template v-if="event.imageUrls">
+                  <template v-for="(image, index) in event.imageUrls" :key="index">
                     <img :src="image" alt="이미지" class="content-image" />
                   </template>
-                </template> -->
+                </template>
               </div>
             </div>
           </template>
@@ -54,8 +54,12 @@ const formatDate = createdAt => {
 
 const fetchEventDetail = async () => {
   event.value = await $api.event.getEventDetailByEventPostCode(eventId.value);
-  console.log(event.value.title);
 };
+
+// const fetchThemeDetail = async () => {
+//   event.value = await $api.theme.get(eventId.value);
+//   console.log(event.value.title);
+// };
 
 onMounted(fetchEventDetail);
 
