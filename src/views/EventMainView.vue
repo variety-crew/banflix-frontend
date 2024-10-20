@@ -7,7 +7,7 @@
         <ThemeCard
           v-for="(event, id) in discountEvents"
           :key="id"
-          :theme="event"
+          :theme="event.eventTheme"
           next-page="EVENT"
           @click="goDetailEvent(event.eventPostCode)"
         />
@@ -22,7 +22,7 @@
         <ThemeCard
           v-for="(event, id) in newThemeEvents"
           :key="id"
-          :theme="event"
+          :theme="event.eventTheme"
           next-page="EVENT"
           @click="goDetailEvent(event.eventPostCode)"
         />
@@ -40,7 +40,7 @@ import router from '@/router/routes';
 import { $api } from '@/services/api/api';
 
 const goEventForm = () => {
-  router.push(`/event/form/`);
+  router.push('/event/form/');
 };
 
 const goDetailEvent = id => {
@@ -79,12 +79,35 @@ h3 {
 .sub-title {
   margin-top: 10px;
 }
-.event-card-container {
+/* .event-card-container {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
-}
+}*/
+
 .event-card {
   cursor: pointer;
+}
+
+/* 이벤트 카드 컨테이너의 스타일 */
+.event-card-container {
+  display: grid; /* flex 대신 grid 사용 */
+  grid-template-columns: repeat(5, 1fr); /* 5개 열 */
+  gap: 16px; /* 카드 간격 */
+  margin-top: 20px; /* 상단 여백 */
+}
+
+/* 카드에 대한 스타일 */
+.theme-card {
+  cursor: pointer;
+}
+
+/* 태그 스타일 */
+.tag-order {
+  margin-bottom: 10px;
+}
+
+& + & {
+  margin-top: 4px;
 }
 </style>
