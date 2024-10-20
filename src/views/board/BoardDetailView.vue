@@ -50,7 +50,12 @@
             </div>
             <template v-if="comments && comments.length">
               <template v-for="comment in comments" :key="comment.commentCode">
-                <Comment :comments="comment" :is-admin="isAdmin" :is-writer="isWriter" />
+                <Comment
+                  :comments="comment"
+                  :is-admin="isAdmin"
+                  :is-writer="isWriter"
+                  @on-reload-comments="fetchComments"
+                />
               </template>
             </template>
           </div>
@@ -109,6 +114,7 @@ const fetchComments = async () => {
     content: comment.content,
     createdAt: formatDate(comment.createdAt),
     profile: comment.profile,
+    communityPostCode: comment.communityPostCode,
   }));
   // console.log(comments.value);
 };

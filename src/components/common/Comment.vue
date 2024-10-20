@@ -9,16 +9,17 @@
       </template>
       <div class="comment-content-container">
         <div class="created-at">{{ props.comments.createdAt }}</div>
-        <div class="comment-content">{{ props.comments.content }}</div>
+        <Textarea v-if="isEditing" v-model="editingComment" rows="5" cols="30" fluid />
+        <div v-else class="comment-content">{{ props.comments.content }}</div>
       </div>
-      <div class="comment-footer">
+      <div v-if="isEditing" class="flex-row content-between">
+        <Button label="취소" size="small" severity="secondary" @click="cancelEdit" />
+        <Button label="저장" size="small" @click="handleCommentUpdate" />
+      </div>
+      <div v-else class="comment-footer">
         <div class="footer-start">
-          <i v-if="isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comments.commentCode)">
-            수정</i
-          >
-          <i v-if="isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)">
-            삭제</i
-          >
+          <i v-if="isWriter" class="pi pi-pencil" @click="clickEdit"> 수정</i>
+          <i v-if="isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)"> 삭제</i>
           <i v-if="isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comments.commentCode)">
             비활성화
           </i>
@@ -40,8 +41,11 @@
 <script setup>
 import useToastMessage from '@/hooks/useToastMessage';
 import { Helper } from '@/utils/Helper';
-import { defineProps, onMounted, computed } from 'vue';
+import { defineProps, onMounted, computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
+import Textarea from 'primevue/textarea';
+import Button from 'primevue/button';
+import { $api } from '@/services/api/api';
 
 const { showSuccess } = useToastMessage();
 const props = defineProps({
@@ -58,6 +62,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(['onReloadComments']);
 
 const userStore = useUserStore(); // Pinia 스토어 인스턴스 가져오기
 const currentUserNickname = userStore.nickname; // 현재 로그인한 사용자의 닉네임
@@ -66,9 +71,26 @@ const currentUserIsAdmin = userStore.isAdmin;
 // 댓글 작성자와 현재 사용자의 닉네임 비교
 const isWriter = computed(() => props.comments.nickname === currentUserNickname);
 
-const handleCommentUpdate = commentId => {
-  // TODO: 댓글 수정
-  showSuccess('updated', 'successfully');
+const isEditing = ref(false);
+const editingComment = ref('');
+
+const clickEdit = () => {
+  isEditing.value = true;
+  editingComment.value = props.comments.content;
+};
+
+const cancelEdit = () => {
+  isEditing.value = false;
+  editingComment.value = '';
+};
+
+const handleCommentUpdate = () => {
+  $api.community
+    .updateComment(props.comments.communityPostCode, props.comments.commentCode, editingComment.value)
+    .then(() => {
+      isEditing.value = false;
+      emit('onReloadComments');
+    });
 };
 const handleCommentDelete = commentId => {
   // TODO: 댓글 삭제
@@ -82,8 +104,6 @@ const handleCommentReport = commentId => {
   // TODO: 댓글 신고
   showSuccess('reported', 'successfully');
 };
-
-onMounted(() => {});
 </script>
 
 <style scoped>

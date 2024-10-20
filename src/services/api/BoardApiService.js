@@ -24,4 +24,8 @@ export default class BoardApiService extends ApiService {
   submitComment(communityPostCode, commentData) {
     return this.post({ content: commentData.content }, `post/${communityPostCode}/comments`);
   }
+
+  updateComment(communityPostCode, commentCode, content) {
+    return this.put({ content }, `post/${communityPostCode}/comments/${commentCode}`);
+  }
 }
