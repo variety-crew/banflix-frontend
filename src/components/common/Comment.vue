@@ -3,24 +3,34 @@
     <Fieldset>
       <template #legend>
         <div class="profile-container">
-          <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png" shape="circle" />
-          <span class="nickname">{{ props.comment.writer }}</span>
+          <Avatar :image="getImageUrl(props.comments.profile)" shape="circle" />
+          <span class="nickname">{{ props.comments.nickname }}</span>
         </div>
       </template>
       <div class="comment-content-container">
-        <div class="created-at">{{ props.comment.createdAt }}</div>
-        <div class="comment-content">{{ props.comment.comment }}</div>
+        <div class="created-at">{{ props.comments.createdAt }}</div>
+        <div class="comment-content">{{ props.comments.content }}</div>
       </div>
       <div class="comment-footer">
         <div class="footer-start">
-          <i v-if="props.isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comment.id)"> 수정</i>
-          <i v-if="props.isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comment.id)"> 삭제</i>
-          <i v-if="props.isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comment.id)">
+          <i v-if="props.isWriter" class="pi pi-pencil" @click="handleCommentUpdate(props.comments.commentCode)">
+            수정</i
+          >
+          <i v-if="props.isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)">
+            삭제</i
+          >
+          <i v-if="props.isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comments.commentCode)">
             비활성화
           </i>
         </div>
         <div class="footer-end">
-          <i v-if="comment" class="pi pi-exclamation-triangle" @click="handleCommentReport(props.comment.id)"> 신고</i>
+          <i
+            v-if="props.comments"
+            class="pi pi-exclamation-triangle"
+            @click="handleCommentReport(props.comments.commentCode)"
+          >
+            신고</i
+          >
         </div>
       </div>
     </Fieldset>
@@ -31,10 +41,11 @@
 import useToastMessage from '@/hooks/useToastMessage';
 import { defineProps, onMounted } from 'vue';
 
+const BASE_URL = 'http://localhost:8080';
 const { showSuccess } = useToastMessage();
 const props = defineProps({
-  comment: {
-    type: Object,
+  comments: {
+    type: Array,
     required: true,
   },
   isWriter: {
@@ -46,6 +57,14 @@ const props = defineProps({
     required: true,
   },
 });
+
+// 이미지 URL 생성
+const getImageUrl = path => {
+  if (!path) {
+    return;
+  }
+  return `${BASE_URL}${path}`; // 절대 URL 반환
+};
 
 const handleCommentUpdate = commentId => {
   // TODO: 댓글 수정
