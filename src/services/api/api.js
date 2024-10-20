@@ -5,6 +5,8 @@ import ThemeApiService from '@/services/api/ThemeApiService';
 import ReviewApiService from './ReviewApiService';
 import NoticeApiService from '@/services/api/NoticeApiService';
 import RankingApiService from './RankingApiService';
+import BoardApiService from './BoardApiService';
+import CommunityLikeApiService from './CommunityLikeApiService';
 
 export const $api = {
   posts: new PostApiService(),
@@ -14,4 +16,6 @@ export const $api = {
   review: new ReviewApiService(),
   notice: new NoticeApiService(),
   ranking: new RankingApiService(),
+  community: new BoardApiService(),
+  postLike: new CommunityLikeApiService(),
 };
