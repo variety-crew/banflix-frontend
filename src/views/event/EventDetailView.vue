@@ -7,7 +7,7 @@
             event.category === 'discount' ? '할인 테마' : event.category === 'newTheme' ? '신규 테마' : event.category
           }}
         </h1>
-        <!-- <ThemeCard :theme="event.eventTheme" next-page="THEME" /> -->
+        <ThemeCard v-if="theme" :theme="theme" next-page="THEME" />
       </div>
       <div class="content-container">
         <Card class="content-aria">
@@ -45,6 +45,7 @@ import { $api } from '@/services/api/api';
 const route = useRoute();
 const eventId = ref(route.params.eventId);
 const event = ref({});
+const theme = ref(null);
 
 const formatDate = createdAt => {
   if (!createdAt || createdAt.length < 3) return '';
@@ -61,7 +62,15 @@ const fetchEventDetail = async () => {
 //   console.log(event.value.title);
 // };
 
-onMounted(fetchEventDetail);
+onMounted(async () => {
+  // 1. eventPost 조회
+  await fetchEventDetail();
+
+  // 2. Theme 조회
+  $api.theme.getTheme(event.value.eventTheme.themeCode).then(foundTheme => {
+    theme.value = foundTheme;
+  });
+});
 
 // const event = ref({
 //   id: route.params.eventId,
@@ -99,6 +108,10 @@ onMounted(fetchEventDetail);
 .detail-container {
   display: flex;
   margin-top: 50px;
+
+  .profile-container {
+    flex-shrink: 0;
+  }
 }
 
 h1 {
