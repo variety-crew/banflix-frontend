@@ -16,6 +16,7 @@ const dateOptions = ref([]);
 // 선택된 기준일자가 바뀔 때마다 랭킹 목록 update
 watch(selectedDate, newVal => {
   $api.ranking.getReviewRankingByDate(newVal).then(foundReviews => {
+    if (!foundReviews) return;
     reviews.value = foundReviews;
   });
 });
@@ -23,7 +24,8 @@ watch(selectedDate, newVal => {
 onMounted(() => {
   // 랭킹 기준일자 목록 가져오기
   $api.ranking.getRakingWeeks().then(result => {
-    // week 옵션
+    if (!result) return;
+
     const foundDates = result.reviewRankingDates;
     // const foundDates = ['2024-08-10', '2024-09-10'];
     dateOptions.value = foundDates;
