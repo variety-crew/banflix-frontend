@@ -7,6 +7,7 @@ import NoticeApiService from '@/services/api/NoticeApiService';
 import RankingApiService from './RankingApiService';
 import BoardApiService from './BoardApiService';
 import CommunityLikeApiService from './CommunityLikeApiService';
+import StoreApiService from './StoreApiService';
 
 export const $api = {
   posts: new PostApiService(),
@@ -18,4 +19,5 @@ export const $api = {
   ranking: new RankingApiService(),
   community: new BoardApiService(),
   postLike: new CommunityLikeApiService(),
+  store: new StoreApiService(),
 };
