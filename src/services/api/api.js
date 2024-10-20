@@ -8,6 +8,7 @@ import RankingApiService from './RankingApiService';
 import BoardApiService from './BoardApiService';
 import CommunityLikeApiService from './CommunityLikeApiService';
 import StoreApiService from './StoreApiService';
+import EventApiService from '@/services/api/EventApiService';
 
 export const $api = {
   posts: new PostApiService(),
@@ -20,4 +21,5 @@ export const $api = {
   community: new BoardApiService(),
   postLike: new CommunityLikeApiService(),
   store: new StoreApiService(),
+  event: new EventApiService(),
 };

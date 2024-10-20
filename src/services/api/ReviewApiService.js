@@ -26,4 +26,8 @@ export default class ReviewApiService extends ApiService {
   deactivateLike(reviewCode) {
     return this.delete({ reviewCode }, 'likes');
   }
+
+  removeMyReview(reviewCode) {
+    return this.delete({ reviewCode });
+  }
 }
