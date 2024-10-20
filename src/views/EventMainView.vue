@@ -3,30 +3,14 @@
     <h3>할인 테마</h3>
     <div class="sub-title">테마 별 할인 정보를 제공합니다. 지금이 제일 저렴할 때!</div>
     <template v-if="discountEvents.length > 0">
-      <div class="event-card-container">
-        <ThemeCard
-          v-for="(event, id) in discountEvents"
-          :key="id"
-          :theme="event.eventTheme"
-          next-page="EVENT"
-          @click="goDetailEvent(event.eventPostCode)"
-        />
-      </div>
+      <EventPostCardList :event-posts="discountEvents" />
     </template>
     <template v-else> 이벤트가 존재하지 않습니다. </template>
 
     <h3>신규 테마</h3>
     <div class="sub-title">새로운 방탈출 게임을 소개합니다.</div>
     <template v-if="newThemeEvents.length > 0">
-      <div class="event-card-container">
-        <ThemeCard
-          v-for="(event, id) in newThemeEvents"
-          :key="id"
-          :theme="event.eventTheme"
-          next-page="EVENT"
-          @click="goDetailEvent(event.eventPostCode)"
-        />
-      </div>
+      <EventPostCardList :event-posts="newThemeEvents" />
     </template>
     <template v-else> 이벤트가 존재하지 않습니다. </template>
   </PageLayout>
@@ -35,16 +19,12 @@
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue';
 import PageLayout from '@/components/layouts/PageLayout.vue';
-import ThemeCard from '@/components/cards/ThemeCard.vue';
 import router from '@/router/routes';
 import { $api } from '@/services/api/api';
+import EventPostCardList from '@/components/event/EventPostCardList.vue';
 
 const goEventForm = () => {
   router.push('/event/form/');
-};
-
-const goDetailEvent = id => {
-  router.push(`/event/detail/${id}`);
 };
 
 const events = ref([]);
@@ -87,14 +67,6 @@ h3 {
 
 .event-card {
   cursor: pointer;
-}
-
-/* 이벤트 카드 컨테이너의 스타일 */
-.event-card-container {
-  display: grid; /* flex 대신 grid 사용 */
-  grid-template-columns: repeat(5, 1fr); /* 5개 열 */
-  gap: 16px; /* 카드 간격 */
-  margin-top: 20px; /* 상단 여백 */
 }
 
 /* 카드에 대한 스타일 */
