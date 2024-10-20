@@ -15,7 +15,7 @@
       <!-- Report Section -->
       <div class="report-section">
         <h3>Report</h3>
-        <p>방탈러 님의 리뷰 평균 점수는 {{ userReport.point }}점이에요</p>
+        <p>방탈러 님의 리뷰 평균 점수는 {{ userReport.avgScore }}점이에요</p>
         <p>방탈러 님이 자주 플레이한 장르는 {{ userReport.genres }} 장르에요</p>
       </div>
 
@@ -88,12 +88,30 @@ const baseServerUrl = `${import.meta.env.VITE_SERVER_URL}`;
 
 const userStore = useUserStore();
 
-const isMe = ref(false);
-
-const userInfo = ref({});
-const userReport = ref({});
-const reviews = ref([]);
-const posts = ref([]);
+const userInfo = ref({
+  admin: false,
+  image: '',
+  nickname: '닉네임',
+});
+const userReport = ref({
+  avgScore: 0,
+  genres: [],
+});
+const reviews = ref([
+  {
+    totalScore: 0,
+    content: '',
+    createdAt: '2024-10-24',
+    likes: 0,
+  },
+]);
+const posts = ref([
+  {
+    title: '',
+    content: '',
+    createdAt: '',
+  },
+]);
 const comments = ref([]);
 const themes = ref([]);
 
@@ -102,24 +120,22 @@ const themes = ref([]);
 onMounted(async () => {
   const token = userStore.accessToken;
   if (token) {
-    const isMeResponse = await $api.review.get('user/report');
-    console.log('isMeResponse: ', isMeResponse);
     try {
       // 사용자 정보 조회
-      userInfo.value = await $api.user.get('info');
-      console.log('userInfo.value: ', userInfo.value);
+      userInfo.value = await $api.user.get('mypage');
       if (userInfo.value) {
+        // 사용자가 업로드한 것인지, 더미데이터인지 확인 필요
         userInfo.value.image = baseServerUrl + userInfo.value.image;
       } else {
         userInfo.value = [];
       }
+
       // 사용자 report 조회
-      userReport.value = await $api.review.get('user/report');
-      if (userReport.value) {
-        console.log('userReport.value: ', userReport.value);
-      } else {
-        userReport.value = [];
+      const responseReport = await $api.review.get('user/report');
+      if (responseReport) {
+        userReport.value = responseReport;
       }
+
       // 사용자 review 조회
       reviews.value = await $api.review.get('user');
       if (reviews.value) {
@@ -127,12 +143,13 @@ onMounted(async () => {
       } else {
         reviews.value = [];
       }
+
       // 사용자 post 조회
-      reviews.value = await $api.posts.get('user');
+      posts.value = await $api.community.get('my');
       if (reviews.value) {
-        console.log('reviews.value: ', reviews.value);
+        console.log('posts.value: ', posts.value);
       } else {
-        reviews.value = [];
+        posts.value = [];
       }
     } catch (error) {
       console.error('Failed to fetch user info:', error);
