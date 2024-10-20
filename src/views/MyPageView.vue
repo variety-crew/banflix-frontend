@@ -100,46 +100,46 @@ const themes = ref([]);
 // /user/report
 
 onMounted(async () => {
-  // const token = userStore.accessToken;
-  // if (token) {
-  //   const isMeResponse = await $api.review.get('user/report');
-  //   console.log('isMeResponse: ', isMeResponse);
-  //   try {
-  //     // 사용자 정보 조회
-  //     userInfo.value = await $api.user.get('info');
-  //     console.log('userInfo.value: ', userInfo.value);
-  //     if (userInfo.value) {
-  //       userInfo.value.image = baseServerUrl + userInfo.value.image;
-  //     } else {
-  //       userInfo.value = [];
-  //     }
-  //     // 사용자 report 조회
-  //     userReport.value = await $api.review.get('user/report');
-  //     if (userReport.value) {
-  //       console.log('userReport.value: ', userReport.value);
-  //     } else {
-  //       userReport.value = [];
-  //     }
-  //     // 사용자 review 조회
-  //     reviews.value = await $api.review.get('user');
-  //     if (reviews.value) {
-  //       console.log('reviews.value: ', reviews.value);
-  //     } else {
-  //       reviews.value = [];
-  //     }
-  //     // 사용자 post 조회
-  //     reviews.value = await $api.posts.get('user');
-  //     if (reviews.value) {
-  //       console.log('reviews.value: ', reviews.value);
-  //     } else {
-  //       reviews.value = [];
-  //     }
-  //   } catch (error) {
-  //     console.error('Failed to fetch user info:', error);
-  //   }
-  // } else {
-  //   console.log('User is not authenticated.');
-  // }
+  const token = userStore.accessToken;
+  if (token) {
+    const isMeResponse = await $api.review.get('user/report');
+    console.log('isMeResponse: ', isMeResponse);
+    try {
+      // 사용자 정보 조회
+      userInfo.value = await $api.user.get('info');
+      console.log('userInfo.value: ', userInfo.value);
+      if (userInfo.value) {
+        userInfo.value.image = baseServerUrl + userInfo.value.image;
+      } else {
+        userInfo.value = [];
+      }
+      // 사용자 report 조회
+      userReport.value = await $api.review.get('user/report');
+      if (userReport.value) {
+        console.log('userReport.value: ', userReport.value);
+      } else {
+        userReport.value = [];
+      }
+      // 사용자 review 조회
+      reviews.value = await $api.review.get('user');
+      if (reviews.value) {
+        console.log('reviews.value: ', reviews.value);
+      } else {
+        reviews.value = [];
+      }
+      // 사용자 post 조회
+      reviews.value = await $api.posts.get('user');
+      if (reviews.value) {
+        console.log('reviews.value: ', reviews.value);
+      } else {
+        reviews.value = [];
+      }
+    } catch (error) {
+      console.error('Failed to fetch user info:', error);
+    }
+  } else {
+    console.log('User is not authenticated.');
+  }
 });
 </script>
 
