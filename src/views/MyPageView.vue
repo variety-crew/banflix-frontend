@@ -153,6 +153,7 @@ onMounted(async () => {
         // 사용자가 업로드한 것인지, 더미데이터인지 확인 필요
         if (!(userInfo.value.image.substr(0, 20) === 'https://drive.google')) {
           userInfo.value.image = baseServerUrl + userInfo.value.image;
+          console.log('userInfo.value: ', userInfo.value);
         }
       } else {
         userInfo.value = [];
@@ -167,17 +168,13 @@ onMounted(async () => {
 
       // 사용자 review 조회
       reviews.value = await $api.review.get('user');
-      if (reviews.value) {
-        console.log('reviews.value: ', reviews.value);
-      } else {
+      if (!reviews.value) {
         reviews.value = [];
       }
 
       // 사용자 post 조회
       posts.value = await $api.community.get('my');
       if (reviews.value) {
-        console.log('posts.value: ', posts.value);
-      } else {
         posts.value = [];
       }
 
@@ -186,13 +183,11 @@ onMounted(async () => {
       if (!comments.value) {
         comments.value = [];
       }
-      console.log('comments.value: ', comments.value);
+      // console.log('comments.value: ', comments.value);
 
       // 테마 조회
       themes.value = await $api.theme.getThemesByMe();
-      if (themes.value) {
-        console.log('themes.value: ', themes.value);
-      } else {
+      if (!themes.value) {
         themes.value = [];
       }
     } catch (error) {

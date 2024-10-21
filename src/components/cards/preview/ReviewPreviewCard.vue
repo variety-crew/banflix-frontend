@@ -2,7 +2,7 @@
   <div class="review-preview-container">
     <Card>
       <template #title>
-        <h2>{{ props.review.totalScore }}/10</h2>
+        <h2>{{ props.review.totalScore }}/5</h2>
       </template>
       <template #content>
         <p>

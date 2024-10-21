@@ -9,7 +9,7 @@
               : props.comment.content
           }}
         </p>
-        <p>{{ props.comment.createdAt.slice(0, 3).join('.') }}</p>
+        <p>{{ props.comment.createdAt.split('T')[0] }}</p>
       </template>
     </Card>
   </div>
