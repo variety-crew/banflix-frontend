@@ -26,7 +26,7 @@
         </Card>
         <div class="content-footer-container">
           <div class="created-at">
-            {{ formatDate(event.createdAt) }}
+            {{ Helper.Date.formatDateTime(event.createdAt) }}
           </div>
           <div class="writer">{{ event.nickname + ' 관리자' }}</div>
         </div>
@@ -41,17 +41,12 @@ import ThemeCard from '@/components/cards/ThemeCard.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { $api } from '@/services/api/api';
+import { Helper } from '@/utils/Helper';
 
 const route = useRoute();
 const eventId = ref(route.params.eventId);
 const event = ref({});
 const theme = ref(null);
-
-const formatDate = createdAt => {
-  if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day, hour, min] = createdAt;
-  return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')} 등록`;
-};
 
 const fetchEventDetail = async () => {
   event.value = await $api.event.getEventDetailByEventPostCode(eventId.value);

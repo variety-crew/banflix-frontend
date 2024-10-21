@@ -4,6 +4,7 @@
       <ReviewItem
         :review="review"
         :rank="props.showRanking ? index + 1 : null"
+        :show-theme="props.showTheme"
         @click-image="clickImage"
         @click-report="clickReport"
         @on-removed-my-review="emit('onRemovedMyReview')"
@@ -66,6 +67,11 @@ const props = defineProps({
     required: true,
   },
   showRanking: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  showTheme: {
     type: Boolean,
     required: false,
     default: false,

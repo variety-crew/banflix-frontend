@@ -9,7 +9,7 @@
               <div class="profile-nickname">{{ post.nickname }}</div>
             </div>
             <div class="end">
-              <div class="created-at">{{ formatDate(post.createdAt) }}</div>
+              <div class="created-at">{{ Helper.Date.formatDateTime(post.createdAt) }}</div>
               <i class="pi pi-exclamation-triangle" @click="handleReport"> 신고하기</i>
               <div class="button-overlay">
                 <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" />
@@ -31,10 +31,12 @@
             </div>
           </div>
           <div class="content-footer">
-            <div class="like">
-              <i class="pi pi-heart"></i>
-              <div class="emoji">{{ countLikes.likeCount }}</div>
-            </div>
+            <ReviewLike
+              :is-user-like="false"
+              :count="countLikes.likeCount"
+              @handle-active="toggleLike"
+              @handle-deactivate="toggleLike"
+            />
             <div class="comment">
               <i class="pi pi-comment"></i>
               <div class="emoji">{{ countComments.commentCount }}</div>
@@ -65,6 +67,8 @@
       <template v-else> 게시글이 존재하지 않습니다.</template>
     </div>
   </PageLayout>
+
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <script setup>
@@ -75,6 +79,8 @@ import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
 import { Helper } from '@/utils/Helper';
 import { useUserStore } from '@/stores/user';
+import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -112,7 +118,7 @@ const fetchComments = async () => {
     commentCode: comment.commentCode,
     nickname: comment.nickname,
     content: comment.content,
-    createdAt: formatDate(comment.createdAt),
+    createdAt: Helper.Date.formatDateTime(comment.createdAt),
     profile: comment.profile,
     communityPostCode: comment.communityPostCode,
   }));
@@ -141,13 +147,6 @@ const submitComment = async () => {
   showSuccess('댓글이 작성되었습니다.');
   fetchComments(); // 댓글 목록 새로 고침
   inputComment.value = '';
-};
-
-// createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
-const formatDate = createdAt => {
-  if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day, hour, minute] = createdAt;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 };
 
 const menu = ref();
@@ -235,6 +234,13 @@ const handleSubscribe = () => {
   console.log('status: ', isSubscribed.value);
 };
 
+const toggleLike = () => {
+  $api.postLike.toggleLike(boardId.value).then(() => {
+    // 좋아요 개수 새로고침
+    fetchLikeCount();
+  });
+};
+
 onMounted(() => {
   setMenuItems();
   fetchPostDetail();
@@ -301,6 +307,8 @@ onMounted(() => {
 .content-footer {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
 }
 .like {
   display: flex;

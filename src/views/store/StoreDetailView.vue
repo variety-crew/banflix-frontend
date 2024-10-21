@@ -46,7 +46,7 @@
     <!-- 매장의 베스트 리뷰 -->
     <div class="mb-l">
       <AppTypography type="title3" class="mb-s">베스트 리뷰</AppTypography>
-      <ReviewItem v-if="bestReview" :review="bestReview" />
+      <ReviewItem v-if="bestReview" :review="bestReview" show-theme />
       <AppTypography v-else>아직 베스트 리뷰가 없어요!</AppTypography>
     </div>
 

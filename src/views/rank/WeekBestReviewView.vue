@@ -1,7 +1,7 @@
 <template>
   <AppTypography type="caption" color="darkgray" class="mb-xs">기준일자 선택</AppTypography>
   <SelectButton v-model="selectedDate" :options="dateOptions" aria-labelledby="장르" class="mb-l" />
-  <ReviewList :reviews="reviews" show-ranking />
+  <ReviewList :reviews="reviews" show-ranking show-theme />
 </template>
 
 <script setup>

@@ -11,7 +11,7 @@
           props.post.content.length > 130 ? props.post.content.slice(0, 130) + '...(더보기)' : props.post.content
         }}</template
       >
-      <template #footer> {{ post.createdAt.slice(0, 3).join('.') }} </template>
+      <template #footer> {{ post.createdAt.split('T')[0] }} </template>
     </Card>
   </div>
 </template>

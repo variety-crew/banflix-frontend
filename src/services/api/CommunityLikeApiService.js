@@ -8,4 +8,8 @@ export default class CommunityLikeApiService extends ApiService {
   getLikeCount(communityPostCode) {
     return this.get(`${communityPostCode}`);
   }
+
+  toggleLike(communityPostCode) {
+    return this.post({ communityPostCode });
+  }
 }

@@ -28,4 +28,8 @@ export default class BoardApiService extends ApiService {
   updateComment(communityPostCode, commentCode, content) {
     return this.put({ content }, `post/${communityPostCode}/comments/${commentCode}`);
   }
+
+  deleteComment(communityPostCode, commentCode) {
+    return this.delete({}, `post/${communityPostCode}/comments/${commentCode}`);
+  }
 }

@@ -7,7 +7,7 @@
         <div class="list-theme">
           <div v-for="theme in recommendedThemes" :key="theme.themeCode">
             <ThemeCard :theme="theme" :show-footer="false" class="mb-s" />
-            <Button label="방탈출 구경하기" fluid @click="clickRecommendedTheme(theme.themeCode)" />
+            <Button label="방탈출 구경하기" fluid as="router-link" :to="`/theme/detail/${theme.themeCode}`" />
           </div>
         </div>
       </div>
@@ -40,14 +40,11 @@
         <div class="flex-col items-center">
           <Button
             label="내 취향 방탈출 추천 받기"
-            :disabled="selectedThemeCodes.length < minSelectCnt"
+            :disabled="selectedThemeCodes.length === 0"
             @click="clickRecommend"
           />
-          <AppTypography v-if="selectedThemeCodes.length < minSelectCnt" type="caption" color="darkgray" class="mt-xs"
-            >{{ minSelectCnt - selectedThemeCodes.length }}개 더 골라주세요! (최소 {{ minSelectCnt }}개 선택
-            필요)</AppTypography
-          >
-          <AppTypography v-else type="caption" color="darkgray" class="mt-xs"
+          <AppTypography type="caption" color="darkgray" class="mt-xs">(최대 {{ maxCnt }}개 선택 가능)</AppTypography>
+          <AppTypography type="caption" color="darkgray" class="mt-xs"
             >많이 고를 수록 더 정확히 추천받을 수 있어요!</AppTypography
           >
         </div>
@@ -63,9 +60,9 @@ import { $api } from '@/services/api/api';
 import { onMounted, ref } from 'vue';
 import Button from 'primevue/button';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
-import { useRouter } from 'vue-router';
+import useToastMessage from '@/hooks/useToastMessage';
 
-const router = useRouter();
+const { showError } = useToastMessage();
 
 const themes = ref([]);
 const selectedThemeCodes = ref([]);
@@ -73,8 +70,9 @@ const isReloading = ref(false);
 const recommendedThemes = ref([]);
 const recommendedSuccess = ref(false);
 
-const minSelectCnt = 3;
+const maxCnt = 3;
 let currentPage = 0;
+let genres = [];
 
 const clickTheme = themeCode => {
   if (selectedThemeCodes.value.includes(themeCode)) {
@@ -83,7 +81,11 @@ const clickTheme = themeCode => {
     return;
   }
 
-  // 추가하기
+  if (selectedThemeCodes.value.length === 3) {
+    // 이미 가득 차있다면 마지막 선택한 거 제외하고 추가하기
+    selectedThemeCodes.value.pop();
+  }
+
   selectedThemeCodes.value.push(themeCode);
 };
 
@@ -94,26 +96,45 @@ const clickRecommend = () => {
   });
 };
 
-const clickRecommendedTheme = themeCode => {
-  router.push(`/theme/detail/${themeCode}`);
-};
+const getThemes = genres => {
+  if (genres.length < 1) {
+    showError('더 이상 새로고침 할 수 없어요 ㅠㅠ');
+    return;
+  }
 
-const getThemes = (page = 0) => {
   isReloading.value = true;
-  $api.theme.searchThemes({ page }).then(themeList => {
+  $api.theme.searchThemes({ genres: genres.map(e => e.name) }).then(themeList => {
     themes.value = themeList;
     isReloading.value = false;
   });
 };
 
-const reloadThemes = () => {
-  // 다음 페이지의 테마목록 가져오기
-  getThemes(currentPage + 1);
-  currentPage += 1;
+const getTargetGenres = () => {
+  let targetGenres = []; // 테마 검색 시 사용할 장르
+  if (genres.length >= 3) {
+    targetGenres.push(genres.pop());
+    targetGenres.push(genres.pop());
+    targetGenres.push(genres.pop());
+  } else {
+    targetGenres = [...genres];
+    genres = [];
+  }
+
+  return targetGenres;
 };
 
-onMounted(() => {
-  getThemes();
+const reloadThemes = () => {
+  // 다른 장르 가져오기
+  const targetGenres = getTargetGenres();
+  getThemes(targetGenres);
+};
+
+onMounted(async () => {
+  // 1. 장르 먼저 호출
+  genres = await $api.theme.getGenres();
+  const targetGenres = getTargetGenres();
+
+  getThemes(targetGenres);
 });
 </script>
 

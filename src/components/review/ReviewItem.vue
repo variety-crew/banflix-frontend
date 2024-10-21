@@ -65,13 +65,30 @@
           </div>
         </div>
 
-        <!-- 좋아요 버튼 -->
-        <ReviewLike
-          :is-user-like="reviewUserLike"
-          :count="reviewCount"
-          @handle-deactivate="handleDeactivate"
-          @handle-active="handleActive"
-        />
+        <div>
+          <!-- 테마 정보 -->
+          <div v-if="props.showTheme" class="area-theme mb-xxs">
+            <Image :src="Helper.getImageUrl(props.review.themeImage)" width="50" />
+            <div>
+              <AppTypography type="title3" class="mb-xxs">테마: {{ props.review.themeName }}</AppTypography>
+              <Button
+                label="테마 상세"
+                size="small"
+                severity="secondary"
+                as="router-link"
+                :to="`/theme/detail/${props.review.themeCode}`"
+              />
+            </div>
+          </div>
+
+          <!-- 좋아요 버튼 -->
+          <ReviewLike
+            :is-user-like="reviewUserLike"
+            :count="reviewCount"
+            @handle-deactivate="handleDeactivate"
+            @handle-active="handleActive"
+          />
+        </div>
       </div>
 
       <!-- 구분선 -->
@@ -96,15 +113,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 테마/매장 정보 -->
-    <!-- <div v-if="props.showTheme && props.review.theme" class="area-store">
-      <div class="square"></div>
-      <div class="store">
-        <AppTypography class="mb-xs">테마: {{ props.review.theme.title }}</AppTypography>
-        <AppTypography type="caption" color="darkgray">{{ props.review.theme.storeName }}</AppTypography>
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -210,6 +218,7 @@ watchEffect(() => {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      gap: 16px;
     }
   }
 
@@ -219,10 +228,10 @@ watchEffect(() => {
     left: -25px;
   }
 
-  .area-store {
-    padding: 16px;
+  .area-theme {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
+    gap: 10px;
 
     .square {
       width: 20px;
