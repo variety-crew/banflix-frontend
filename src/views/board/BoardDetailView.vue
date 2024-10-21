@@ -1,7 +1,7 @@
 <template>
   <PageLayout title="게시글 상세보기">
     <div class="board-detail-container">
-      <Card v-if="boardDetail">
+      <Card v-if="post">
         <template #header>
           <div class="card-header-container">
             <div class="start">
@@ -32,7 +32,7 @@
           </div>
           <div class="content-footer">
             <ReviewLike
-              :is-user-like="false"
+              :is-user-like="post.isLike"
               :count="countLikes.likeCount"
               @handle-active="toggleLike"
               @handle-deactivate="toggleLike"
@@ -86,7 +86,7 @@ const route = useRoute();
 const userStore = useUserStore();
 const { showSuccess, showWarning } = useToastMessage();
 
-const post = ref({});
+const post = ref(null);
 const boardId = ref(route.params.boardId);
 const isSubscribed = ref(true);
 const isWriter = ref(true);
@@ -150,27 +150,6 @@ const submitComment = async () => {
 };
 
 const menu = ref();
-const boardDetail = ref({
-  communityPostCode: boardId.value,
-  profile: post.value.profile,
-  nickname: post.value.nickname,
-
-  title: post.value.title,
-  content: post.value.content,
-  imageUrls: post.value.imageUrls,
-  likeCount: countLikes.value.likeCount,
-  commentCount: countComments.value.commentCount,
-  comments: [
-    {
-      commentCode: comments.value.commentCode,
-      nickname: comments.value.nickname,
-      profile: comments.value.profile,
-      content: comments.value.content,
-      createdAt: comments.value.createdAt,
-    },
-  ],
-  createdAt: post.value.createdAt,
-});
 
 const menuItems = ref([]);
 
@@ -236,8 +215,8 @@ const handleSubscribe = () => {
 
 const toggleLike = () => {
   $api.postLike.toggleLike(boardId.value).then(() => {
-    // 좋아요 개수 새로고침
-    fetchLikeCount();
+    fetchLikeCount(); // 좋아요 개수 새로고침
+    fetchPostDetail(); // isLike 새로고침
   });
 };
 
