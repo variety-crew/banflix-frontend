@@ -67,6 +67,8 @@
       <template v-else> 게시글이 존재하지 않습니다.</template>
     </div>
   </PageLayout>
+
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <script setup>
@@ -78,6 +80,7 @@ import { $api } from '@/services/api/api';
 import { Helper } from '@/utils/Helper';
 import { useUserStore } from '@/stores/user';
 import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 const route = useRoute();
 const userStore = useUserStore();

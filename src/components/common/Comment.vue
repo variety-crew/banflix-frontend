@@ -19,7 +19,7 @@
       <div v-else class="comment-footer">
         <div class="footer-start">
           <i v-if="isWriter" class="pi pi-pencil" @click="clickEdit"> 수정</i>
-          <i v-if="isWriter" class="pi pi-trash" @click="handleCommentDelete(props.comments.commentCode)"> 삭제</i>
+          <i v-if="isWriter" class="pi pi-trash" @click="clickDelete"> 삭제</i>
           <i v-if="isAdmin" class="pi pi-power-off" @click="handleCommentDeactivate(props.comments.commentCode)">
             비활성화
           </i>
@@ -46,6 +46,7 @@ import { useUserStore } from '@/stores/user';
 import Textarea from 'primevue/textarea';
 import Button from 'primevue/button';
 import { $api } from '@/services/api/api';
+import { useConfirm } from 'primevue/useconfirm';
 
 const { showSuccess } = useToastMessage();
 const props = defineProps({
@@ -67,6 +68,8 @@ const emit = defineEmits(['onReloadComments']);
 const userStore = useUserStore(); // Pinia 스토어 인스턴스 가져오기
 const currentUserNickname = userStore.nickname; // 현재 로그인한 사용자의 닉네임
 const currentUserIsAdmin = userStore.isAdmin;
+
+const confirm = useConfirm();
 
 // 댓글 작성자와 현재 사용자의 닉네임 비교
 const isWriter = computed(() => props.comments.nickname === currentUserNickname);
@@ -92,10 +95,29 @@ const handleCommentUpdate = () => {
       emit('onReloadComments');
     });
 };
-const handleCommentDelete = commentId => {
-  // TODO: 댓글 삭제
-  showSuccess('deleted', 'successfully');
+
+const clickDelete = () => {
+  confirm.require({
+    message: '댓글을 삭제할까요?',
+    header: '댓글 삭제',
+    rejectProps: {
+      label: '취소',
+      severity: 'secondary',
+      outlined: true,
+    },
+    acceptProps: {
+      label: '댓글 삭제',
+      severity: 'danger',
+    },
+    accept: handleCommentDelete,
+  });
 };
+const handleCommentDelete = () => {
+  $api.community.deleteComment(props.comments.communityPostCode, props.comments.commentCode).then(() => {
+    emit('onReloadComments');
+  });
+};
+
 const handleCommentDeactivate = commentId => {
   // TODO: 댓글 비활성화
   showSuccess('deactivated', 'successfully');
