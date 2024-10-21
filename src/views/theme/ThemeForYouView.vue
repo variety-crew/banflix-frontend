@@ -64,8 +64,10 @@ import { onMounted, ref } from 'vue';
 import Button from 'primevue/button';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
 import { useRouter } from 'vue-router';
+import useToastMessage from '@/hooks/useToastMessage';
 
 const router = useRouter();
+const { showError } = useToastMessage();
 
 const themes = ref([]);
 const selectedThemeCodes = ref([]);
@@ -75,6 +77,7 @@ const recommendedSuccess = ref(false);
 
 const minSelectCnt = 3;
 let currentPage = 0;
+let genres = [];
 
 const clickTheme = themeCode => {
   if (selectedThemeCodes.value.includes(themeCode)) {
@@ -98,22 +101,45 @@ const clickRecommendedTheme = themeCode => {
   router.push(`/theme/detail/${themeCode}`);
 };
 
-const getThemes = (page = 0) => {
+const getThemes = genres => {
+  if (genres.length < 1) {
+    showError('더 이상 새로고침 할 수 없어요 ㅠㅠ');
+    return;
+  }
+
   isReloading.value = true;
-  $api.theme.searchThemes({ page }).then(themeList => {
+  $api.theme.searchThemes({ genres: genres.map(e => e.name) }).then(themeList => {
     themes.value = themeList;
     isReloading.value = false;
   });
 };
 
-const reloadThemes = () => {
-  // 다음 페이지의 테마목록 가져오기
-  getThemes(currentPage + 1);
-  currentPage += 1;
+const getTargetGenres = () => {
+  let targetGenres = []; // 테마 검색 시 사용할 장르
+  if (genres.length >= 3) {
+    targetGenres.push(genres.pop());
+    targetGenres.push(genres.pop());
+    targetGenres.push(genres.pop());
+  } else {
+    targetGenres = [...genres];
+    genres = [];
+  }
+
+  return targetGenres;
 };
 
-onMounted(() => {
-  getThemes();
+const reloadThemes = () => {
+  // 다른 장르 가져오기
+  const targetGenres = getTargetGenres();
+  getThemes(targetGenres);
+};
+
+onMounted(async () => {
+  // 1. 장르 먼저 호출
+  genres = await $api.theme.getGenres();
+  const targetGenres = getTargetGenres();
+
+  getThemes(targetGenres);
 });
 </script>
 
