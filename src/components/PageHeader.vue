@@ -7,10 +7,14 @@
         </RouterLink>
 
         <template v-for="item in items" :key="item.label">
-          <RouterLink :to="item.route" active-class="active">
-            <Button v-if="item.role === 'ALL'" :label="item.label" text />
-            <Button v-else-if="item.role === 'ADMIN' && userStore.isAdmin" :label="item.label" severity="secondary" />
-          </RouterLink>
+          <Button v-if="item.role === 'ALL'" :label="item.label" text as="router-link" :to="item.route" />
+          <Button
+            v-else-if="item.role === 'ADMIN' && userStore.isAdmin"
+            :label="item.label"
+            severity="secondary"
+            as="router-link"
+            :to="item.route"
+          />
         </template>
       </div>
 
@@ -40,8 +44,8 @@
 
         <!-- 게스트 -->
         <template v-else>
-          <Button label="로그인" severity="secondary" size="small" @click="goLoginPage" />
-          <Button label="회원가입" size="small" @click="goRegisterPage" />
+          <Button label="로그인" severity="secondary" size="small" as="router-link" to="/login" />
+          <Button label="회원가입" size="small" as="router-link" to="/register" />
         </template>
       </div>
     </nav>
@@ -102,14 +106,6 @@ const items = ref([
 const userStore = useUserStore();
 const router = useRouter();
 
-const goLoginPage = () => {
-  router.push('/login');
-};
-
-const goRegisterPage = () => {
-  router.push('/register');
-};
-
 const logout = () => {
   userStore.logout();
   showSuccess('로그아웃되었습니다.');
@@ -140,8 +136,14 @@ const logout = () => {
     gap: 20px;
   }
 
-  a.active {
-    background-color: aqua;
+  .router-link-active {
+    font-size: 20px;
+    text-decoration: underline;
+    text-decoration-thickness: 4px;
+    text-decoration-color: rgba(0, 0, 0, 0.2);
+    text-underline-offset: -2px;
+    position: relative;
+    top: -3px;
   }
 }
 
