@@ -136,14 +136,16 @@ const logout = () => {
     gap: 20px;
   }
 
-  .router-link-active {
-    font-size: 20px;
-    text-decoration: underline;
-    text-decoration-thickness: 4px;
-    text-decoration-color: rgba(0, 0, 0, 0.2);
-    text-underline-offset: -2px;
-    position: relative;
-    top: -3px;
+  .start {
+    .router-link-active {
+      font-size: 20px;
+      text-decoration: underline;
+      text-decoration-thickness: 4px;
+      text-decoration-color: rgba(0, 0, 0, 0.2);
+      text-underline-offset: -2px;
+      position: relative;
+      top: -3px;
+    }
   }
 }
 
