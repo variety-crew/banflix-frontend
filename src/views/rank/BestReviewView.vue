@@ -1,5 +1,5 @@
 <template>
-  <ReviewList :reviews="reviews" show-ranking />
+  <ReviewList :reviews="reviews" show-ranking show-theme />
 </template>
 
 <script setup>
