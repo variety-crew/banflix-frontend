@@ -6,7 +6,7 @@
           <Avatar :image="Helper.getImageUrl(post.profile)" class="profile-image" size="large" shape="circle" />
           <div class="profile-nickname">{{ post.nickname }}</div>
         </div>
-        <div>{{ formatDate(post.createdAt) }}</div>
+        <div>{{ Helper.Date.formatDateTime(post.createdAt) }}</div>
       </div>
     </template>
     <template #title>{{ post.title }}</template>
@@ -36,7 +36,7 @@ import { Helper } from '@/utils/Helper';
 const props = defineProps({
   post: {
     type: Object,
-    Required: true,
+    required: true,
   },
 });
 
@@ -51,13 +51,6 @@ const countComments = ref({
 });
 
 const emit = defineEmits(['clickBoardPreview']);
-
-// createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
-const formatDate = createdAt => {
-  if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day, hour, minute] = createdAt;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
-};
 
 const fetchLikeCount = async () => {
   // console.log(props.post.communityPostCode);

@@ -5,12 +5,13 @@
         <div class="title">{{ notice.title }}</div>
         <div class="writer">{{ notice.nickname }}</div>
       </div>
-      <div class="content">{{ formatDate(notice.createdAt) }}</div>
+      <div class="content">{{ Helper.Date.formatDateTime(notice.createdAt) }}</div>
     </template>
   </Card>
 </template>
 
 <script setup>
+import { Helper } from '@/utils/Helper';
 import { defineProps } from 'vue';
 
 const props = defineProps({
@@ -19,13 +20,6 @@ const props = defineProps({
     required: true,
   },
 });
-
-// createdAt 배열을 "YYYY-MM-DD" 형식으로 변환
-const formatDate = createdAt => {
-  if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day] = createdAt;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-};
 </script>
 
 <style scoped>

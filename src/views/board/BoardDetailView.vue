@@ -9,7 +9,7 @@
               <div class="profile-nickname">{{ post.nickname }}</div>
             </div>
             <div class="end">
-              <div class="created-at">{{ formatDate(post.createdAt) }}</div>
+              <div class="created-at">{{ Helper.Date.formatDateTime(post.createdAt) }}</div>
               <i class="pi pi-exclamation-triangle" @click="handleReport"> 신고하기</i>
               <div class="button-overlay">
                 <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" />
@@ -112,7 +112,7 @@ const fetchComments = async () => {
     commentCode: comment.commentCode,
     nickname: comment.nickname,
     content: comment.content,
-    createdAt: formatDate(comment.createdAt),
+    createdAt: Helper.Date.formatDateTime(comment.createdAt),
     profile: comment.profile,
     communityPostCode: comment.communityPostCode,
   }));
@@ -141,13 +141,6 @@ const submitComment = async () => {
   showSuccess('댓글이 작성되었습니다.');
   fetchComments(); // 댓글 목록 새로 고침
   inputComment.value = '';
-};
-
-// createdAt 배열을 "YYYY-MM-DD HH:mm" 형식으로 변환하는 함수
-const formatDate = createdAt => {
-  if (!createdAt || createdAt.length < 3) return '';
-  const [year, month, day, hour, minute] = createdAt;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')} ${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
 };
 
 const menu = ref();
