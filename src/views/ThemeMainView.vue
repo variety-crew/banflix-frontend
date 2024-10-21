@@ -29,9 +29,12 @@
 
     <!-- 검색 결과 목록 -->
     <LoadingView v-if="isFirstLoading" />
-    <div v-else class="list-theme">
-      <ThemeCard v-for="theme in resultThemes" :key="theme.themeCode" :theme="theme" next-page="THEME" />
-    </div>
+    <template v-else>
+      <div class="list-theme mb-l">
+        <ThemeCard v-for="theme in resultThemes" :key="theme.themeCode" :theme="theme" next-page="THEME" />
+      </div>
+      <Button label="더보기" fluid severity="secondary" :loading="isMoreLoading" @click="clickMoreThemes" />
+    </template>
   </PageLayout>
 </template>
 
@@ -59,12 +62,12 @@ const sortingOptions = ref([
 const resultThemes = ref([]); // 검색 결과로 나온 테마 목록
 const isFirstLoading = ref(false);
 const isMoreLoading = ref(false);
-const currentPage = ref(0);
+let currentPage = 0;
 
 let debounce = null;
 
 const searchThemes = async (themeName, genres, filter) => {
-  if (currentPage.value < 1) {
+  if (currentPage < 1) {
     isFirstLoading.value = true;
   } else {
     isMoreLoading.value = true;
@@ -74,12 +77,12 @@ const searchThemes = async (themeName, genres, filter) => {
     themeName,
     genres: genres.map(e => e.label), // 장르 이름
     filter: filter.value,
-    page: currentPage.value,
+    page: currentPage,
   });
 
   isFirstLoading.value = false;
   isMoreLoading.value = false;
-  resultThemes.value = foundThemes;
+  resultThemes.value = resultThemes.value.concat(foundThemes); // 데이터 받은 것 추가
 };
 
 const changeGenre = event => {
@@ -88,6 +91,16 @@ const changeGenre = event => {
   }
 
   selectedGenres.value = event.value;
+};
+
+const clickMoreThemes = () => {
+  currentPage += 1;
+  searchThemes(keyword.value, selectedGenres.value, selectedSorting.value);
+};
+
+const resetPage = () => {
+  currentPage = 0;
+  resultThemes.value = [];
 };
 
 onMounted(async () => {
@@ -110,6 +123,7 @@ onMounted(async () => {
 
 // 장르가 변경되면 테마 검색
 watch(selectedGenres, newVal => {
+  resetPage();
   searchThemes(keyword.value, newVal, selectedSorting.value);
 });
 
@@ -120,12 +134,14 @@ watch(keyword, newVal => {
   }
 
   debounce = setTimeout(() => {
+    resetPage();
     searchThemes(newVal, selectedGenres.value, selectedSorting.value);
   }, 500);
 });
 
 // 정렬기준이 변경되면 테마 검색
 watch(selectedSorting, newVal => {
+  resetPage();
   searchThemes(keyword.value, selectedGenres.value, newVal);
 });
 
