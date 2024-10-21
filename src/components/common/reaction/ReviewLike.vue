@@ -32,9 +32,7 @@ const emit = defineEmits(['handleDeactivate', 'handleActive']);
 <style scoped>
 .like-container {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  width: 100%;
 }
 .pi {
   margin-right: 5px;

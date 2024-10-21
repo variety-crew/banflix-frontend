@@ -31,10 +31,12 @@
             </div>
           </div>
           <div class="content-footer">
-            <div class="like">
-              <i class="pi pi-heart"></i>
-              <div class="emoji">{{ countLikes.likeCount }}</div>
-            </div>
+            <ReviewLike
+              :is-user-like="false"
+              :count="countLikes.likeCount"
+              @handle-active="toggleLike"
+              @handle-deactivate="toggleLike"
+            />
             <div class="comment">
               <i class="pi pi-comment"></i>
               <div class="emoji">{{ countComments.commentCount }}</div>
@@ -75,6 +77,7 @@ import Comment from '@/components/common/Comment.vue';
 import { $api } from '@/services/api/api';
 import { Helper } from '@/utils/Helper';
 import { useUserStore } from '@/stores/user';
+import ReviewLike from '@/components/common/reaction/ReviewLike.vue';
 
 const route = useRoute();
 const userStore = useUserStore();
@@ -228,6 +231,13 @@ const handleSubscribe = () => {
   console.log('status: ', isSubscribed.value);
 };
 
+const toggleLike = () => {
+  $api.postLike.toggleLike(boardId.value).then(() => {
+    // 좋아요 개수 새로고침
+    fetchLikeCount();
+  });
+};
+
 onMounted(() => {
   setMenuItems();
   fetchPostDetail();
@@ -294,6 +304,8 @@ onMounted(() => {
 .content-footer {
   display: flex;
   justify-content: flex-end;
+  gap: 10px;
+  align-items: center;
 }
 .like {
   display: flex;
