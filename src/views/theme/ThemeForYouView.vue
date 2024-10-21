@@ -7,7 +7,7 @@
         <div class="list-theme">
           <div v-for="theme in recommendedThemes" :key="theme.themeCode">
             <ThemeCard :theme="theme" :show-footer="false" class="mb-s" />
-            <Button label="방탈출 구경하기" fluid @click="clickRecommendedTheme(theme.themeCode)" />
+            <Button label="방탈출 구경하기" fluid as="router-link" :to="`/theme/detail/${theme.themeCode}`" />
           </div>
         </div>
       </div>
@@ -60,10 +60,8 @@ import { $api } from '@/services/api/api';
 import { onMounted, ref } from 'vue';
 import Button from 'primevue/button';
 import ThemeCard from '@/components/cards/ThemeCard.vue';
-import { useRouter } from 'vue-router';
 import useToastMessage from '@/hooks/useToastMessage';
 
-const router = useRouter();
 const { showError } = useToastMessage();
 
 const themes = ref([]);
@@ -96,10 +94,6 @@ const clickRecommend = () => {
     recommendedThemes.value = foundThemes;
     recommendedSuccess.value = true;
   });
-};
-
-const clickRecommendedTheme = themeCode => {
-  router.push(`/theme/detail/${themeCode}`);
 };
 
 const getThemes = genres => {

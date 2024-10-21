@@ -14,7 +14,8 @@
       text
       icon="pi pi-home"
       class="mb-s"
-      @click="clickStore(themeDetail.storeCode)"
+      as="router-link"
+      :to="`/store/detail/${themeDetail.storeCode}`"
     />
 
     <div class="flex-row gap-20 mb-l items-start">
@@ -192,10 +193,6 @@ const clickScrap = (themeCode, changeTo) => {
     if (changeTo) scrapCnt.value += 1;
     else scrapCnt.value -= 1;
   });
-};
-
-const clickStore = storeCode => {
-  router.push(`/store/detail/${storeCode}`);
 };
 
 const mappingStatistics = (options, one, two, three, four, five) => {

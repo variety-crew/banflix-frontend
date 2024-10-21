@@ -35,7 +35,15 @@
             @click="clickScrap(!userBookmarked)"
           />
         </div>
-        <Button label="테마 상세보기" size="small" fluid @click="clickCard(props.theme.themeCode)" />
+
+        <Button
+          v-if="props.nextPage === 'THEME'"
+          label="테마 상세보기"
+          size="small"
+          fluid
+          as="router-link"
+          :to="`/theme/detail/${props.theme.themeCode}`"
+        />
       </template>
     </Card>
   </div>
@@ -47,7 +55,6 @@ import Card from 'primevue/card';
 import ReviewIcon from '../common/reaction/ReviewIcon.vue';
 import Like from '../common/reaction/ReviewLike.vue';
 import Scrap from '../common/reaction/Scrap.vue';
-import router from '@/router/routes';
 import { useUserStore } from '@/stores/user';
 import Button from 'primevue/button';
 import AppTypography from '../AppTypography.vue';
@@ -78,17 +85,6 @@ const userLiked = ref(false);
 const userBookmarked = ref(false);
 const likeCnt = ref(0);
 const scrapCnt = ref(0);
-
-const clickCard = id => {
-  let nextPageUrl = '';
-  if (props.nextPage === 'EVENT') {
-    nextPageUrl = `/event/detail/${id}`;
-  } else if (props.nextPage === 'THEME') {
-    nextPageUrl = `/theme/detail/${id}`;
-  }
-
-  router.push(nextPageUrl);
-};
 
 const clickLike = changeTo => {
   $api.theme.setReactions('like', changeTo, props.theme.themeCode).then(() => {
