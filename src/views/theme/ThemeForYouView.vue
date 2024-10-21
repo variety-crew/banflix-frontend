@@ -40,14 +40,11 @@
         <div class="flex-col items-center">
           <Button
             label="내 취향 방탈출 추천 받기"
-            :disabled="selectedThemeCodes.length < minSelectCnt"
+            :disabled="selectedThemeCodes.length === 0"
             @click="clickRecommend"
           />
-          <AppTypography v-if="selectedThemeCodes.length < minSelectCnt" type="caption" color="darkgray" class="mt-xs"
-            >{{ minSelectCnt - selectedThemeCodes.length }}개 더 골라주세요! (최소 {{ minSelectCnt }}개 선택
-            필요)</AppTypography
-          >
-          <AppTypography v-else type="caption" color="darkgray" class="mt-xs"
+          <AppTypography type="caption" color="darkgray" class="mt-xs">(최대 {{ maxCnt }}개 선택 가능)</AppTypography>
+          <AppTypography type="caption" color="darkgray" class="mt-xs"
             >많이 고를 수록 더 정확히 추천받을 수 있어요!</AppTypography
           >
         </div>
@@ -75,7 +72,7 @@ const isReloading = ref(false);
 const recommendedThemes = ref([]);
 const recommendedSuccess = ref(false);
 
-const minSelectCnt = 3;
+const maxCnt = 3;
 let currentPage = 0;
 let genres = [];
 
@@ -86,7 +83,11 @@ const clickTheme = themeCode => {
     return;
   }
 
-  // 추가하기
+  if (selectedThemeCodes.value.length === 3) {
+    // 이미 가득 차있다면 마지막 선택한 거 제외하고 추가하기
+    selectedThemeCodes.value.pop();
+  }
+
   selectedThemeCodes.value.push(themeCode);
 };
 
